@@ -1,0 +1,8 @@
+/node_modules
+/public/storage
+/vendor
+.env
+/storage/oauth-private.key
+/storage/oauth-public.key
+
+/nbproject/
