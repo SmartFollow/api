@@ -18,8 +18,6 @@ class CreateLessonsTable extends Migration
 			$table->integer('subject_id')->unsigned()->index();
 			$table->integer('reservation_id')->unsigned()->index();
 			$table->string('description');
-			$table->timestamp('start_at');
-			$table->timestamp('end_at');
             $table->timestamps();
 			$table->softDeletes();
         });
