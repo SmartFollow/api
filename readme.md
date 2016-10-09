@@ -16,7 +16,7 @@ git clone git@gitlab.com:smartfollow/api.git
 cd api
 ```
 
-### Configuring Laravel setup
+### Configuring and installing Laravel setup
 
 ```sh
 composer install
@@ -26,8 +26,6 @@ nano .env
 ```
 
 Update the database informations and other relevant credentials.
-
-### Installing Laravel
 
 ```sh
 php artisan migrate
