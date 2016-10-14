@@ -12,4 +12,9 @@ class Group extends Model
 		return $this->belongsToMany('App\Models\Users\AccessRule');
 	}
 
+	public function users()
+	{
+		return $this->hasMany('App\Models\Users\User');
+	}
+
 }

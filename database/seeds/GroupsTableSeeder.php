@@ -11,7 +11,7 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('groups')->insert([
+		DB::table('groups')->insert([
 			'name' => 'Administrators',
 			'description' => 'Administrators of the software',
 			'deletable' => false,
