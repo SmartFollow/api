@@ -17,6 +17,8 @@ class GroupController extends Controller
      */
     public function index()
     {
+		$this->authorize('index', Group::class);
+
 		return Group::get();
     }
 
@@ -28,6 +30,8 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+		$this->authorize('create', Group::class);
+
 		$this->validate($request, [
 			'name' => 'required|unique:groups',
 			'description' => 'required',
@@ -54,6 +58,8 @@ class GroupController extends Controller
     {
 		$group = Group::findOrFail($id);
 
+		$this->authorize('show', $group);
+
         return $group;
     }
 
@@ -65,6 +71,8 @@ class GroupController extends Controller
 	public function showAccessRules($id)
     {
 		$group = Group::with('accessRules')->findOrFail($id);
+
+		$this->authorize('accessRules', $group);
 
         return $group->accessRules;
     }
@@ -79,6 +87,8 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
 		$group = Group::findOrFail($id);
+
+		$this->authorize('update', $group);
 
 		$this->validate($request, [
 			'name' => 'unique:groups',
@@ -112,6 +122,8 @@ class GroupController extends Controller
     public function destroy($id)
     {
         $group = Group::findOrFail($id);
+
+		$this->authorize('destroy', $group);
 
 		if (!$group->deletable)
 			abort(403, trans('group.not_deletable'));
