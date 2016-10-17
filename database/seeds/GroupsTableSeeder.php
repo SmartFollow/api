@@ -15,24 +15,28 @@ class GroupsTableSeeder extends Seeder
 			'name' => 'Administrators',
 			'description' => 'Administrators of the software',
 			'deletable' => false,
+			'editable' => false,
 		]);
 
 		DB::table('groups')->insert([
 			'name' => 'Teachers',
 			'description' => 'Teachers of the school',
 			'deletable' => false,
+			'editable' => false,
 		]);
 
 		DB::table('groups')->insert([
 			'name' => 'Employees',
 			'description' => 'Administrators of the school',
 			'deletable' => true,
+			'editable' => true,
 		]);
 
 		DB::table('groups')->insert([
 			'name' => 'Students',
 			'description' => 'Students of the school',
 			'deletable' => false,
+			'editable' => false,
 		]);
     }
 }

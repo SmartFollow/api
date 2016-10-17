@@ -31,6 +31,7 @@ class GroupController extends Controller
 		$this->validate($request, [
 			'name' => 'required|unique:groups',
 			'description' => 'required',
+			'access_rules.*' => 'exists:access_rules,id'
 		]);
 
 		$group = new Group();
@@ -38,7 +39,9 @@ class GroupController extends Controller
 		$group->description = $request->get('description');
 		$group->save();
 
-		return ($group);
+		$group->accessRules()->sync($request->get('access_rules'));
+
+		return $group;
     }
 
     /**
@@ -49,7 +52,9 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        return Group::findOrFail($id);
+		$group = Group::findOrFail($id);
+
+        return $group;
     }
 
 	/**
@@ -59,7 +64,9 @@ class GroupController extends Controller
 	 */
 	public function showAccessRules($id)
     {
-        return Group::with('accessRules')->findOrFail($id)->access_rules;
+		$group = Group::with('accessRules')->findOrFail($id);
+
+        return $group->accessRules;
     }
 
     /**
@@ -71,19 +78,29 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
+		$group = Group::findOrFail($id);
+
 		$this->validate($request, [
-			'name' => 'unique:groups,id',
+			'name' => 'unique:groups',
 			'description' => '',
+			'access_rules.*' => 'exists:access_rules,id'
 		]);
 
-        $group = Group::findOrFail($id);
+		if (!$group->editable)
+			abort(403, trans('group.not_editable'));
+
 		if ($request->has('name'))
 			$group->name = $request->get('name');
 		if ($request->has('description'))
 			$group->description = $request->get('description');
 		$group->save();
 
-		return ($group);
+		if ($request->has('access_rules'))
+		{
+			$group->accessRules()->sync($request->get('access_rules'));
+		}
+
+		return $group;
     }
 
     /**
