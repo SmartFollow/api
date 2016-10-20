@@ -25,8 +25,10 @@ class AlterTableGroupsAddEditableField extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('groups', function (Blueprint $table) {
             $table->dropColumn('editable');
         });
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

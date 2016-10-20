@@ -48,5 +48,9 @@ class AccessRulesSeeder extends Seeder
 			'name' => 'groups.destroy',
 			'route' => 'groups.destroy',
 		]);
+		DB::table('access_rules')->insert([
+			'name' => 'groups.access-rules',
+			'route' => 'groups.access-rules',
+		]);
     }
 }

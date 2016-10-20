@@ -28,6 +28,8 @@ class CreateAccessRuleGroupPivotTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::drop('access_rule_group');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

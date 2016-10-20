@@ -27,10 +27,12 @@ class AddNameFieldsUsers extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('firstname');
             $table->dropColumn('lastname');
 			$table->string('name');
         });
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

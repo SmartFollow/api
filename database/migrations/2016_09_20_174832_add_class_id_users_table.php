@@ -26,9 +26,11 @@ class AddClassIdUsersTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('users', function (Blueprint $table) {
-           $table->dropIndex('class_id');
+           $table->dropForeign(['class_id']);
            $table->dropColumn('class_id');
         });
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
