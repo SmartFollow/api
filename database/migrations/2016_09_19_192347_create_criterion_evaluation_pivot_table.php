@@ -30,6 +30,8 @@ class CreateCriterionEvaluationPivotTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::drop('criterion_evaluation');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

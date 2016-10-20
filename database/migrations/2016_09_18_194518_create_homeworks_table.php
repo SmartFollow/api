@@ -34,6 +34,8 @@ class CreateHomeworksTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('homeworks');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

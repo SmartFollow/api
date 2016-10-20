@@ -26,8 +26,10 @@ class AlterTableAccessRulesRemoveTimestamps extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('access_rules', function (Blueprint $table) {
             $table->timestamps();
         });
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

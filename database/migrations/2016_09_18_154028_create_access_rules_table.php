@@ -29,6 +29,8 @@ class CreateAccessRulesTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('access_rules');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

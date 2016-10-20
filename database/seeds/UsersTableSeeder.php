@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Users\Group;
+use App\Models\Users\User;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -11,6 +14,10 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Users\User::class, 15)->create();
+		factory(App\Models\Users\User::class, 15)->create();
+
+		$user = User::first();
+		$user->group_id = Group::where('name', 'Administrators')->first()->id;
+		$user->save();
     }
 }
