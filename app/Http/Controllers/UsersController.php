@@ -29,13 +29,17 @@ class UsersController extends Controller
     public function store(Request $request)
     {
     	$this->validate($request, [
-			'firstname' => 'required',
-			'email' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'password' => 'required',
 		]);
 
 		$user = new User();
-		$user->firstname = $request->get('firstname');
+        $user->firstname = $request->get('firstname');
+        $user->lastname = $request->get('lastname');
 		$user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
 		$user->save();
 
 		return ($user);
@@ -50,16 +54,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-		$this->validate($request, [
-			'firstname' => 'unique:Users,id',
-			'email' => '',
-		]);
-
         $user = User::findOrFail($id);
-		if ($request->has('firstname'))
-			$user->firstname = $request->get('firstname');
+
+        if ($request->has('firstname'))
+            $user->firstname = $request->get('firstname');      
+        if ($request->has('lastname'))
+            $user->lastname = $request->get('lastname');
 		if ($request->has('email'))
 			$user->email = $request->get('email');
+        if ($request->has('password'))
+            $user->password = bcrypt($request->get('password'));
 		$user->save();
 
 		return ($user);
