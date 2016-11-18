@@ -17,6 +17,8 @@ class UsersController extends Controller
      */
     public function index()
     {
+		$this->authorize('index', User::class);
+
 		return User::get();
     }
 
@@ -28,11 +30,14 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+		$this->authorize('create', User::class);
+
     	$this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
+			'group' => 'exists:groups,id',
 		]);
 
 		$user = new User();
@@ -40,6 +45,8 @@ class UsersController extends Controller
         $user->lastname = $request->get('lastname');
 		$user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
+		if ($request->has('group'))
+			$user->group_id = $request->get('group');
 		$user->save();
 
 		return ($user);
@@ -56,11 +63,14 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
+		$this->authorize('update', $user);
+
 		$this->validate($request, [
             'firstname' => '',
             'lastname' => '',
             'email' => 'email|unique:users,email,' . $id,
             'password' => '',
+			'group' => 'exists:groups,id',
 		]);
 
         if ($request->has('firstname'))
@@ -71,6 +81,8 @@ class UsersController extends Controller
 			$user->email = $request->get('email');
         if ($request->has('password'))
             $user->password = bcrypt($request->get('password'));
+		if ($request->has('group'))
+			$user->group_id = $request->get('group');
 		$user->save();
 
 		return ($user);
@@ -84,7 +96,11 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        return User::findOrFail($id);
+		$user = User::with('group')->findOrFail($id);
+
+		$this->authorize('show', $user);
+
+        return $user;
     }
 
     /**
@@ -96,6 +112,8 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
+		$this->authorize('destroy', $user);
 
 		$user->delete();
     }
