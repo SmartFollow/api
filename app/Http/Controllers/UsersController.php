@@ -31,7 +31,7 @@ class UsersController extends Controller
     	$this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
-            'email' => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
 		]);
 
@@ -56,8 +56,15 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
+		$this->validate($request, [
+            'firstname' => '',
+            'lastname' => '',
+            'email' => 'email|unique:users,email,' . $id,
+            'password' => '',
+		]);
+
         if ($request->has('firstname'))
-            $user->firstname = $request->get('firstname');      
+            $user->firstname = $request->get('firstname');
         if ($request->has('lastname'))
             $user->lastname = $request->get('lastname');
 		if ($request->has('email'))
