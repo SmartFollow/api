@@ -12,12 +12,12 @@ class AccessRulesSeeder extends Seeder
     public function run()
     {
         DB::table('access_rules')->insert([
-			'name' => 'user.profile',
-			'route' => 'user.profile',
+			'name' => 'users.profile',
+			'route' => 'users.profile',
 		]);
         DB::table('access_rules')->insert([
-			'name' => 'user.show',
-			'route' => 'user.show',
+			'name' => 'users.show',
+			'route' => 'users.show',
 		]);
 
 		DB::table('access_rules')->insert([

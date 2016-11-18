@@ -20,8 +20,8 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => false,
 			'editable' => false,
 		]);
-		$administrators->accessRules()->attach(AccessRule::where('route', 'user.profile')->first());
-		$administrators->accessRules()->attach(AccessRule::where('route', 'user.show')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.create')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.store')->first());
@@ -37,8 +37,8 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => false,
 			'editable' => false,
 		]);
-		$teachers->accessRules()->attach(AccessRule::where('route', 'user.profile')->first());
-		$teachers->accessRules()->attach(AccessRule::where('route', 'user.show')->first());
+		$teachers->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$teachers->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
 		$teachers->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$teachers->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
 
@@ -48,8 +48,8 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => true,
 			'editable' => true,
 		]);
-		$employees->accessRules()->attach(AccessRule::where('route', 'user.profile')->first());
-		$employees->accessRules()->attach(AccessRule::where('route', 'user.show')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.access-rules')->first());
@@ -60,6 +60,6 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => false,
 			'editable' => false,
 		]);
-		$students->accessRules()->attach(AccessRule::where('route', 'user.profile')->first());
+		$students->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
     }
 }
