@@ -28,6 +28,8 @@ class CreateGroupUserPivotTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::drop('group_user');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

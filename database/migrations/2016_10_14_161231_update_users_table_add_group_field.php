@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNameFieldsUsers extends Migration
+class UpdateUsersTableAddGroupField extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class AddNameFieldsUsers extends Migration
      */
     public function up()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('name');
-			$table->string('firstname');
-			$table->string('lastname');
+            $table->integer('group_id')->unsigned()->index();
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
+
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -29,9 +32,8 @@ class AddNameFieldsUsers extends Migration
     {
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('firstname');
-            $table->dropColumn('lastname');
-			$table->string('name');
+            $table->dropForeign(['group_id']);
+            $table->dropColumn('group_id');
         });
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
