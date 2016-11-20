@@ -20,8 +20,12 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => false,
 			'editable' => false,
 		]);
-		$administrators->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.create')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.update')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'users.destroy')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.create')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.store')->first());
@@ -48,8 +52,12 @@ class GroupsTableSeeder extends Seeder
 			'deletable' => true,
 			'editable' => true,
 		]);
-		$employees->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.create')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.update')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'users.destroy')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.access-rules')->first());
