@@ -8,7 +8,7 @@ use App\Http\Requests;
 
 use App\Models\Users\User;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,6 +38,7 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
 			'group' => 'exists:groups,id',
+			'studentClass' => 'exists:student_classes,id',
 		]);
 
 		$user = new User();
@@ -47,6 +48,8 @@ class UsersController extends Controller
         $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
+		if ($request->has('studentClass'))
+			$user->class_id = $request->get('studentClass');
 		$user->save();
 
 		return ($user);
@@ -71,6 +74,7 @@ class UsersController extends Controller
             'email' => 'email|unique:users,email,' . $id,
             'password' => '',
 			'group' => 'exists:groups,id',
+			'studentClass' => 'exists:student_classes,id',
 		]);
 
         if ($request->has('firstname'))
@@ -83,6 +87,8 @@ class UsersController extends Controller
             $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
+		if ($request->has('studentClass'))
+			$user->class_id = $request->get('studentClass');
 		$user->save();
 
 		return ($user);
