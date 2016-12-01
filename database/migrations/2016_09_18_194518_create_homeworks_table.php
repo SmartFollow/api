@@ -23,7 +23,7 @@ class CreateHomeworksTable extends Migration
 
 		Schema::table('homeworks', function (Blueprint $table) {
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

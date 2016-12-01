@@ -15,7 +15,7 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('transmitter_id')->unsigned()->index();
+			$table->integer('transmitter_id')->unsigned()->index()->nullable();
 			$table->string('resource_link');
 			$table->text('message');
             $table->timestamps();
@@ -23,7 +23,7 @@ class CreateNotificationsTable extends Migration
         });
 
 		Schema::table('notifications', function (Blueprint $table) {
-            $table->foreign('transmitter_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('transmitter_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

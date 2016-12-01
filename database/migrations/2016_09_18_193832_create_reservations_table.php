@@ -24,7 +24,7 @@ class CreateReservationsTable extends Migration
 
 		Schema::table('reservations', function (Blueprint $table) {
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('recurrence_id')->references('id')->on('recurrences')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('recurrence_id')->references('id')->on('recurrences')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
