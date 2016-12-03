@@ -22,4 +22,13 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	Route::resource('users', 'UsersController');
 
+	/**
+	 * Routes related to the notifications
+	 */
+	Route::group(['prefix' => '/notification'], function()
+	{
+		
+	});
+	Route::resource('notification', 'NotificationController');
+
 });
