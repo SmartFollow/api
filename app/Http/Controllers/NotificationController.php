@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Models\Communication\Notification;
 
 class NotificationController extends Controller
@@ -39,9 +40,9 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'transmitter_id' => 'required',
+            'transmitter_id' => '',
             'resource_link' => '',
-            'message' => 'required|unique:notification,message',
+            'message' => 'required',
         ]);
 
         $notif = new Notification();
@@ -89,9 +90,9 @@ class NotificationController extends Controller
         $notif = Notification::findOrFail($id);
 
         $this->validate($request, [
-            'transmitter_id' => 'unique:notification,transmitter_id',
+            'transmitter_id' => '',
             'resource_link' => '',
-            'message' => 'exists:notification,message',
+            'message' => '',
         ]);
 
         if ($request->has('transmitter_id'))
