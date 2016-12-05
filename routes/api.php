@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/notification'], function()
 	{
-		
+		Route::get('/notification/{id}/read','NotificationController@read');
 	});
 	Route::resource('notification', 'NotificationController');
 

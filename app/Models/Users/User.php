@@ -36,4 +36,9 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo('App\Models\Users\Group');
 	}
+
+    public function notifications()
+    {
+        return $this->belongsToMany('App\Models\Communication\Notification');
+    }
 }

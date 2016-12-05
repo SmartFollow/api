@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\Models\Communication\Notification;
+use App\Models\Users\User;
 
 class NotificationController extends Controller
 {
@@ -43,6 +44,7 @@ class NotificationController extends Controller
             'transmitter_id' => '',
             'resource_link' => '',
             'message' => 'required',
+            'user' => 'exists:users,id',
         ]);
 
         $notif = new Notification();
@@ -50,6 +52,8 @@ class NotificationController extends Controller
         $notif->resource_link = $request->get('resource_link');
         $notif->message = $request->get('message');
         $notif->save();
+
+        $notif->users()->attach($request->get('user'));
 
         return $notif;
     }
@@ -93,6 +97,7 @@ class NotificationController extends Controller
             'transmitter_id' => '',
             'resource_link' => '',
             'message' => '',
+            'user' => 'exists:users,id',
         ]);
 
         if ($request->has('transmitter_id'))
@@ -102,6 +107,11 @@ class NotificationController extends Controller
         if ($request->has('message'))
             $notif->message = $request->get('message');
         $notif->save();
+
+        if ($request->has('user'))
+        {
+            $notif->users()->attach($request->get('user'));
+        }
 
         return $notif;
     }
@@ -118,4 +128,19 @@ class NotificationController extends Controller
 
         $notif->delete();
     }
+
+
+    /**
+     * Mark as read function
+     *
+     * @param type $id
+     * @return type
+     */
+    public function read($id)
+    {
+        $notif = notif::with('user')->findOrFail($id);
+
+        return $notif->markAsRead();
+    }
+
 }
