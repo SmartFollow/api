@@ -11,4 +11,9 @@ class Lesson extends Model
 		return $this->belongsTo('App\Models\Pedagogy\Subject');
 	}
 
+	public function reservation()
+	{
+		return $this->belongsTo('App\Models\Planning\Reservation');
+	}
+
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Pedagogy\Level;
 use App\Models\Pedagogy\Lesson;
+use App\Models\Pedagogy\Subject;
 use App\Models\Planning\Reservation;
 
 use DateTime;
@@ -30,7 +32,14 @@ class LessonController extends Controller
      */
     public function create()
     {
-        //
+        $available_reservations = Reservation::whereDoesntHave('lessons')->get();
+
+		$levels = Level::with('subjects.studentClasses')->get();
+
+		return [
+			'available_reservations' => $available_reservations,
+			'levels' => $levels,
+		];
     }
 
     /**
@@ -57,12 +66,29 @@ class LessonController extends Controller
 			'student_class_id' => 'required|exists:student_classes,id',
 		]);
 
-		// TODO validate the fact that subject / student_class are compatible
+		// Validate that the studentClass has the subject
+		$classSubjectMatch = Subject::whereHas('studentClasses', function($q) use($request) {
+			$q->where('student_classes.id', $request->get('student_class_id'));
+		})->where('id', $request->get('subject_id'))->count() > 0;
+		if (!$classSubjectMatch)
+		{
+			return [
+				"error" => trans('lessons.student_class_doesnt_have_subject'),
+			];
+		}
+
+		// Validate that the reservation is available and not already used
+		$reservationIsAvailable = Lesson::where('reservation_id', $request->get('reservation_id'))->count() == 0;
+		if (!$reservationIsAvailable)
+			{
+			return [
+				"error" => trans('reservations.reservation_not_available'),
+			];
+		}
 
 		$reservation = Reservation::findOrFail($request->get('reservation_id'));
 
 		$recurrency_end = new DateTime($reservation->date_end);
-
 		$nextLessonStart = new DateTime($reservation->date_start);
 		if ($nextLessonStart->format('w') != $days[$reservation->day])
 			$nextLessonStart->modify('next ' . $reservation->day);
@@ -99,7 +125,9 @@ class LessonController extends Controller
      */
     public function show($id)
     {
-        $lesson = Lesson::findOrFail($id);
+        $lesson = Lesson::with('reservation')
+				->with('subject.teacher')
+				->findOrFail($id);
 
 		return $lesson;
     }
