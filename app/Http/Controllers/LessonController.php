@@ -38,7 +38,15 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+			'subject_id' => 'required|exists:subjects,id',
+			'description' => 'required',
+		]);
+
+		$lesson = new Lesson();
+		$lesson->subject_id = $request->get('subject_id');
+		$lesson->description = $request->get('description');
+		$lesson->save();
     }
 
     /**

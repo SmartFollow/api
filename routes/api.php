@@ -79,8 +79,17 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/lessons'], function()
 	{
-		
+
 	});
 	Route::resource('lessons', 'LessonController');
+
+	/**
+	 * Routes related to the reservations
+	 */
+	Route::group(['prefix' => '/reservations'], function()
+	{
+
+	});
+	Route::resource('reservations', 'ReservationController');
 
 });
