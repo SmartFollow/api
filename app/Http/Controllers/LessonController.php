@@ -57,6 +57,8 @@ class LessonController extends Controller
 			'student_class_id' => 'required|exists:student_classes,id',
 		]);
 
+		// TODO validate the fact that subject / student_class are compatible
+
 		$reservation = Reservation::findOrFail($request->get('reservation_id'));
 
 		$recurrency_end = new DateTime($reservation->date_end);
