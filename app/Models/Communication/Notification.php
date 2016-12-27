@@ -8,6 +8,6 @@ class Notification extends Model
 {
     public function users()
 	{
-		return $this->belongsToMany('App\Models\Users\User');
+		return $this->belongsToMany('App\Models\Users\User')->withPivot('read_at');;
 	}
 }

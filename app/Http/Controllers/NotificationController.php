@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\Communication\Notification;
 use App\Models\Users\User;
+use DateTime;
 
 class NotificationController extends Controller
 {
@@ -131,16 +132,27 @@ class NotificationController extends Controller
 
 
     /**
-     * Mark as read function
+     * Mark the notification as read.
      *
-     * @param type $id
-     * @return type
+     * @return void
      */
-    public function read($id)
+    public function ReadAt($id)
     {
-        $notif = notif::with('user')->findOrFail($id);
+        $notif = Notification::findOrFail($id);
 
-        return $notif->markAsRead();
+        $date = new \DateTime();
+        $usableDate = $date->format('Y-m-d H:i:s');
+
+        foreach ($notif->users as $notifs)
+        {
+            $read = $notifs->pivot_read_at;
+            if (is_null($read)) {
+                $read = $usableDate;
+                //$read->save();
+            }
+            var_dump($read);
+        }
+        return $read;
     }
 
 }
