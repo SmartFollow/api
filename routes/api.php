@@ -22,4 +22,13 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	Route::resource('users', 'UsersController');
 
+	/**
+	 * Routes related to rooms
+	 */
+	Route::group(['prefix' => '/room'], function()
+	{
+		
+	});
+	Route::resource('room', 'RoomController');
+
 });
