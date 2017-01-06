@@ -127,6 +127,10 @@ class LessonController extends Controller
     {
         $lesson = Lesson::with('reservation')
 				->with('subject.teacher')
+				->with('homeworks')
+				->with('documents')
+				->with('exam')
+				->with('studentClass.students')
 				->findOrFail($id);
 
 		return $lesson;

@@ -79,9 +79,19 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/lessons'], function()
 	{
+		Route::group(['prefix' => '/{lessonId}'], function()
+		{
+			Route::resource('homeworks', 'HomeworkController');
 
+			Route::get('/exam', ['as' => 'lessons.exams.show', 'uses' => 'ExamController@showLessonExam']);
+			Route::get('/exam/create', ['as' => 'lessons.exams.create', 'uses' => 'ExamController@createLessonExam']);
+			Route::post('/exam', ['as' => 'lessons.exams.store', 'uses' => 'ExamController@storeLessonExam']);
+		});
+//		->where(['lessonId' => '[0-9]+']);
 	});
 	Route::resource('lessons', 'LessonController');
+
+	Route::resource('exams', 'ExamController');
 
 	/**
 	 * Routes related to the reservations
