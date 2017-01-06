@@ -10,4 +10,9 @@ class Reservation extends Model
 	{
 		return $this->hasMany('App\Models\Pedagogy\Lesson');
 	}
+
+	public function room()
+	{
+		return $this->belongsTo('App\Models\Planning\Room');
+	}
 }

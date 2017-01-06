@@ -125,7 +125,7 @@ class LessonController extends Controller
      */
     public function show($id)
     {
-        $lesson = Lesson::with('reservation')
+        $lesson = Lesson::with('reservation.room')
 				->with('subject.teacher')
 				->with('homeworks')
 				->with('documents')
@@ -167,6 +167,8 @@ class LessonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $lesson = Lesson::findOrFail($id);
+
+		$lesson->delete();
     }
 }
