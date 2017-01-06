@@ -17,7 +17,6 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
 			$table->string('identifier')->unique();
 			$table->smallInteger('seats')->unsigned();
-            $table->timestamps();
         });
     }
 

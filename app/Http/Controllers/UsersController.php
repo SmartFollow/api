@@ -8,6 +8,8 @@ use App\Http\Requests;
 
 use App\Models\Users\User;
 
+use Illuminate\Support\Facades\Auth;
+
 class UsersController extends Controller
 {
     /**
@@ -117,4 +119,26 @@ class UsersController extends Controller
 
 		$user->delete();
     }
+
+    /**
+     * Change user password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $this->validate($request, [
+            'password' => 'required',
+            'new_password' => 'required|different:password'
+        ]);
+
+        $user->password = bcrypt($request->get('new_password'));
+        $user->save();
+
+        return ($user);
+    }
 }
+

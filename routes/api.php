@@ -20,8 +20,9 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::get('/groups/{id}/access-rules', ['as' => 'groups.show.access-rules', 'uses' => 'GroupController@showAccessRules'])
 		->where(['id' => '[0-9]+']);
 
+	Route::put('/users/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);	
 	Route::resource('users', 'UsersController');
-
+	
 	/**
 	 * Routes related to rooms
 	 */
