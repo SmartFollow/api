@@ -4,6 +4,8 @@ namespace App\Models\Pedagogy;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Pedagogy\Evaluations\Evaluation;
+
 class Lesson extends Model
 {
     public function subject()
@@ -34,6 +36,11 @@ class Lesson extends Model
 	public function studentClass()
 	{
 		return $this->belongsTo('App\Models\Pedagogy\StudentClass');
+	}
+	
+	public function evaluations()
+	{
+		return $this->hasMany(Evaluation::class);
 	}
 
 }

@@ -19,6 +19,10 @@ Route::group(['middleware' => ['auth:api']], function()
 	/**
 	 * Routes related to the users
 	 */
+	Route::group(['prefix' => '/users'], function()
+	{
+		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
+	});
 	Route::resource('users', 'UserController');
 
 	/**
@@ -30,7 +34,6 @@ Route::group(['middleware' => ['auth:api']], function()
 			->where(['id' => '[0-9]+']);
 	});
 	Route::resource('groups', 'GroupController');
-
 
 	/**
 	 * Routes related to the levels
@@ -86,12 +89,23 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::get('/exam', ['as' => 'lessons.exams.show', 'uses' => 'ExamController@showLessonExam']);
 			Route::get('/exam/create', ['as' => 'lessons.exams.create', 'uses' => 'ExamController@createLessonExam']);
 			Route::post('/exam', ['as' => 'lessons.exams.store', 'uses' => 'ExamController@storeLessonExam']);
+
+			Route::post('/documents', ['as' => 'lessons.documents.store', 'uses' => 'DocumentController@storeLessonDocument']);
+			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
+				 ->where(['id' => '[0-9]+']);
+			
+			Route::resource('evaluations', 'EvaluationController');
 		});
-//		->where(['lessonId' => '[0-9]+']);
 	});
 	Route::resource('lessons', 'LessonController');
 
 	Route::resource('exams', 'ExamController');
+	
+	Route::group(['prefix' => '/documents'], function()
+	{
+		
+	});
+	Route::resource('documents', 'DocumentController');
 
 	/**
 	 * Routes related to the reservations
@@ -101,5 +115,17 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	});
 	Route::resource('reservations', 'ReservationController');
+	
+	/**
+	 * Routes related to the evaluations
+	 */
+	Route::group(['prefix' => '/evaluations'], function()
+	{
+		Route::group(['prefix' => '/{evaluationId}'], function()
+		{
+			Route::resource('absences', 'AbsenceController', ['only' => ['destroy', 'store']]);
+		});
+	});
+	Route::resource('evaluations', 'EvaluationController');
 
 });

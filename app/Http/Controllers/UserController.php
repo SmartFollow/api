@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Users\User;
+use App\Models\Users\Group;
 
 class UserController extends Controller
 {
@@ -21,6 +21,13 @@ class UserController extends Controller
 
 		return User::get();
     }
+	
+	public function profileAccessRules()
+	{
+		$group = Group::with('accessRules')->findOrFail(Auth::user()->group_id);
+		
+		return $group->accessRules;
+	}
 
     /**
      * Store a newly created resource in storage.

@@ -50,6 +50,8 @@ class HomeworkController extends Controller
 			'description' => 'required',
 			'document_id' => 'exists:documents,id',
 		]);
+		
+		// Check if document belongs to lesson
 
 		$homework = new Homework();
 		$homework->description = $request->get('description');
@@ -84,7 +86,13 @@ class HomeworkController extends Controller
      */
     public function edit($lessonId, $id)
     {
-        //
+        $documents = Document::where('lesson_id', $lessonId)->get();
+		$homework = Homework::findOrFail($id);
+
+		return [
+			'documents' => $documents,
+			'homework' => $homework
+		];
     }
 
     /**
@@ -96,7 +104,19 @@ class HomeworkController extends Controller
      */
     public function update(Request $request, $lessonId, $id)
     {
-        //
+        $this->validate($request, [
+			'description' => '',
+			'document_id' => 'exists:documents,id',
+		]);
+
+		$homework = Homework::findOrFail($id);
+		if ($request->has('description'))
+			$homework->description = $request->get('description');
+		if ($request->has('document_id'))
+			$homework->document_id = $request->get('document_id');
+		$homework->save();
+
+		return $homework;
     }
 
     /**

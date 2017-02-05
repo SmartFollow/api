@@ -38,4 +38,10 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo('App\Models\Pedagogy\StudentClass', 'class_id');
 	}
+	
+	public function teachedSubjects()
+	{
+		return $this->hasMany('App\Models\Users\User', 'teacher_id', 'id');
+	}
+
 }

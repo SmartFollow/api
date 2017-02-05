@@ -8,6 +8,7 @@ use App\Models\Pedagogy\Level;
 use App\Models\Pedagogy\Lesson;
 use App\Models\Pedagogy\Subject;
 use App\Models\Planning\Reservation;
+use App\Models\Users\User;
 
 use DateTime;
 
@@ -144,7 +145,9 @@ class LessonController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lesson = Lesson::findOrFail($id);
+
+		return $lesson;
     }
 
     /**
@@ -156,7 +159,16 @@ class LessonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $lesson = Lesson::findOrFail($id);
+		
+		$this->validate($request, [
+			'description' => '',
+		]);
+		
+		$lesson->description = $request->get('description');
+		$lesson->save();
+
+		return $lesson;
     }
 
     /**
