@@ -86,9 +86,12 @@ Route::group(['middleware' => ['auth:api']], function()
 		{
 			Route::resource('homeworks', 'HomeworkController');
 
-			Route::get('/exam', ['as' => 'lessons.exams.show', 'uses' => 'ExamController@showLessonExam']);
-			Route::get('/exam/create', ['as' => 'lessons.exams.create', 'uses' => 'ExamController@createLessonExam']);
-			Route::post('/exam', ['as' => 'lessons.exams.store', 'uses' => 'ExamController@storeLessonExam']);
+			Route::group(['prefix' => '/exam'], function()
+			{
+				Route::get('/', ['as' => 'lessons.exams.show', 'uses' => 'ExamController@showLessonExam']);
+				Route::get('/create', ['as' => 'lessons.exams.create', 'uses' => 'ExamController@createLessonExam']);
+				Route::post('/', ['as' => 'lessons.exams.store', 'uses' => 'ExamController@storeLessonExam']);
+			});
 
 			Route::post('/documents', ['as' => 'lessons.documents.store', 'uses' => 'DocumentController@storeLessonDocument']);
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
@@ -99,6 +102,13 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('lessons', 'LessonController');
 
+	Route::group(['prefix' => '/exams'], function()
+	{
+		Route::group(['prefix' => '/{examId}'], function()
+		{
+			Route::resource('marks', 'MarkController');
+		});
+	});
 	Route::resource('exams', 'ExamController');
 	
 	Route::group(['prefix' => '/documents'], function()
@@ -123,7 +133,8 @@ Route::group(['middleware' => ['auth:api']], function()
 	{
 		Route::group(['prefix' => '/{evaluationId}'], function()
 		{
-			Route::resource('absences', 'AbsenceController', ['only' => ['destroy', 'store']]);
+			Route::resource('absences', 'AbsenceController');
+			Route::resource('delays', 'DelayController', ['only' => ['destroy', 'store']]);
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');

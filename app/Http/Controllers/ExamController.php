@@ -52,6 +52,10 @@ class ExamController extends Controller
 			'max_mark' => 'numeric',
 			'document_id' => 'exists:documents,id'
 		]);
+		
+		// Check if document is linked to the lesson
+		
+		// Check if the lesson has no exam yet
 
 		$exam = new Exam();
 		$exam->lesson_id = $lesson->id;
