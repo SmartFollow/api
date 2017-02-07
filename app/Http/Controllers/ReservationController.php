@@ -28,7 +28,11 @@ class ReservationController extends Controller
      */
     public function create()
     {
-        //
+        $rooms = Room::get();
+		
+		return [
+			'rooms' => $rooms,
+		];
     }
 
     /**
@@ -94,7 +98,11 @@ class ReservationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $rooms = Room::get();
+		
+		return [
+			'rooms' => $rooms,
+		];
     }
 
     /**
@@ -106,7 +114,45 @@ class ReservationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+			'room_id' => 'exists:rooms,id',
+			'time_start' => 'date_format:H:i',
+			'time_end' => 'date_format:H:i',
+			'date_start' => 'date_format:Y-m-d',
+			'date_end' => 'date_format:Y-m-d',
+			'day' => 'in:MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY',
+		]);
+		
+		$conflict = Reservation::where('room_id', $request->get('room_id'))
+							   ->where('day', $request->get('day'))
+							   ->where('date_start', '<=', $request->get('date_start'))
+							   ->where('date_end', '>=', $request->get('date_end'))
+							   ->where('time_start', '<=', $request->get('time_start'))
+							   ->where('time_end', '>=', $request->get('time_end'))
+							   ->where('id', '!=', $id)
+							   ->count();
+		
+		if ($conflict != 0)
+			return [
+				"error" => trans('reservations.conflict')
+			];
+
+		$reservation = Reservation::findOrFail($id);
+		if ($request->has('room_id'))
+			$reservation->room_id = $request->get('room_id');
+		if ($request->has('time_start'))
+			$reservation->time_start = $request->get('time_start');
+		if ($request->has('time_end'))
+			$reservation->time_end = $request->get('time_end');
+		if ($request->has('date_start'))
+			$reservation->date_start = $request->get('date_start');
+		if ($request->has('date_end'))
+			$reservation->date_end = $request->get('date_end');
+		if ($request->has('day'))
+			$reservation->day = $request->get('day');
+		$reservation->save();
+
+		return $reservation;
     }
 
     /**
@@ -117,6 +163,8 @@ class ReservationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $reservation = Reservation::findOrFail($id);
+		
+		$reservation->delete();
     }
 }
