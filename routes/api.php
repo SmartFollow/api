@@ -96,10 +96,11 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::post('/documents', ['as' => 'lessons.documents.store', 'uses' => 'DocumentController@storeLessonDocument']);
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
 				 ->where(['id' => '[0-9]+']);
-			
+
 			Route::resource('evaluations', 'EvaluationController');
 		});
 	});
+	Route::get('lessons/history', ['as' => 'lessons.history', 'uses' => 'LessonController@lessonHistory']);
 	Route::resource('lessons', 'LessonController');
 
 	Route::group(['prefix' => '/exams'], function()
