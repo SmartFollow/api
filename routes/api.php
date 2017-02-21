@@ -97,7 +97,8 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
 				 ->where(['id' => '[0-9]+']);
 			
-			Route::resource('evaluations', 'EvaluationController');
+			
+			Route::resource('evaluations', 'EvaluationController', ['only' => 'index', 'create', 'store']);
 		});
 	});
 	Route::resource('lessons', 'LessonController');

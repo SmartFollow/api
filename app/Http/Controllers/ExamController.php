@@ -54,7 +54,7 @@ class ExamController extends Controller
 		]);
 		
 		// Check if document is linked to the lesson
-		
+
 		// Check if the lesson has no exam yet
 
 		$exam = new Exam();

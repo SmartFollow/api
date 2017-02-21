@@ -4,23 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Pedagogy\Evaluations\Evaluation;
-use App\Models\Pedagogy\Lesson;
-
-class EvaluationController extends Controller
+class CriterionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexLessonEvaluations($lessonId)
+    public function index()
     {
-		$evaluations = Evaluation::whereHas('lesson', function ($q) use ($lessonId) {
-			$q->where('lessons.id', $lessonId);
-		})->get();
-		
-		return $evaluations;
+        //
     }
 
     /**
@@ -28,9 +21,9 @@ class EvaluationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createLessonEvaluations($lessonId)
+    public function create()
     {
-        
+        //
     }
 
     /**
@@ -39,25 +32,9 @@ class EvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeLessonEvaluations(Request $request, $lessonId)
+    public function store(Request $request)
     {
-        $lesson = Lesson::findOrFail($lessonId);
-		
-		$this->validate($request, [
-			'student_id' => 'exists:users,id|required',
-			'comment' => '',
-		]);
-		
-		// Verify if student is enrolled in class
-		
-		$evaluation = new Evaluation();
-		$evaluation->lesson_id = $lessonId;
-		$evaluation->student_id = $request->get('student_id');
-		if ($request->has('comment'))
-			$evaluation->comment = $request->get('comment');
-		$evaluation->save();
-		
-		return $evaluation;
+        //
     }
 
     /**
@@ -68,11 +45,7 @@ class EvaluationController extends Controller
      */
     public function show($id)
     {
-        $evaluation = Evaluation::with('lesson')
-								->with('criteria')
-								->findOrFail($id);
-		
-		return $evaluation;
+        //
     }
 
     /**
@@ -83,7 +56,7 @@ class EvaluationController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -95,7 +68,7 @@ class EvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**
@@ -106,6 +79,6 @@ class EvaluationController extends Controller
      */
     public function destroy($id)
     {
-        
+        //
     }
 }
