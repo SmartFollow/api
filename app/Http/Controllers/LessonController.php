@@ -9,6 +9,7 @@ use App\Models\Pedagogy\Lesson;
 use App\Models\Pedagogy\Subject;
 use App\Models\Planning\Reservation;
 use App\Models\Users\User;
+use Auth;
 
 use DateTime;
 
@@ -182,5 +183,48 @@ class LessonController extends Controller
         $lesson = Lesson::findOrFail($id);
 
 		$lesson->delete();
+    }
+
+    /**
+     * Display passed lesson.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function lessonHistory(Request $request)
+    {
+    	$lesson = Lesson::get();
+        $user = Auth::user();
+
+        $date = new DateTime('now');
+
+        if ($user->group_id == 4)
+        {
+        	$class = $user->class_id;
+        	foreach ($lesson as $lessons) {
+        		if ($lessons->student_class_id == $class)
+        		{
+        			if ($lessons->end < $date)
+        		 		return $lessons;
+        		 	else {
+        		 		return [
+    						'error' => 'You did not participate to any lesson recently'
+						];
+        		 	}
+        		}
+        		else
+        		{
+        			return [
+    					'error' => 'You did not participate to any lesson recently'
+					];
+        		}
+        	}
+        }
+        else
+        {
+        	return [
+    			'error' => 'No lesson history'
+			];
+        }
     }
 }

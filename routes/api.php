@@ -82,6 +82,8 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/lessons'], function()
 	{
+		Route::get('/history', ['as' => 'lessons.history', 'uses' => 'LessonController@lessonHistory']);
+
 		Route::group(['prefix' => '/{lessonId}'], function()
 		{
 			Route::resource('homeworks', 'HomeworkController');
@@ -96,8 +98,7 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::post('/documents', ['as' => 'lessons.documents.store', 'uses' => 'DocumentController@storeLessonDocument']);
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
 				 ->where(['id' => '[0-9]+']);
-			
-			
+
 			Route::resource('evaluations', 'EvaluationController', ['only' => 'index', 'create', 'store']);
 		});
 	});
