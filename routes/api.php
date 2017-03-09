@@ -112,10 +112,10 @@ Route::group(['middleware' => ['auth:api']], function()
 		});
 	});
 	Route::resource('exams', 'ExamController');
-	
+
 	Route::group(['prefix' => '/documents'], function()
 	{
-		
+
 	});
 	Route::resource('documents', 'DocumentController');
 
@@ -127,7 +127,7 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	});
 	Route::resource('reservations', 'ReservationController');
-	
+
 	/**
 	 * Routes related to the evaluations
 	 */
