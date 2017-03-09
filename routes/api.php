@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/users'], function()
 	{
+		Route::put('/users/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 	});
 	Route::resource('users', 'UserController');
@@ -34,6 +35,15 @@ Route::group(['middleware' => ['auth:api']], function()
 			->where(['id' => '[0-9]+']);
 	});
 	Route::resource('groups', 'GroupController');
+
+	/**
+	 * Routes related to rooms
+	 */
+	Route::group(['prefix' => '/rooms'], function()
+	{
+
+	});
+	Route::resource('rooms', 'RoomController');
 
 	/**
 	 * Routes related to the levels
@@ -140,5 +150,6 @@ Route::group(['middleware' => ['auth:api']], function()
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');
+>>>>>>> remotes/origin/feature/API-11-lessons
 
 });

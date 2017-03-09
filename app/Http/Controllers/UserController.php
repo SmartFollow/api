@@ -21,11 +21,11 @@ class UserController extends Controller
 
 		return User::get();
     }
-	
+
 	public function profileAccessRules()
 	{
 		$group = Group::with('accessRules')->findOrFail(Auth::user()->group_id);
-		
+
 		return $group->accessRules;
 	}
 
@@ -129,5 +129,26 @@ class UserController extends Controller
 		$this->authorize('destroy', $user);
 
 		$user->delete();
+    }
+
+    /**
+     * Change user password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $this->validate($request, [
+            'password' => 'required',
+            'new_password' => 'required|different:password'
+        ]);
+
+        $user->password = bcrypt($request->get('new_password'));
+        $user->save();
+
+        return ($user);
     }
 }
