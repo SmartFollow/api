@@ -150,6 +150,5 @@ Route::group(['middleware' => ['auth:api']], function()
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');
->>>>>>> remotes/origin/feature/API-11-lessons
 
 });
