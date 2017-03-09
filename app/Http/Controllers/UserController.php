@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Users\User;
+use App\Models\Users\Group;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,6 +21,13 @@ class UsersController extends Controller
 
 		return User::get();
     }
+
+	public function profileAccessRules()
+	{
+		$group = Group::with('accessRules')->findOrFail(Auth::user()->group_id);
+
+		return $group->accessRules;
+	}
 
     /**
      * Store a newly created resource in storage.
@@ -38,6 +45,7 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
 			'group' => 'exists:groups,id',
+			'studentClass' => 'exists:student_classes,id',
 		]);
 
 		$user = new User();
@@ -47,6 +55,8 @@ class UsersController extends Controller
         $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
+		if ($request->has('studentClass'))
+			$user->class_id = $request->get('studentClass');
 		$user->save();
 
 		return ($user);
@@ -71,6 +81,7 @@ class UsersController extends Controller
             'email' => 'email|unique:users,email,' . $id,
             'password' => '',
 			'group' => 'exists:groups,id',
+			'studentClass' => 'exists:student_classes,id',
 		]);
 
         if ($request->has('firstname'))
@@ -83,6 +94,8 @@ class UsersController extends Controller
             $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
+		if ($request->has('studentClass'))
+			$user->class_id = $request->get('studentClass');
 		$user->save();
 
 		return ($user);
@@ -116,5 +129,26 @@ class UsersController extends Controller
 		$this->authorize('destroy', $user);
 
 		$user->delete();
+    }
+
+    /**
+     * Change user password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $this->validate($request, [
+            'password' => 'required',
+            'new_password' => 'required|different:password'
+        ]);
+
+        $user->password = bcrypt($request->get('new_password'));
+        $user->save();
+
+        return ($user);
     }
 }

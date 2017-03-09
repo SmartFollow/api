@@ -7,9 +7,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
 
-use App\Models\Users\AccessRule;
-use App\Models\Users\Group;
-
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -41,4 +38,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Models\Communication\Notification');
     }
+
+	public function studentClass()
+	{
+		return $this->belongsTo('App\Models\Pedagogy\StudentClass', 'class_id');
+	}
+	
+	public function teachedSubjects()
+	{
+		return $this->hasMany('App\Models\Users\User', 'teacher_id', 'id');
+	}
+
 }

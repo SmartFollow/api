@@ -16,7 +16,7 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('subject_id')->unsigned()->index();
-			$table->integer('reservation_id')->unsigned()->index();
+			$table->integer('reservation_id')->unsigned()->index()->nullable();
 			$table->string('description');
             $table->timestamps();
 			$table->softDeletes();
@@ -24,7 +24,7 @@ class CreateLessonsTable extends Migration
 
 		Schema::table('lessons', function (Blueprint $table) {
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

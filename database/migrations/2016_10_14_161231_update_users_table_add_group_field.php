@@ -16,8 +16,8 @@ class UpdateUsersTableAddGroupField extends Migration
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->integer('group_id')->unsigned()->index()->nullable();
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
         });
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');

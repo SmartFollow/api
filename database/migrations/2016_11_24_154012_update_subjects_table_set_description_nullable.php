@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddClassIdUsersTable extends Migration
+class UpdateSubjectsTableSetDescriptionNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddClassIdUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('class_id')->unsigned()->index()->nullable();
-			$table->foreign('class_id')->references('id')->on('student_classes')->onDelete('set null')->onUpdate('cascade');
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->string('description')->nullable()->change();
         });
     }
 
@@ -27,9 +26,8 @@ class AddClassIdUsersTable extends Migration
     public function down()
     {
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::table('users', function (Blueprint $table) {
-           $table->dropForeign(['class_id']);
-           $table->dropColumn('class_id');
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->string('description')->change();
         });
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
