@@ -201,12 +201,16 @@ class LessonController extends Controller
         if ($user->group_id == 4)
         {
         	$class = $user->class_id;
+
         	foreach ($lesson as $lessons) {
         		if ($lessons->student_class_id == $class)
         		{
         			if ($lessons->end < $date)
-        		 		return $lessons;
-        		 	else {
+                    {   
+        		 	
+                    	return $lessons;
+        		 	}
+                    else {
         		 		return [
     						'error' => 'You did not participate to any lesson recently'
 						];

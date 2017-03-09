@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Pedagogy\Homework;
 use App\Models\Pedagogy\Document;
 use App\Models\Pedagogy\Lesson;
+use Auth;
 
 class HomeworkController extends Controller
 {
@@ -130,5 +131,44 @@ class HomeworkController extends Controller
         $homework = Homework::findOrFail($id);
 
 		$homework->delete();
+    }
+
+    /**
+     * Display list of homeworks.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function homeworkList(Request $request)
+    {
+        $lesson = Lesson::all();
+        $homework = Homework::get();
+        $user = Auth::user();
+
+        if ($user->group_id == 4)
+        {
+            $class = $user->class_id;
+            foreach ($lesson as $lessons) {
+
+                if ($lessons->student_class_id == $class)
+                { 
+                   foreach ($homework as $homeworks) {
+                        return $homeworks;
+                   }
+                }
+                else
+                {
+                    return [
+                        'error' => 'No homeworks'
+                    ];
+                }
+            }
+        }
+        else
+        {
+            return [
+                'error' => 'Homeworks unvailable'
+            ];
+        }
     }
 }
