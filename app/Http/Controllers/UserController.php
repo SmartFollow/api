@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     /**
 	 * @api {get} /users List users
-	 * @apiName ListUsers
+	 * @apiName index
 	 * @apiGroup Users
 	 *
      * @apiDescription Display a listing of the resource.
@@ -28,7 +28,7 @@ class UserController extends Controller
 
 	/**
      * @api {get} /profile/access-rules User access rules
-	 * @apiName AccessRulesUser
+	 * @apiName profileAccessRules
 	 * @apiGroup Users
 	 *
      * @apiDescription Display the access rules of the authenticated user
@@ -45,7 +45,7 @@ class UserController extends Controller
 
     /**
      * @api {post} /users Store new user
-	 * @apiName StoreUser
+	 * @apiName store
 	 * @apiGroup Users
 	 *
      * @apiDescription Store a newly created resource in storage.
@@ -89,7 +89,7 @@ class UserController extends Controller
 
     /**
      * @api {put} /users/:id Update user
-	 * @apiName UpdateUser
+	 * @apiName update
 	 * @apiGroup Users
 	 *
      * @apiDescription Update the specified resource in storage.
@@ -141,7 +141,7 @@ class UserController extends Controller
 
     /**
      * @api {get} /users/:id Display user
-	 * @apiName DisplayUser
+	 * @apiName show
 	 * @apiGroup Users
 	 *
      * @apiDescription Display the specified resource.
@@ -162,7 +162,7 @@ class UserController extends Controller
 
     /**
 	 * @api {delete} /users/:id Delete user
-	 * @apiName DeleteUser
+	 * @apiName destroy
 	 * @apiGroup Users
 	 *
      * @apiDescription Remove the specified resource from storage.
@@ -183,7 +183,7 @@ class UserController extends Controller
 
     /**
 	 * @api {put} /users/change-password Change password
-	 * @apiName ChangePassword
+	 * @apiName changePassword
 	 * @apiGroup Users
 	 *
      * @apiDescription Change the password of the authenticated user.

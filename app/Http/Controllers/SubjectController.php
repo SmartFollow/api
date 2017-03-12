@@ -10,7 +10,7 @@ class SubjectController extends Controller
 {
     /**
      * @api {get} /subjects List subjects
-	 * @apiName ListSubjects
+	 * @apiName index
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Display a listing of the resource.
@@ -26,7 +26,7 @@ class SubjectController extends Controller
 
     /**
      * @api {get} /subjects/create Create subject form
-	 * @apiName CreateSubjectForm
+	 * @apiName create
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Show the form for creating a new resource.
@@ -40,7 +40,7 @@ class SubjectController extends Controller
 
     /**
      * @api {post} /subjects Store new subject
-	 * @apiName StoreSubject
+	 * @apiName store
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Store a newly created resource in storage.
@@ -74,7 +74,7 @@ class SubjectController extends Controller
 
     /**
      * @api {get} /subjects/:id Display subject
-	 * @apiName DisplaySubject
+	 * @apiName show
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Display the specified resource.
@@ -93,7 +93,7 @@ class SubjectController extends Controller
 
     /**
      * @api {get} /subjects/:id/edit Edit subject form
-	 * @apiName EditSubjectForm
+	 * @apiName edit
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Show the form for editing the specified resource.
@@ -110,7 +110,7 @@ class SubjectController extends Controller
 
     /**
 	 * @api {get} /subjects/:id/edit Edit subject form
-	 * @apiName EditSubjectForm
+	 * @apiName update
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Update the specified resource in storage.
@@ -152,7 +152,7 @@ class SubjectController extends Controller
 
     /**
      * @api {delete} /subjects/:id Delete subject
-	 * @apiName DeleteSubject
+	 * @apiName destroy
 	 * @apiGroup Subjects
 	 *
      * @apiDescription Remove the specified resource from storage.
@@ -171,7 +171,7 @@ class SubjectController extends Controller
 
 	/**
 	 * @api {get} /subjects/:id/student-classes List subject's student classes
-	 * @apiName SubjectStudentClasses
+	 * @apiName listStudentClasses
 	 * @apiGroup Subjects
 	 *
      * @apiDescription List all the student classes of a subject
