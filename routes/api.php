@@ -109,7 +109,11 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
 				 ->where(['id' => '[0-9]+']);
 
-			Route::resource('evaluations', 'EvaluationController', ['only' => 'index', 'create', 'store']);
+			Route::group(['prefix' => 'evaluations'], function()
+			{
+				Route::get('/', 'EvaluationController@indexLessonEvaluations');
+				Route::get('/create', 'EvaluationController@createLessonEvaluations');
+			});
 		});
 	});
 	Route::resource('lessons', 'LessonController');
@@ -147,6 +151,8 @@ Route::group(['middleware' => ['auth:api']], function()
 		{
 			Route::resource('absences', 'AbsenceController');
 			Route::resource('delays', 'DelayController', ['only' => ['destroy', 'store']]);
+
+			Route::resource('criteria', 'CriterionEvaluationController');
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');

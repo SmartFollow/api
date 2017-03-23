@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\Evaluations\Evaluation;
 use App\Models\Pedagogy\Lesson;
+use App\Models\Pedagogy\Evaluations\Criterion;
 
 class EvaluationController extends Controller
 {
@@ -19,7 +20,7 @@ class EvaluationController extends Controller
 		$evaluations = Evaluation::whereHas('lesson', function ($q) use ($lessonId) {
 			$q->where('lessons.id', $lessonId);
 		})->get();
-		
+
 		return $evaluations;
     }
 
@@ -30,7 +31,17 @@ class EvaluationController extends Controller
      */
     public function createLessonEvaluations($lessonId)
     {
-        
+		$lesson = Lesson::with('studentClass.students')
+						->with('evaluations')
+						->findOrFail($lessonId);
+
+		$criteria = Criterion::get();
+
+		return [
+			'students' => $lesson->studentClass->students,
+			'existing_evaluations' => $lesson->evaluations,
+			'criteria' => $criteria,
+		];
     }
 
     /**
@@ -39,24 +50,25 @@ class EvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeLessonEvaluations(Request $request, $lessonId)
+    public function store(Request $request)
     {
-        $lesson = Lesson::findOrFail($lessonId);
-		
 		$this->validate($request, [
 			'student_id' => 'exists:users,id|required',
+			'lesson_id' => 'exists:lessons,id|required',
 			'comment' => '',
 		]);
-		
+
+        $lesson = Lesson::findOrFail($request->get('lesson_id'));
+
 		// Verify if student is enrolled in class
-		
+
 		$evaluation = new Evaluation();
-		$evaluation->lesson_id = $lessonId;
+		$evaluation->lesson_id = $request->get('lesson_id');
 		$evaluation->student_id = $request->get('student_id');
 		if ($request->has('comment'))
 			$evaluation->comment = $request->get('comment');
 		$evaluation->save();
-		
+
 		return $evaluation;
     }
 
@@ -70,8 +82,9 @@ class EvaluationController extends Controller
     {
         $evaluation = Evaluation::with('lesson')
 								->with('criteria')
+								->with('student')
 								->findOrFail($id);
-		
+
 		return $evaluation;
     }
 
@@ -83,7 +96,7 @@ class EvaluationController extends Controller
      */
     public function edit($id)
     {
-        
+
     }
 
     /**
@@ -95,7 +108,7 @@ class EvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
     }
 
     /**
@@ -106,6 +119,6 @@ class EvaluationController extends Controller
      */
     public function destroy($id)
     {
-        
+
     }
 }
