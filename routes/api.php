@@ -152,7 +152,7 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::resource('absences', 'AbsenceController');
 			Route::resource('delays', 'DelayController', ['only' => ['destroy', 'store']]);
 
-			Route::resource('criteria', 'CriterionEvaluationController');
+			Route::resource('criteria', 'CriterionEvaluationController', ['except' => ['show', 'destroy']]);
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');

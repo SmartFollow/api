@@ -66,17 +66,6 @@ class CriterionEvaluationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($evaluationId, $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -84,7 +73,11 @@ class CriterionEvaluationController extends Controller
      */
     public function edit($evaluationId, $id)
     {
-        //
+        $criteria = Evaluation::with('criteria')->findOrFail($evaluationId)->criteria;
+
+		return [
+			'criteria' => $criteria
+		];
     }
 
     /**
@@ -96,17 +89,16 @@ class CriterionEvaluationController extends Controller
      */
     public function update(Request $request, $evaluationId, $id)
     {
-        //
-    }
+		$this->validate($request, [
+			'value' => 'required|json',
+		]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($evaluationId, $id)
-    {
-        //
+        $evaluation = Evaluation::with('criteria')->findOrFail($evaluationId);
+
+		$evaluation->criteria()->updateExistingPivot($id, ['value' => $request->get('value')]);
+
+		$evaluation->load('criteria');
+
+		return $evaluation->criteria;
     }
 }
