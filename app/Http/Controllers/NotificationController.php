@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Communication\Notification;
+use App\Models\Users\Group;
+use App\Models\Pedagogy\StudentClass;
 
 class NotificationController extends Controller
 {
@@ -41,10 +43,12 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'transmitter_id' => '',
             'resource_link' => '',
             'message' => 'required',
-            'user' => 'exists:users,id',
+            'user' => 'required_without_all:users,group,student_class|exists:users,id',
+            'users.*' => 'required_without_all:user,group,student_class|exists:users,id',
+            'group' => 'required_without_all:user,users,student_class|exists:groups,id',
+            'student_class' => 'required_without_all:user,users,group|exists:student_classes,id',
         ]);
 
         $notification = new Notification();
@@ -53,7 +57,24 @@ class NotificationController extends Controller
         $notification->message = $request->get('message');
         $notification->save();
 
-        $notification->users()->attach($request->get('user'));
+		if ($request->has('user'))
+		{
+			$notification->users()->attach($request->get('user'));
+		}
+		if ($request->has('users'))
+		{
+			$notification->users()->syncWithoutDetaching($request->get('users'));
+		}
+		if ($request->has('group'))
+		{
+			$group = Group::with('users')->findOrFail($request->get('group'));
+			$notification->users()->syncWithoutDetaching($group->users);
+		}
+		if ($request->has('student_class'))
+		{
+			$studentClass = StudentClass::with('students')->findOrFail($request->get('student_class'));
+			$notification->users()->syncWithoutDetaching($studentClass->students);
+		}
 
         return $notification;
     }
