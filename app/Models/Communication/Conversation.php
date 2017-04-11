@@ -9,4 +9,14 @@ class Conversation extends Model
     {
         return $this->hasMany('App\Models\Communication\Message');
     }
+
+	public function participants()
+	{
+		return $this->belongsToMany('App\Models\Users\User', 'conversation_user', 'conversation_id', 'user_id');
+	}
+
+	public function creator()
+	{
+		return $this->belongsTo('App\Models\Users\User', 'creator_id');
+	}
 }

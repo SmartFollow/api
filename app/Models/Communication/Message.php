@@ -9,4 +9,9 @@ class Message extends Model
     {
         return $this->belongsTo('App\Models\Communication\Conversation');
     }
+
+	public function creator()
+	{
+		return $this->belongsTo('App\Models\Users\User', 'creator_id');
+	}
 }

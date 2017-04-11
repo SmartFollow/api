@@ -14,11 +14,10 @@ class ConversationController extends Controller
      */
     public function index()
     {
-		// Only get conversations where user is participating
-
-        return Conversation::get();
+		return Conversation::whereHas('participants', function($q) {
+			$q->where('users.id', Auth::id());
+		})->with('participants')->get();
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -30,6 +29,7 @@ class ConversationController extends Controller
     {
         $this->validate($request, [
             'subject' => 'required',
+			'participants.*' => 'exists:users,id'
         ]);
 
         $conversation = new Conversation();
@@ -37,7 +37,12 @@ class ConversationController extends Controller
         $conversation->subject = $request->get('subject');
         $conversation->save();
 
-        return ($conversation);
+		$conversation->participants()->sync($request->get('participants'));
+		$conversation->participants()->attach(Auth::id());
+
+		$conversation->load('participants');
+
+        return $conversation;
     }
 
     /**

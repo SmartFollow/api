@@ -5,10 +5,6 @@ namespace App\Models\Users;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Collection;
-
-use App\Models\Users\AccessRule;
-use App\Models\Users\Group;
 
 class User extends Authenticatable
 {
@@ -35,5 +31,10 @@ class User extends Authenticatable
 	public function group()
 	{
 		return $this->belongsTo('App\Models\Users\Group');
+	}
+
+	public function conversations()
+	{
+		return $this->belongsToMany('App\Models\Communication\Conversation', 'conversation_user', 'user_id', 'conversation_id');
 	}
 }
