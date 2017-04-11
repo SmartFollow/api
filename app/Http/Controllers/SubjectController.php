@@ -9,7 +9,11 @@ use App\Models\Pedagogy\Subject;
 class SubjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @api {get} /subjects List subjects
+	 * @apiName index
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +25,11 @@ class SubjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @api {get} /subjects/create Create subject form
+	 * @apiName create
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -31,7 +39,16 @@ class SubjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @api {post} /subjects Store new subject
+	 * @apiName store
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Store a newly created resource in storage.
+	 *
+	 * @apiParam {Number} level			The ID of the level of the subject
+	 * @apiParam {String} name			Name
+	 * @apiParam {String} [description]	Description
+	 * @apiParam {Number} teacher		The ID of the user that will be the teacher of the subject
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -56,7 +73,13 @@ class SubjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @api {get} /subjects/:id Display subject
+	 * @apiName show
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Display the specified resource.
+	 *
+	 * @apiParam {Number} id	The ID of the subject to display
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -69,7 +92,13 @@ class SubjectController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @api {get} /subjects/:id/edit Edit subject form
+	 * @apiName edit
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Show the form for editing the specified resource.
+	 *
+	 * @apiParam {Number} id	The ID of the subject to edit
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -80,7 +109,18 @@ class SubjectController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+	 * @api {get} /subjects/:id/edit Edit subject form
+	 * @apiName update
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Update the specified resource in storage.
+	 *
+	 * @apiParam {Number} id	The ID of the subject to display
+	 *
+	 * @apiParam {Number} [level]		The ID of the level of the subject
+	 * @apiParam {String} [name]		Name
+	 * @apiParam {String} [description]	Description
+	 * @apiParam {Number} [teacher]		The ID of the user that will be the teacher of the subject
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -111,7 +151,13 @@ class SubjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @api {delete} /subjects/:id Delete subject
+	 * @apiName destroy
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription Remove the specified resource from storage.
+	 *
+	 * @apiParam {Number} id	The ID of the subject to delete
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -124,7 +170,13 @@ class SubjectController extends Controller
     }
 
 	/**
-	 * List all the student classes of a subject
+	 * @api {get} /subjects/:id/student-classes List subject's student classes
+	 * @apiName listStudentClasses
+	 * @apiGroup Subjects
+	 *
+     * @apiDescription List all the student classes of a subject
+	 *
+	 * @apiParam {Number} id	The ID of the subject
 	 *
 	 * @param type $id
 	 * @return type

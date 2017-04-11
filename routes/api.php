@@ -16,17 +16,18 @@
 Route::group(['middleware' => ['auth:api']], function()
 {
 
-	/**
+	/*
 	 * Routes related to the users
 	 */
 	Route::group(['prefix' => '/users'], function()
 	{
-		Route::put('/users/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);
+		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
+		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 	});
 	Route::resource('users', 'UserController');
 
-	/**
+	/*
 	 * Routes related to the groups
 	 */
 	Route::group(['prefix' => '/groups'], function()
@@ -36,7 +37,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('groups', 'GroupController');
 
-	/**
+	/*
 	 * Routes related to rooms
 	 */
 	Route::group(['prefix' => '/rooms'], function()
@@ -45,7 +46,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('rooms', 'RoomController');
 
-	/**
+	/*
 	 * Routes related to the levels
 	 */
 	Route::group(['prefix' => '/levels'], function()
@@ -60,7 +61,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('levels', 'LevelController');
 
-	/**
+	/*
 	 * Routes related to the subjects
 	 */
 	Route::group(['prefix' => '/subjects'], function()
@@ -70,7 +71,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('subjects', 'SubjectController');
 
-	/**
+	/*
 	 * Routes related to the student classes
 	 */
 	Route::group(['prefix' => '/student-classes'], function()
@@ -87,7 +88,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('student-classes', 'StudentClassController');
 
-	/**
+	/*
 	 * Routes related to the lessons
 	 */
 	Route::group(['prefix' => '/lessons'], function()
@@ -109,11 +110,18 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::get('/documents/{id}', ['as' => 'lessons.documents.show', 'uses' => 'DocumentController@showLessonDocument'])
 				 ->where(['id' => '[0-9]+']);
 
-			Route::resource('evaluations', 'EvaluationController', ['only' => 'index', 'create', 'store']);
+			Route::group(['prefix' => 'evaluations'], function()
+			{
+				Route::get('/', 'EvaluationController@indexLessonEvaluations');
+				Route::get('/create', 'EvaluationController@createLessonEvaluations');
+			});
 		});
 	});
 	Route::resource('lessons', 'LessonController');
 
+	/*
+	 * Routes related to the exams
+	 */
 	Route::group(['prefix' => '/exams'], function()
 	{
 		Route::group(['prefix' => '/{examId}'], function()
@@ -123,13 +131,16 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('exams', 'ExamController');
 
+	/*
+	 * Routes related to the documents
+	 */
 	Route::group(['prefix' => '/documents'], function()
 	{
 
 	});
 	Route::resource('documents', 'DocumentController');
 
-	/**
+	/*
 	 * Routes related to the reservations
 	 */
 	Route::group(['prefix' => '/reservations'], function()
@@ -138,7 +149,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('reservations', 'ReservationController');
 
-	/**
+	/*
 	 * Routes related to the evaluations
 	 */
 	Route::group(['prefix' => '/evaluations'], function()
@@ -147,6 +158,8 @@ Route::group(['middleware' => ['auth:api']], function()
 		{
 			Route::resource('absences', 'AbsenceController');
 			Route::resource('delays', 'DelayController', ['only' => ['destroy', 'store']]);
+
+			Route::resource('criteria', 'CriterionEvaluationController', ['except' => ['show', 'destroy']]);
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');
@@ -160,4 +173,31 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('notifications', 'NotificationController');
 
+	/*
+	 * Routes related to the processes
+	 */
+	Route::group(['prefix' => 'processes'], function()
+	{
+
+	});
+	Route::resource('processes', 'ProcessController');
+
+	/*
+	 * Routes related to the steps
+	 */
+	Route::group(['prefix' => 'steps'], function()
+	{
+
+	});
+	Route::resource('steps', 'StepController');
+
+	/*
+	 * Routes related to the conversations and messages
+	 */
+	Route::group(['prefix' => 'conversations'], function()
+	{
+
+	});
+	Route::resource('conversations', 'ConversationController');
+	Route::resource('messages', 'MessageController', ['only' => ['store']]);
 });

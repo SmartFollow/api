@@ -32,3 +32,13 @@ php artisan migrate
 php artisan db:seed
 php artisan passport:install
 ```
+
+## Documentation
+
+The documentation for the routes is available at http://path.to.smartfollow.api/docs
+
+To generate it you have to install [apiDoc](http://apidocjs.com/) and run the following command:
+
+```sh
+apidoc -i app/ -o public/docs/
+```

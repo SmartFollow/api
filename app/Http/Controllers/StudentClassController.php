@@ -10,7 +10,11 @@ use App\Models\Users\User;
 class StudentClassController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @api {get} /student-classes List student classes
+	 * @apiName index
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +26,11 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @api {get} /student-classes/create Create student class form
+	 * @apiName create
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,7 +40,14 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @api {post} /student-classes Store new student class
+	 * @apiName store
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Store a newly created resource in storage.
+	 *
+	 * @apiParam {Number} level	The ID of the level for this student class
+	 * @apiParam {String} name	Name of the student class
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -53,7 +68,13 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @api {get} /student-classes/:id Display student class
+	 * @apiName show
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Display the specified resource.
+	 *
+	 * @apiParam {Number} id	The ID of the student class
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -66,7 +87,13 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @api {get} /student-classes/:id/edit Edit student class form
+	 * @apiName edit
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Show the form for editing the specified resource.
+	 *
+	 * @apiParam {Number} id	The ID of the student class
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -77,7 +104,16 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @api {put} /student-classes/:id Update student class
+	 * @apiName update
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Update the specified resource in storage.
+	 *
+	 * @apiParam {Number} id	The ID of the student class
+	 *
+	 * @apiParam {Number} [level]	The ID of the level for this student class
+	 * @apiParam {String} [name]	Name of the student class
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -88,8 +124,8 @@ class StudentClassController extends Controller
         $studentClass = StudentClass::findOrFail($id);
 
         $this->validate($request, [
-			'level' => 'required|exists:levels,id',
-            'name' => 'required|unique:student_classes,name,' . $id,
+			'level' => 'exists:levels,id',
+            'name' => 'unique:student_classes,name,' . $id,
 		]);
 
 		if ($request->has('level'))
@@ -102,7 +138,13 @@ class StudentClassController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @api {delete} /student-classes/:id Delete student class
+	 * @apiName destroy
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Remove the specified resource from storage.
+	 *
+	 * @apiParam {Number} id	The ID of the student class
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -115,7 +157,13 @@ class StudentClassController extends Controller
     }
 
 	/**
-	 * List all the students of the class
+	 * @api {get} /student-classes/:id/students Display student class' students
+	 * @apiName listStudents
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription List all the students of the class
+	 *
+	 * @apiParam {Number} id	The ID of the student class
 	 *
 	 * @param type $id
 	 * @return type
@@ -128,7 +176,15 @@ class StudentClassController extends Controller
 	}
 
 	/**
-	 * Update the list of students that are in the class
+	 * @api {put} /student-classes/:id/students Update student class' students
+	 * @apiName updateStudents
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Update the list of students that are in the class
+	 *
+	 * @apiParam {Number} id			The ID of the student class
+	 *
+	 * @apiParam {Number[]} students	The list of IDs of students to add to the class
 	 *
 	 * @param Request $request
 	 * @param type $id
@@ -167,7 +223,13 @@ class StudentClassController extends Controller
 	}
 
 	/**
-	 * List all subjects taken by a class
+	 * @api {get} /student-classes/:id/subjects Display student class' subjects
+	 * @apiName listSubjects
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription List all subjects taken by a class
+	 *
+	 * @apiParam {Number} id	The ID of the student class
 	 *
 	 * @param type $id
 	 */
@@ -179,7 +241,15 @@ class StudentClassController extends Controller
 	}
 
 	/**
-	 * Update the list of subjects taken by a class
+	 * @api {put} /student-classes/:id/subjects Update student class' subjects
+	 * @apiName updateSubjects
+	 * @apiGroup Student Classes
+	 *
+     * @apiDescription Update the list of subjects taken by a class
+	 *
+	 * @apiParam {Number} id			The ID of the student class
+	 *
+	 * @apiParam {Number[]} subjects	The list of IDs of subjects to add to the class
 	 *
 	 * @param Request $request
 	 * @param type $id
