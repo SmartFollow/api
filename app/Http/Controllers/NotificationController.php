@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-use Auth;
 use App\Models\Communication\Notification;
-use App\Models\Users\User;
-use DateTime;
 
 class NotificationController extends Controller
 {
@@ -18,9 +15,11 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notif = Notification::get();
+		$notification = Notification::whereHas('users', function ($q) {
+			$q->where('users.id', Auth::id());
+		})->get();
 
-        return $notif;
+        return $notification;
     }
 
     /**
@@ -30,7 +29,7 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -48,15 +47,15 @@ class NotificationController extends Controller
             'user' => 'exists:users,id',
         ]);
 
-        $notif = new Notification();
-        $notif->transmitter_id = Auth::user()->id;
-        $notif->resource_link = $request->get('resource_link');
-        $notif->message = $request->get('message');
-        $notif->save();
+        $notification = new Notification();
+        $notification->transmitter_id = Auth::id();
+        $notification->resource_link = $request->get('resource_link');
+        $notification->message = $request->get('message');
+        $notification->save();
 
-        $notif->users()->attach($request->get('user'));
+        $notification->users()->attach($request->get('user'));
 
-        return $notif;
+        return $notification;
     }
 
     /**
@@ -67,9 +66,9 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        $notif = Notification::findOrFail($id);
+        $notification = Notification::findOrFail($id);
 
-        return $notif;
+        return $notification;
     }
 
     /**
@@ -80,7 +79,9 @@ class NotificationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $notification = Notification::findOrFail($id);
+
+        return $notification;
     }
 
     /**
@@ -92,7 +93,7 @@ class NotificationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $notif = Notification::findOrFail($id);
+        $notification = Notification::findOrFail($id);
 
         $this->validate($request, [
             'transmitter_id' => '',
@@ -102,19 +103,19 @@ class NotificationController extends Controller
         ]);
 
         if ($request->has('transmitter_id'))
-            $notif->transmitter_id = Auth::user()->id;
+            $notification->transmitter_id = Auth::id();
         if ($request->has('resource_link'))
-            $notif->resource_link = $request->get('resource_link');
+            $notification->resource_link = $request->get('resource_link');
         if ($request->has('message'))
-            $notif->message = $request->get('message');
-        $notif->save();
+            $notification->message = $request->get('message');
+        $notification->save();
 
         if ($request->has('user'))
         {
-            $notif->users()->attach($request->get('user'));
+            $notification->users()->attach($request->get('user'));
         }
 
-        return $notif;
+        return $notification;
     }
 
     /**
@@ -125,34 +126,21 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        $notif = Notification::findOrFail($id);
+        $notification = Notification::findOrFail($id);
 
-        $notif->delete();
+        $notification->delete();
     }
-
 
     /**
      * Mark the notification as read.
      *
      * @return void
      */
-    public function ReadAt($id)
+    public function readAt($id)
     {
-        $notif = Notification::findOrFail($id);
+        $notification = Notification::findOrFail($id);
 
-        $date = new \DateTime();
-        $usableDate = $date->format('Y-m-d H:i:s');
-
-        foreach ($notif->users as $notifs)
-        {
-            $read = $notifs->pivot_read_at;
-            if (is_null($read)) {
-                $read = $usableDate;
-                //$read->save();
-            }
-            var_dump($read);
-        }
-        return $read;
+		$notification->users()->updateExistingPivot(Auth::id(), ['read_at' => new \DateTime()]);
     }
 
 }

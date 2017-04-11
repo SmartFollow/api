@@ -154,11 +154,10 @@ Route::group(['middleware' => ['auth:api']], function()
 	/**
 	 * Routes related to the notifications
 	 */
-	Route::group(['prefix' => '/notification'], function()
+	Route::group(['prefix' => '/notifications'], function()
 	{
-		
+		Route::put('/{id}/read','NotificationController@readAt');
 	});
-	Route::resource('notification', 'NotificationController');
-	Route::put('/notification/{id}/read','NotificationController@ReadAt');
+	Route::resource('notifications', 'NotificationController');
 
 });
