@@ -164,6 +164,15 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('evaluations', 'EvaluationController');
 
+	/**
+	 * Routes related to the notifications
+	 */
+	Route::group(['prefix' => '/notifications'], function()
+	{
+		Route::put('/{id}/read','NotificationController@readAt');
+	});
+	Route::resource('notifications', 'NotificationController');
+
 	/*
 	 * Routes related to the processes
 	 */
