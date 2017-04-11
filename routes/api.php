@@ -158,4 +158,22 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('evaluations', 'EvaluationController');
 
+	Route::group(['prefix' => 'processes'], function()
+	{
+
+	});
+	Route::resource('processes', 'ProcessController');
+
+	Route::group(['prefix' => 'steps'], function()
+	{
+
+	});
+	Route::resource('steps', 'StepController');
+
+	Route::group(['prefix' => 'conversations'], function()
+	{
+
+	});
+	Route::resource('conversations', 'ConversationController');
+	Route::resource('messages', 'MessageController', ['only' => ['store']]);
 });
