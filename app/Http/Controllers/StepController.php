@@ -17,18 +17,6 @@ use App\Http\Requests;
 class StepController extends Controller
 {
     /**
-     * Getter
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return Step::get();
-    }
-
-
-    /**
      * Store a newly created resource in storage.
      *
      * name, description and process are all stored.
@@ -41,14 +29,14 @@ class StepController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'process' => 'exists:processes,id',
+            'process_id' => 'exists:processes,id',
         ]);
 
         $step = new Process();
         $step->name = $request->get('name');
         $step->description = $request->get('description');
-        if ($request->has('processes'))
-            $step->process_id = $request->get('process');
+        if ($request->has('process_id'))
+            $step->process_id = $request->get('process_id');
         $step->save();
 
         return ($step);
@@ -105,12 +93,8 @@ class StepController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $step = Step::with('process')->findOrFail($id);
+        $step = Step::findOrFail($id);
 
-        if (!$step->deletable)
-            abort(403, trans('process.not_deletable'));
-        else
-            $step->delete();
+		$step->delete();
     }
 }

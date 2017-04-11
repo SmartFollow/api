@@ -1,21 +1,12 @@
 <?php
-
 namespace App\Models\Communication;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    //
-
-    /*protected $fillable = [
-        'creator_id', 'conversation_id', 'content',
-        ];
-    */
-
-    public function messages()
+    public function conversation()
     {
-        return this;
-        //return $this->hasMany('App\Models\Communication\Message');
+        return $this->belongsTo('App\Models\Communication\Conversation');
     }
 }

@@ -52,8 +52,7 @@ class ProcessController extends Controller
      */
     public function show($id)
     {
-        //
-        $process = Process::findOrFail($id);
+        $process = Process::with('steps')->findOrFail($id);
 
         return $process;
     }
@@ -74,7 +73,6 @@ class ProcessController extends Controller
             'description' => 'required',
         ]);
 
-        $process = new Process();
         if ($request->has('name'))
             $process->name = $request->get('name');
         if ($request->has('description'))
@@ -92,7 +90,6 @@ class ProcessController extends Controller
      */
     public function destroy($id)
     {
-        //
         $process = Process::findOrFail($id);
         $process->delete();
     }

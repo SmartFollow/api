@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Communication\Conversation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 
@@ -22,6 +23,8 @@ class ConversationController extends Controller
      */
     public function index()
     {
+		// Only get conversations where user is participating
+		
         return Conversation::get();
     }
 
@@ -35,12 +38,11 @@ class ConversationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'creator_id' => 'required',
             'subject' => 'required',
         ]);
 
         $conversation = new Conversation();
-        $conversation->creator_id = $request->get('creator_id');
+        $conversation->creator_id = Auth::id();
         $conversation->subject = $request->get('subject');
         $conversation->save();
 
@@ -55,8 +57,7 @@ class ConversationController extends Controller
      */
     public function show($id)
     {
-        //
-        $conversation = Process::findOrFail($id);
+        $conversation = Conversation::with('messages')->findOrFail($id);
 
         return $conversation;
     }
@@ -73,13 +74,9 @@ class ConversationController extends Controller
         $conversation = Conversation::findOrFail($id);
 
         $this->validate($request, [
-            'creator_id' => 'required',
             'subject' => 'required',
         ]);
 
-        $conversation = new Conversation();
-        if ($request->has('creator_id'))
-            $conversation->creator_id = $request->get('creator_id');
         if ($request->has('subject'))
             $conversation->conversation_id = $request->get('subject');
 
@@ -96,8 +93,8 @@ class ConversationController extends Controller
      */
     public function destroy($id)
     {
-        //
         $conversation = Conversation::findOrFail($id);
+
         $conversation->delete();
     }
 }
