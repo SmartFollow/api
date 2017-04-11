@@ -1,18 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: steev
- * Date: 04/12/2016
- * Time: 07:17
- */
-
 namespace App\Http\Controllers;
-
 
 use App\Models\Processes\Step;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class StepController extends Controller
 {

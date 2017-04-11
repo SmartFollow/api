@@ -1,18 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: steev
- * Date: 06/01/2017
- * Time: 21:30
- */
-
 namespace App\Http\Controllers;
 
 use App\Models\Communication\Conversation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-use App\Http\Requests;
 
 class ConversationController extends Controller
 {
@@ -24,7 +15,7 @@ class ConversationController extends Controller
     public function index()
     {
 		// Only get conversations where user is participating
-		
+
         return Conversation::get();
     }
 

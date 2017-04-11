@@ -1,18 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: steev
- * Date: 06/01/2017
- * Time: 19:06
- */
-
 namespace App\Http\Controllers;
 
 use App\Models\Communication\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-use App\Http\Requests;
 
 class MessageController extends Controller
 {
