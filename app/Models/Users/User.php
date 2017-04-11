@@ -5,7 +5,7 @@ namespace App\Models\Users;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Pedagogy\Exams\Mark;
 
 class User extends Authenticatable
 {
@@ -38,10 +38,15 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo('App\Models\Pedagogy\StudentClass', 'class_id');
 	}
-	
-	public function teachedSubjects()
+
+	public function taughtSubjects()
 	{
-		return $this->hasMany('App\Models\Users\User', 'teacher_id', 'id');
+		return $this->hasMany('App\Models\Pedagogy\Subject', 'teacher_id', 'id');
+	}
+
+	public function marks()
+	{
+		return $this->hasMany(Mark::class, 'student_id');
 	}
 
 }

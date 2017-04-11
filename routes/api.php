@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	{
 		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
+		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 	});
 	Route::resource('users', 'UserController');
 

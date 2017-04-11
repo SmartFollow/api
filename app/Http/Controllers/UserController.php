@@ -153,12 +153,37 @@ class UserController extends Controller
      */
     public function show($id)
     {
-		$user = User::with('group')->findOrFail($id);
+		$user = User::with('group')
+					->with('studentClass')
+					->with('taughtSubjects')
+					->with('marks.exam')
+					->findOrFail($id);
 
 		$this->authorize('show', $user);
 
         return $user;
     }
+
+	/**
+     * @api {get} /users/profile Display logged-in user
+	 * @apiName profile
+	 * @apiGroup Users
+	 *
+     * @apiDescription Display the profile of the logged-in user.
+	 *
+     * @return \Illuminate\Http\Response
+     */
+	public function profile()
+	{
+		$user = Auth::user();
+
+		$user->load('group');
+		$user->load('studentClass');
+		$user->load('taughtSubjects');
+		$user->load('marks.exam');
+
+		return $user;
+	}
 
     /**
 	 * @api {delete} /users/:id Delete user
