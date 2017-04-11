@@ -15,7 +15,7 @@ class AddClassIdUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('class_id')->unsigned()->index()->nullable();
-			$table->foreign('class_id')->references('id')->on('student_classes')->onDelete('cascade')->onUpdate('cascade');
+			$table->foreign('class_id')->references('id')->on('student_classes')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

@@ -6,6 +6,8 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Models\Pedagogy\Exams\Mark;
+
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -37,4 +39,20 @@ class User extends Authenticatable
 	{
 		return $this->belongsToMany('App\Models\Communication\Conversation', 'conversation_user', 'user_id', 'conversation_id');
 	}
+
+	public function studentClass()
+	{
+		return $this->belongsTo('App\Models\Pedagogy\StudentClass', 'class_id');
+	}
+
+	public function taughtSubjects()
+	{
+		return $this->hasMany('App\Models\Pedagogy\Subject', 'teacher_id', 'id');
+	}
+
+	public function marks()
+	{
+		return $this->hasMany(Mark::class, 'student_id');
+	}
+
 }

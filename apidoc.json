@@ -1,0 +1,12 @@
+{
+	"name": "SmartFollow API",
+	"version": "0.1.0",
+	"description": "SmartFollow API documentation",
+	"title": "SmartFollow API",
+	"url" : "https://api.dev.smartfollow.org/api",
+
+	"template": {
+		"withCompare": false,
+		"withGenerator": false
+	}
+}
