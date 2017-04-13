@@ -180,7 +180,7 @@ class UserController extends Controller
 		$user->load('group');
 		$user->load('studentClass');
 		$user->load('taughtSubjects');
-		$user->load('marks.exam');
+		$user->load('marks.exam.lesson.subject');
 
 		return $user;
 	}
