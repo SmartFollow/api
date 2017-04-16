@@ -53,7 +53,9 @@ class ConversationController extends Controller
      */
     public function show($id)
     {
-        $conversation = Conversation::with('messages')->findOrFail($id);
+        $conversation = Conversation::with('messages')
+									->with('participants')
+									->findOrFail($id);
 
         return $conversation;
     }
