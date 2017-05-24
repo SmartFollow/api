@@ -3,13 +3,11 @@ services:
   web:
     image: mysql:latest
     ports:
-     - "3306:${DB_PORT}"
+     - "${DB_PORT}:3306"
     container_name: mysql-server
     environment:
      - MYSQL_DATABASE=${DB_DATABASE}
      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
      - MYSQL_USER=${DB_USERNAME}
      - MYSQL_PASSWORD=${DB_PASSWORD}
-
-# docker run -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
-# https://hub.docker.com/_/mysql/
+     
