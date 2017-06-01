@@ -1,0 +1,11 @@
+version: '2'
+services:
+  web:
+    image: mysql:latest
+    ports:
+     - "${DB_PORT}:3306"
+    container_name: mysql-server
+    environment:
+     - MYSQL_DATABASE=${DB_DATABASE}
+     - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+     
