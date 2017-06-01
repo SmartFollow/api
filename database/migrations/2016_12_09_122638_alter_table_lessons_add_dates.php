@@ -14,8 +14,8 @@ class AlterTableLessonsAddDates extends Migration
     public function up()
     {
         Schema::table('lessons', function (Blueprint $table) {
-            $table->datetime('start');
-			$table->datetime('end');
+            $table->datetime('start')->default('');
+			$table->datetime('end')->default('');
         });
     }
 

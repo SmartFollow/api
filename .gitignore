@@ -7,3 +7,6 @@
 /storage/oauth-public.key
 
 /nbproject/
+/storage/oauth-private.key.SQLITE
+/storage/oauth-public.key.SQLITE
+/database/database.sqlite

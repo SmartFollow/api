@@ -13,14 +13,14 @@ class UpdateUsersTableAddGroupField extends Migration
      */
     public function up()
     {
-		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+		Schema::disableForeignKeyConstraints();
 
         Schema::table('users', function (Blueprint $table) {
             $table->integer('group_id')->unsigned()->index()->nullable();
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
         });
 
-		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+		Schema::enableForeignKeyConstraints();
     }
 
     /**

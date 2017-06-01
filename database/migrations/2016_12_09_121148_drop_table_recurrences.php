@@ -13,9 +13,9 @@ class DropTableRecurrences extends Migration
      */
     public function up()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('recurrences');
-		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+		Schema::enableForeignKeyConstraints();
     }
 
     /**

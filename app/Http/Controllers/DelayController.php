@@ -11,7 +11,12 @@ class DelayController extends Controller
 {
 
     /**
-     * Store a newly created resource in storage.
+     * @api {post} /evaluations/:evaluationId/delays Store new delay
+	 * @apiName store
+	 * @apiGroup Delays
+	 *
+     * @apiDescription Store a newly created delay in storage.
+	 * If an existing absence exists, it is automatically destroyed.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -21,21 +26,25 @@ class DelayController extends Controller
 		$this->validate($request, [
 			'arrived_at' => 'date_format:H:i',
 		]);
-		
+
 		$absence = Absence::where('evaluation_id', $evaluationId)->first();
 		if (!empty($absence))
 			$absence->delete();
-		
+
         $delay = new Delay();
 		$delay->evaluation_id = $evaluationId;
 		$delay->arrived_at = $request->get('arrived_at');
 		$delay->save();
-		
+
 		return $delay;
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @api {delete} /evaluations/:evaluationId/delays/:delayId Delete delay
+	 * @apiName destroy
+	 * @apiGroup Delays
+	 *
+     * @apiDescription Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

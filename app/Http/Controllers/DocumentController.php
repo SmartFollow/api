@@ -41,6 +41,17 @@ class DocumentController extends Controller
         //
     }
 
+	/**
+	 * @api {post} /lessons/:lessonId/documents Store new document
+	 * @apiName store
+	 * @apiGroup Documents
+	 *
+     * @apiDescription Store a new document and link it to the specified lesson.
+	 *
+	 * @apiParam {String}	name			Name of the file
+	 * @apiParam {String}	description		Description of the content
+	 * @apiParam {File}		document		Document file
+	 */
     public function storeLessonDocument(Request $request, $lessonId)
     {
 		$lesson = Lesson::findOrFail($lessonId);
@@ -64,7 +75,11 @@ class DocumentController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @api {get} /documents/:documentId Display document
+	 * @apiName show
+	 * @apiGroup Documents
+	 *
+     * @apiDescription Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -72,12 +87,22 @@ class DocumentController extends Controller
     public function show($id)
     {
 		$document = Document::findOrFail($id);
-		
+
 		$document->url = Storage::url($document->path);
-		
+
         return $document;
     }
-	
+
+	/**
+     * @api {get} /lessons/:lessonId/documents/:documentId Display document
+	 * @apiName show
+	 * @apiGroup Documents
+	 *
+     * @apiDescription Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
 	public function showLessonDocument($lessonId, $id)
 	{
 		return $this->show($id);
