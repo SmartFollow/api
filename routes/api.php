@@ -10,12 +10,15 @@
 |
 */
 
+Route::get('/ai/student-average', function(){
+	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
+});
+
 /**
  * Route group for the routes requiring authentication
  */
 Route::group(['middleware' => ['auth:api']], function()
 {
-
 	/*
 	 * Routes related to the users
 	 */
