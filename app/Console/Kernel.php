@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\AI\LessonCriteriaSum::class,
         Commands\AI\StudentCriteriaAverage::class,
         Commands\AI\StudentCriteriaSum::class,
+	    Commands\AI\StudentAbsenceDelaySum::class,
     ];
 
     /**

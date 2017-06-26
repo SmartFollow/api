@@ -23,6 +23,16 @@ class Evaluation extends Model
 					->withTimestamps();
 	}
 
+	public function absence()
+	{
+		return $this->hasOne(Absence::class);
+	}
+
+	public function delay()
+	{
+		return $this->hasOne(Delay::class);
+	}
+
 	public function student()
 	{
 		return $this->belongsTo(User::class, 'student_id');
