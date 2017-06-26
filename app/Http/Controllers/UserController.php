@@ -182,6 +182,7 @@ class UserController extends Controller
 		$user->load('studentClass');
 		$user->load('taughtSubjects');
 		$user->load('marks.exam.lesson.subject');
+		$user->load('criteriaAverages');
 
 		return $user;
 	}

@@ -191,8 +191,17 @@ class LessonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function lessonHistory(Request $request)
+    public function history(Request $request)
     {
+    	$lessons = Lesson::where('student_class_id', Auth::user()->class_id)
+	                     ->orWhereHas('subject', function ($q) {
+		                     $q->where('teacher_id', Auth::id());
+	                     })
+		                 ->where('end', '<=', new DateTime())
+		                 ->get();
+
+    	return $lessons;
+    	/*
     	$lesson = Lesson::get();
         $user = Auth::user();
 
@@ -230,5 +239,6 @@ class LessonController extends Controller
     			'error' => 'No lesson history'
 			];
         }
+    	*/
     }
 }

@@ -13,6 +13,9 @@
 Route::get('/ai/student-average', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
 });
+Route::get('/ai/student-sum', function(){
+	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:sum');
+});
 
 /**
  * Route group for the routes requiring authentication
@@ -96,7 +99,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/lessons'], function()
 	{
-		Route::get('/history', ['as' => 'lessons.history', 'uses' => 'LessonController@lessonHistory']);
+		Route::get('/history', ['as' => 'lessons.history', 'uses' => 'LessonController@history']);
 
 		Route::group(['prefix' => '/{lessonId}'], function()
 		{

@@ -28,6 +28,7 @@ class AlterTableAiStudentCriterionAveragesAddWeek extends Migration
     {
         Schema::table('ai_student_criterion_averages', function (Blueprint $table) {
             $table->dropColumn('week');
+            $table->dropColumn('year');
         });
     }
 }

@@ -60,7 +60,8 @@ class StudentCriteriaAverage extends Command
 			    {
 			    	foreach ($evaluation->criteria as $criterion)
 				    {
-					    $criteriaAverage[$criterion->id]['values'][] = $criterion->pivot->value;
+				    	if ($criterion->stats_type == 'average')
+					        $criteriaAverage[$criterion->id]['values'][] = $criterion->pivot->value;
 				    }
 			    }
 		    }
