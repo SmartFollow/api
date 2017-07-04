@@ -16,7 +16,7 @@ class AlterTableReservationsModifyDates extends Migration
 		Schema::disableForeignKeyConstraints();
 
 		Schema::table('reservations', function (Blueprint $table) {
-			$table->dropForeign('recurrence_id');
+			$table->dropForeign('reservations_recurrence_id_index');
 			$table->dropIndex('recurrence_id');
 			$table->dropColumn('recurrence_id');
 		});
