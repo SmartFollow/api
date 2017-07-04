@@ -25,6 +25,7 @@ class DropTableEvaluationLessonPivot extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::create('evaluation_lesson', function (Blueprint $table) {
             $table->integer('evaluation_id')->unsigned()->index();
             $table->foreign('evaluation_id')->references('id')->on('evaluations')->onDelete('cascade');
@@ -32,5 +33,6 @@ class DropTableEvaluationLessonPivot extends Migration
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->primary(['evaluation_id', 'lesson_id']);
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

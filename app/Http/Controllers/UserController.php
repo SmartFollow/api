@@ -156,7 +156,7 @@ class UserController extends Controller
 		$user = User::with('group')
 					->with('studentClass')
 					->with('taughtSubjects')
-					->with('marks.exam')
+					->with('marks.exam.lesson.subject')
 					->with('criteriaAverages')
 					->findOrFail($id);
 

@@ -26,9 +26,11 @@ class AlterTableAiStudentCriterionAveragesAddWeek extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('ai_student_criterion_averages', function (Blueprint $table) {
             $table->dropColumn('week');
             $table->dropColumn('year');
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

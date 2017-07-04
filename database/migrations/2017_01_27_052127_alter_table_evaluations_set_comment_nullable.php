@@ -25,8 +25,10 @@ class AlterTableEvaluationsSetCommentNullable extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('evaluations', function (Blueprint $table) {
             $table->string('comment')->change();
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

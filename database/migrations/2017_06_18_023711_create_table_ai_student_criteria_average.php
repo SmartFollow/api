@@ -34,6 +34,8 @@ class CreateTableAiStudentCriteriaAverage extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('ai_student_criterion_averages');
+	    Schema::enableForeignKeyConstraints();
     }
 }

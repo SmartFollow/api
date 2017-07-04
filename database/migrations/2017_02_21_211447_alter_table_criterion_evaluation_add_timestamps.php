@@ -25,9 +25,11 @@ class AlterTableCriterionEvaluationAddTimestamps extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('criterion_evaluation', function (Blueprint $table) {
             $table->dropColumn('created_at');
             $table->dropColumn('updated_at');
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

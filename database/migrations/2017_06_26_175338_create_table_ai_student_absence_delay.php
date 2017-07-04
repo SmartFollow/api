@@ -35,6 +35,8 @@ class CreateTableAiStudentAbsenceDelay extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('ai_student_absence_delay');
+	    Schema::enableForeignKeyConstraints();
     }
 }
