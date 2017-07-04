@@ -27,11 +27,11 @@ class AlterTableReservationsModifyDates extends Migration
 		});
 
         Schema::table('reservations', function (Blueprint $table) {
-			$table->time('time_start')->default('');
-			$table->time('time_end')->default('');
-			$table->enum('day', ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])->default('');
-			$table->date('date_start')->default('');
-			$table->date('date_end')->default('');
+			$table->time('time_start')->nullable();
+			$table->time('time_end')->nullable();
+			$table->enum('day', ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])->nullable();
+			$table->date('date_start')->nullable();
+			$table->date('date_end')->nullable();
         });
 		Schema::enableForeignKeyConstraints();
     }

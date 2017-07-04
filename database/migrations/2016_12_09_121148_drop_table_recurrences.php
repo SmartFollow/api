@@ -25,11 +25,13 @@ class DropTableRecurrences extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::create('recurrences', function (Blueprint $table) {
             $table->increments('id');
 			$table->timestamp('start')->nullable();
 			$table->timestamp('end')->nullable();
             $table->timestamps();
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

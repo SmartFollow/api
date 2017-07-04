@@ -14,8 +14,8 @@ class AlterTableLessonsAddDates extends Migration
     public function up()
     {
         Schema::table('lessons', function (Blueprint $table) {
-            $table->datetime('start')->default('');
-			$table->datetime('end')->default('');
+            $table->datetime('start')->nullable();
+			$table->datetime('end')->nullable();
         });
     }
 
@@ -26,9 +26,11 @@ class AlterTableLessonsAddDates extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('lessons', function (Blueprint $table) {
             $table->dropColumn('start');
 			$table->dropColumn('end');
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }
