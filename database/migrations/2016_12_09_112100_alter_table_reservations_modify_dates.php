@@ -16,8 +16,7 @@ class AlterTableReservationsModifyDates extends Migration
 		Schema::disableForeignKeyConstraints();
 
 		Schema::table('reservations', function (Blueprint $table) {
-			$table->dropForeign('reservations_recurrence_id_index');
-			$table->dropIndex('recurrence_id');
+			$table->dropForeign(['recurrence_id']);
 			$table->dropColumn('recurrence_id');
 		});
 		Schema::table('reservations', function (Blueprint $table) {
@@ -28,11 +27,6 @@ class AlterTableReservationsModifyDates extends Migration
 		});
 
         Schema::table('reservations', function (Blueprint $table) {
-			//$table->dropForeign(['recurrence_id']);
-            //$table->dropColumn('recurrence_id');
-            //$table->dropColumn('start_at');
-            //$table->dropColumn('end_at');
-
 			$table->time('time_start')->default('');
 			$table->time('time_end')->default('');
 			$table->enum('day', ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])->default('');
