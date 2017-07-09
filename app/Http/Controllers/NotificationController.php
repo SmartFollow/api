@@ -31,7 +31,10 @@ class NotificationController extends Controller
      */
     public function create()
     {
-
+		return [
+			'groups' => Group::get(),
+			'studentClasses' => StudentClass::get(),
+		];
     }
 
     /**
