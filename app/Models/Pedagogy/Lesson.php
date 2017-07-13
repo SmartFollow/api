@@ -25,7 +25,7 @@ class Lesson extends Model
 
 	public function homeworks()
 	{
-		return $this->hasMany('App\Models\Pedagogy\Homework');
+		return $this->hasMany(Homework::class);
 	}
 
 	public function exam()

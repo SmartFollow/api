@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Homework extends Model
 {
+	protected $table = 'homeworks';
+
     public function lesson()
 	{
 		return $this->belongsTo('App\Models\Pedagogy\Lesson');
