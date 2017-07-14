@@ -183,7 +183,8 @@ class UserController extends Controller
 		$user->load('studentClass');
 		$user->load('taughtSubjects');
 		$user->load('marks.exam.lesson.subject');
-		$user->load('criteriaAverages');
+		$user->load('criteriaAverages.criterion');
+		$user->load('criteriaSums.criterion');
 
 		$prevMonday = date("Y-m-d", strtotime("last week monday"));
 		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));

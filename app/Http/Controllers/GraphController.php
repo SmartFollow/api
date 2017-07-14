@@ -18,7 +18,7 @@ class GraphController extends Controller
      */
     public function index()
     {
-        $graphs = Graph::get();
+        $graphs = Graph::with('criterion')->get();
 
         foreach ($graphs as &$graph)
         {

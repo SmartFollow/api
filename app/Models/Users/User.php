@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\AI\StudentCriterionAverage;
+use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Evaluations\Evaluation;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -73,6 +74,13 @@ class User extends Authenticatable
 	public function criteriaAverages()
 	{
 		return $this->hasMany(StudentCriterionAverage::class)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC');
+	}
+
+	public function criteriaSums()
+	{
+		return $this->hasMany(StudentCriterionSum::class)
 					->orderBy('year', 'ASC')
 					->orderBy('week', 'ASC');
 	}
