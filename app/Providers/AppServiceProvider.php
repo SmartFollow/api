@@ -26,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
 		if ($this->app->environment() == 'local') {
 			$this->app->register('Laracasts\Generators\GeneratorsServiceProvider');
 		}
+
+		if(config('database.default') == 'sqlite') {
+			$db = app()->make('db');
+			$db->connection()->getPdo()->exec("pragma foreign_keys=1");
+		}
     }
 }

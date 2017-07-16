@@ -13,20 +13,27 @@ class AlterTableReservationsModifyDates extends Migration
      */
     public function up()
     {
-		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::table('reservations', function (Blueprint $table) {
-			$table->dropForeign(['recurrence_id']);
-            $table->dropColumn('recurrence_id');
-            $table->dropColumn('start_at');
-            $table->dropColumn('end_at');
+		Schema::disableForeignKeyConstraints();
 
-			$table->time('time_start');
-			$table->time('time_end');
-			$table->enum('day', ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']);
-			$table->date('date_start');
-			$table->date('date_end');
+		Schema::table('reservations', function (Blueprint $table) {
+			$table->dropForeign(['recurrence_id']);
+			$table->dropColumn('recurrence_id');
+		});
+		Schema::table('reservations', function (Blueprint $table) {
+			$table->dropColumn('start_at');
+		});
+		Schema::table('reservations', function (Blueprint $table) {
+			$table->dropColumn('end_at');
+		});
+
+        Schema::table('reservations', function (Blueprint $table) {
+			$table->time('time_start')->nullable();
+			$table->time('time_end')->nullable();
+			$table->enum('day', ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])->nullable();
+			$table->date('date_start')->nullable();
+			$table->date('date_end')->nullable();
         });
-		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+		Schema::enableForeignKeyConstraints();
     }
 
     /**

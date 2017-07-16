@@ -2,6 +2,8 @@
 
 namespace App\Models\Users;
 
+use App\Models\AI\StudentCriterionAverage;
+use App\Models\Pedagogy\Evaluations\Evaluation;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +60,21 @@ class User extends Authenticatable
 	public function marks()
 	{
 		return $this->hasMany(Mark::class, 'student_id');
+	}
+
+	public function evaluations()
+	{
+		return $this->hasMany(Evaluation::class, 'student_id');
+	}
+
+	/*
+	 * AI data relationships
+	 */
+	public function criteriaAverages()
+	{
+		return $this->hasMany(StudentCriterionAverage::class)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC');
 	}
 
 }

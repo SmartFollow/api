@@ -15,6 +15,8 @@ class AlterTableAccessRulesRemoveTimestamps extends Migration
     {
         Schema::table('access_rules', function (Blueprint $table) {
             $table->dropColumn('created_at');
+        });
+		Schema::table('access_rules', function (Blueprint $table) {
             $table->dropColumn('updated_at');
         });
     }

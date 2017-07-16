@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableLessonsAddDates extends Migration
+class AlterTableAiStudentCriterionAveragesAddWeek extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AlterTableLessonsAddDates extends Migration
      */
     public function up()
     {
-        Schema::table('lessons', function (Blueprint $table) {
-            $table->datetime('start')->nullable();
-			$table->datetime('end')->nullable();
+        Schema::table('ai_student_criterion_averages', function (Blueprint $table) {
+            $table->integer('week');
+            $table->integer('year');
         });
     }
 
@@ -27,9 +27,9 @@ class AlterTableLessonsAddDates extends Migration
     public function down()
     {
 	    Schema::disableForeignKeyConstraints();
-        Schema::table('lessons', function (Blueprint $table) {
-            $table->dropColumn('start');
-			$table->dropColumn('end');
+        Schema::table('ai_student_criterion_averages', function (Blueprint $table) {
+            $table->dropColumn('week');
+            $table->dropColumn('year');
         });
 	    Schema::enableForeignKeyConstraints();
     }

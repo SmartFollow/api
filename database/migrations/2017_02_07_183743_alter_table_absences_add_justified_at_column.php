@@ -25,8 +25,10 @@ class AlterTableAbsencesAddJustifiedAtColumn extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('absences', function (Blueprint $table) {
             $table->dropColumn('justified_at');
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

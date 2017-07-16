@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected	$timestamps = false;
+    public	$timestamps = false;
 }

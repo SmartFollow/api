@@ -25,8 +25,10 @@ class AlterTableNotificationsNullableResourcelink extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('notifications', function (Blueprint $table) {
             $table->string('resource_link')->change();
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

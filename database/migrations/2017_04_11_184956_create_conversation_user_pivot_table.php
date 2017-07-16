@@ -28,6 +28,8 @@ class CreateConversationUserPivotTable extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::drop('conversation_user');
+	    Schema::enableForeignKeyConstraints();
     }
 }

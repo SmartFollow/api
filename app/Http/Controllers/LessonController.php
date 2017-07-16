@@ -9,9 +9,10 @@ use App\Models\Pedagogy\Lesson;
 use App\Models\Pedagogy\Subject;
 use App\Models\Planning\Reservation;
 use App\Models\Users\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 use DateTime;
+
 
 class LessonController extends Controller
 {
@@ -22,7 +23,11 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $lessons = Lesson::get();
+	    $lessons = Lesson::where('student_class_id', Auth::user()->class_id)
+					    ->orWhereHas('subject', function ($q) {
+						    $q->where('teacher_id', Auth::id());
+					    })
+					    ->get();
 
         $lessons->load('subject');
         $lessons->load('reservation.room');
@@ -198,44 +203,15 @@ class LessonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function lessonHistory(Request $request)
+    public function history(Request $request)
     {
-    	$lesson = Lesson::get();
-        $user = Auth::user();
+    	$lessons = Lesson::where('student_class_id', Auth::user()->class_id)
+	                     ->orWhereHas('subject', function ($q) {
+		                     $q->where('teacher_id', Auth::id());
+	                     })
+		                 ->where('end', '<=', new DateTime())
+		                 ->get();
 
-        $date = new DateTime('now');
-
-        if ($user->group_id == 4)
-        {
-        	$class = $user->class_id;
-
-        	foreach ($lesson as $lessons) {
-        		if ($lessons->student_class_id == $class)
-        		{
-        			if ($lessons->end < $date)
-                    {   
-        		 	
-                    	return $lessons;
-        		 	}
-                    else {
-        		 		return [
-    						'error' => 'You did not participate to any lesson recently'
-						];
-        		 	}
-        		}
-        		else
-        		{
-        			return [
-    					'error' => 'You did not participate to any lesson recently'
-					];
-        		}
-        	}
-        }
-        else
-        {
-        	return [
-    			'error' => 'No lesson history'
-			];
-        }
+    	return $lessons;
     }
 }

@@ -29,10 +29,12 @@ class AlterTableLessonsAddStudentclass extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('lessons', function (Blueprint $table) {
             $table->dropForeign(['recurrence_id']);
             $table->dropIndex('recurrence_id');
             $table->dropColumn('recurrence_id');
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

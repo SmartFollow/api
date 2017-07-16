@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Auth;
 class ConversationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @api {get} /conversations List conversations
+	 * @apiName index
+	 * @apiGroup Conversations
+	 *
+     * @apiDescription Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,7 +24,14 @@ class ConversationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @api {post} /conversations Store new conversation
+	 * @apiName store
+	 * @apiGroup Conversations
+	 *
+     * @apiDescription Store a newly created resource in storage.
+	 *
+	 * @apiParam {String}	subject			Subject
+	 * @apiParam {Number[]}	participants	An array of the ID of the participants
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -46,20 +57,32 @@ class ConversationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @api {get} /conversations/:id Show conversation
+	 * @apiName show
+	 * @apiGroup Conversations
+	 *
+     * @apiDescription Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $conversation = Conversation::with('messages')->findOrFail($id);
+        $conversation = Conversation::with('messages')
+									->with('participants')
+									->findOrFail($id);
 
         return $conversation;
     }
 
     /**
-     * Update the specified resource in storage.
+     * @api {put} /conversations/:id Update conversation
+	 * @apiName update
+	 * @apiGroup Conversations
+	 *
+     * @apiDescription Update the specified resource in storage.
+	 *
+	 * @apiParam {String}	subject		Subject
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -82,7 +105,11 @@ class ConversationController extends Controller
     }
 
     /**
-     * Remove the specified resource (a process) from storage.
+     * @api {delete} /conversations/:id Delete existing conversation
+	 * @apiName delete
+	 * @apiGroup Conversations
+	 *
+     * @apiDescription Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

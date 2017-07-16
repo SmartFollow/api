@@ -13,9 +13,9 @@ class DropTableRecurrences extends Migration
      */
     public function up()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('recurrences');
-		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+		Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -25,11 +25,13 @@ class DropTableRecurrences extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::create('recurrences', function (Blueprint $table) {
             $table->increments('id');
 			$table->timestamp('start')->nullable();
 			$table->timestamp('end')->nullable();
             $table->timestamps();
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

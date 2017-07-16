@@ -10,18 +10,27 @@
 |
 */
 
+Route::get('/ai/student-average', function(){
+	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
+});
+Route::get('/ai/student-sum', function(){
+	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:sum');
+});
+Route::get('/ai/student-absdelays', function(){
+	\Illuminate\Support\Facades\Artisan::call('ai:absdelay:student');
+});
+
 /**
  * Route group for the routes requiring authentication
  */
 Route::group(['middleware' => ['auth:api']], function()
 {
-
 	/*
 	 * Routes related to the users
 	 */
 	Route::group(['prefix' => '/users'], function()
 	{
-		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UsersController@changePassword']);
+		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UserController@changePassword']);
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 	});
@@ -93,7 +102,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/lessons'], function()
 	{
-		Route::get('/history', ['as' => 'lessons.history', 'uses' => 'LessonController@lessonHistory']);
+		Route::get('/history', ['as' => 'lessons.history', 'uses' => 'LessonController@history']);
 
 		Route::group(['prefix' => '/{lessonId}'], function()
 		{
@@ -200,4 +209,6 @@ Route::group(['middleware' => ['auth:api']], function()
 	});
 	Route::resource('conversations', 'ConversationController');
 	Route::resource('messages', 'MessageController', ['only' => ['store']]);
+
+	Route::resource('graphs', 'GraphController');
 });

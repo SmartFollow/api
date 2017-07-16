@@ -15,9 +15,11 @@ class AddNameFieldsUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('name');
-			$table->string('firstname');
-			$table->string('lastname');
         });
+		Schema::table('users', function (Blueprint $table) {
+			$table->string('firstname')->default('');
+			$table->string('lastname')->default('');
+		});
     }
 
     /**

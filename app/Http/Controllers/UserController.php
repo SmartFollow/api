@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedagogy\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -156,7 +157,8 @@ class UserController extends Controller
 		$user = User::with('group')
 					->with('studentClass')
 					->with('taughtSubjects')
-					->with('marks.exam')
+					->with('marks.exam.lesson.subject')
+					->with('criteriaAverages')
 					->findOrFail($id);
 
 		$this->authorize('show', $user);
@@ -181,6 +183,19 @@ class UserController extends Controller
 		$user->load('studentClass');
 		$user->load('taughtSubjects');
 		$user->load('marks.exam.lesson.subject');
+		$user->load('criteriaAverages');
+
+		$prevMonday = date("Y-m-d", strtotime("last week monday"));
+		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));
+
+		$recentLessons = Lesson::where('student_class_id', $user->class_id)
+							   ->where('start', '>=', $prevMonday)
+							   ->where('end', '<=', $sunday)
+							   ->with('homeworks')
+							   ->with('subject')
+							   ->get();
+
+		$user->homeworks = $recentLessons;
 
 		return $user;
 	}
