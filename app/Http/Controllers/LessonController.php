@@ -24,6 +24,11 @@ class LessonController extends Controller
     {
         $lessons = Lesson::get();
 
+        $lessons->load('subject');
+        $lessons->load('reservation.room');
+        $lessons->load('homeworks');
+        $lessons->load('evaluations.criteria');
+
 		return $lessons;
     }
 
@@ -130,6 +135,8 @@ class LessonController extends Controller
         $lesson = Lesson::with('reservation.room')
 				->with('subject.teacher')
 				->with('homeworks')
+                ->with('evaluations.criteria')
+                ->with('evaluations.student')
 				->with('documents')
 				->with('exam')
 				->with('studentClass.students')
