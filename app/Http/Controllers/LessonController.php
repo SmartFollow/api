@@ -105,12 +105,24 @@ class LessonController extends Controller
 		if ($nextLessonStart->format('w') != $days[$reservation->day])
 			$nextLessonStart->modify('next ' . $reservation->day);
 
+		$reservationStart = [
+			'h' => intval(date('H', strtotime($reservation->time_start))),
+			'm' => intval(date('i', strtotime($reservation->time_start))),
+			's' => intval(date('s', strtotime($reservation->time_start))),
+		];
+
+	    $reservationEnd = [
+		    'h' => intval(date('H', strtotime($reservation->time_end))),
+		    'm' => intval(date('i', strtotime($reservation->time_end))),
+		    's' => intval(date('s', strtotime($reservation->time_end))),
+	    ];
+
 		$lessons = [];
 		while ($nextLessonStart <= $recurrency_end)
 		{
-			$nextLessonStart->modify($reservation->time_start);
-			$nextLessonEnd = $nextLessonStart;
-			$nextLessonEnd->modify($reservation->time_end);
+			$nextLessonStart->setTime($reservationStart['h'], $reservationStart['m'], $reservationStart['s']);
+			$nextLessonEnd = clone $nextLessonStart;
+			$nextLessonEnd->setTime($reservationEnd['h'], $reservationEnd['m'], $reservationEnd['s']);
 
 			$lesson = new Lesson();
 			$lesson->subject_id = $request->get('subject_id');
