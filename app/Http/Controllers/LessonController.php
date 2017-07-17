@@ -30,6 +30,7 @@ class LessonController extends Controller
 					    ->get();
 
         $lessons->load('subject');
+        $lessons->load('studentClass');
         $lessons->load('reservation.room');
         $lessons->load('homeworks');
         $lessons->load('evaluations.criteria');
