@@ -13,9 +13,11 @@
 Route::get('/ai/student-average', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
 });
+
 Route::get('/ai/student-sum', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:sum');
 });
+
 Route::get('/ai/student-absdelays', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:absdelay:student');
 });
