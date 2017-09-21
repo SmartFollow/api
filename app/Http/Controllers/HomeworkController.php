@@ -19,7 +19,7 @@ class HomeworkController extends Controller
     public function index($lessonId)
     {
 		$homeworks = Homework::where('lesson_id', $lessonId)->get();
-
+        $homeworks->load('lesson.subject'); 
         return $homeworks;
     }
 
@@ -76,6 +76,7 @@ class HomeworkController extends Controller
 							->with('lesson.subject')
 							->findOrFail($id);
 
+        $homework->load('lesson.subject');                    
 		return $homework;
     }
 
@@ -142,8 +143,9 @@ class HomeworkController extends Controller
     public function homeworkList(Request $request)
     {
         $lesson = Lesson::all();
-        $homework = Homework::get();
+        $homework = Homework::all();
         $user = Auth::user();
+        $homework->load('lesson.subject');
 
         if ($user->group_id == 4)
         {

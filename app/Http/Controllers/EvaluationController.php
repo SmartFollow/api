@@ -15,6 +15,23 @@ class EvaluationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index()
+    {
+        $evaluations = Evaluation::get();
+
+        $evaluations->load('criteria');
+        $evaluations->load('lesson.subject.teacher');
+        $evaluations->load('student');
+
+        return $evaluations;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function indexLessonEvaluations($lessonId)
     {
 		$evaluations = Evaluation::whereHas('lesson', function ($q) use ($lessonId) {

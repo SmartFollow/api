@@ -72,6 +72,8 @@ class ConversationController extends Controller
 									->with('participants')
 									->findOrFail($id);
 
+        $conversation->load('messages.creator');
+
         return $conversation;
     }
 
