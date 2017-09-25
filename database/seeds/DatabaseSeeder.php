@@ -13,10 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AccessRulesSeeder::class);
         $this->call(GroupsTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
-        $this->call(LevelsTableSeeder::class);
-        $this->call(StudentClassesTableSeeder::class);
-        $this->call(SubjectsTableSeeder::class);
+	    $this->call(LevelsTableSeeder::class);
+	    $this->call(StudentClassesTableSeeder::class);
+	    $this->call(UsersTableSeeder::class);
+	    $this->call(SubjectsTableSeeder::class);
         $this->call(CriteriaTableSeeder::class);
         $this->call(RoomsTableSeeder::class);
     }

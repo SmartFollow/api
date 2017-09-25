@@ -76,6 +76,7 @@ class AccessRulesSeeder extends Seeder
 			'groups.edit',
 			'groups.show.access-rules',
 			'lessons.index',
+			'lessons.self.index',
 			'lessons.store',
 			'lessons.create',
 			'lessons.history',

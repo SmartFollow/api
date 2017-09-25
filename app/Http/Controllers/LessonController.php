@@ -23,11 +23,24 @@ class LessonController extends Controller
      */
     public function index()
     {
-	    $lessons = Lesson::where('student_class_id', Auth::user()->class_id)
-					    ->orWhereHas('subject', function ($q) {
-						    $q->where('teacher_id', Auth::id());
-					    })
-					    ->get();
+	    $lessons = [];
+
+    	if (Auth::user()->group->accessRules->keyBy('name')->has('lessons.index'))
+	    {
+			$lessons = Lesson::get();
+	    }
+	    elseif (Auth::user()->group->accessRules->keyBy('name')->has('lessons.self.index'))
+	    {
+		    $lessons = Lesson::where('student_class_id', Auth::user()->class_id)
+						    ->orWhereHas('subject', function ($q) {
+							    $q->where('teacher_id', Auth::id());
+						    })
+						    ->get();
+	    }
+		else
+		{
+			return [];
+		}
 
         $lessons->load('subject');
         $lessons->load('studentClass');

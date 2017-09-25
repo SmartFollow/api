@@ -34,6 +34,7 @@ class GroupsTableSeeder extends Seeder
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.update')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.destroy')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.show.access-rules')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'lessons.index')->first());
 
 		$teachers = Group::create([
 			'name' => 'Professeurs',
@@ -46,6 +47,7 @@ class GroupsTableSeeder extends Seeder
 		$teachers->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
 		$teachers->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$teachers->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
+		$teachers->accessRules()->attach(AccessRule::where('route', 'lessons.self.index')->first());
 
 		$employees = Group::create([
 			'name' => 'Employés',
@@ -62,6 +64,7 @@ class GroupsTableSeeder extends Seeder
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show.access-rules')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'lessons.index')->first());
 
 		$students = Group::create([
 			'name' => 'Étudiants',
@@ -71,5 +74,6 @@ class GroupsTableSeeder extends Seeder
 		]);
         $students->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
         $students->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
+        $students->accessRules()->attach(AccessRule::where('route', 'lessons.self.index')->first());
     }
 }
