@@ -15,8 +15,8 @@ class GroupsTableSeeder extends Seeder
     public function run()
     {
 		$administrators = Group::create([
-			'name' => 'Administrators',
-			'description' => 'Administrators of the software',
+			'name' => 'Administrateurs',
+			'description' => 'Administrateurs du logiciel',
 			'deletable' => false,
 			'editable' => false,
 		]);
@@ -33,11 +33,11 @@ class GroupsTableSeeder extends Seeder
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.edit')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.update')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.destroy')->first());
-		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.access-rules')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'groups.show.access-rules')->first());
 
 		$teachers = Group::create([
-			'name' => 'Teachers',
-			'description' => 'Teachers of the school',
+			'name' => 'Professeurs',
+			'description' => 'Professeurs de l\'école',
 			'deletable' => false,
 			'editable' => false,
 		]);
@@ -48,8 +48,8 @@ class GroupsTableSeeder extends Seeder
 		$teachers->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
 
 		$employees = Group::create([
-			'name' => 'Employees',
-			'description' => 'Administrators of the school',
+			'name' => 'Employés',
+			'description' => 'Employés de l\'école',
 			'deletable' => true,
 			'editable' => true,
 		]);
@@ -61,11 +61,11 @@ class GroupsTableSeeder extends Seeder
 		$employees->accessRules()->attach(AccessRule::where('route', 'users.destroy')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.index')->first());
 		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show')->first());
-		$employees->accessRules()->attach(AccessRule::where('route', 'groups.access-rules')->first());
+		$employees->accessRules()->attach(AccessRule::where('route', 'groups.show.access-rules')->first());
 
 		$students = Group::create([
-			'name' => 'Students',
-			'description' => 'Students of the school',
+			'name' => 'Étudiants',
+			'description' => 'Étudiants de l\'école',
 			'deletable' => false,
 			'editable' => false,
 		]);

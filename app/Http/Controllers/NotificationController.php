@@ -160,7 +160,7 @@ class NotificationController extends Controller
      *
      * @return void
      */
-    public function readAt($id)
+    public function markAsRead($id)
     {
         $notification = Notification::findOrFail($id);
 

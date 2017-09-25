@@ -10,6 +10,7 @@
 |
 */
 
+/*
 Route::get('/ai/student-average', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
 });
@@ -21,6 +22,7 @@ Route::get('/ai/student-sum', function(){
 Route::get('/ai/student-absdelays', function(){
 	\Illuminate\Support\Facades\Artisan::call('ai:absdelay:student');
 });
+*/
 
 /**
  * Route group for the routes requiring authentication
@@ -36,7 +38,7 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 	});
-	Route::resource('users', 'UserController');
+	Route::resource('users', 'UserController', ['except' => ['create']]);
 
 	/*
 	 * Routes related to the groups
@@ -46,7 +48,7 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::get('/{id}/access-rules', ['as' => 'groups.show.access-rules', 'uses' => 'GroupController@showAccessRules'])
 			->where(['id' => '[0-9]+']);
 	});
-	Route::resource('groups', 'GroupController');
+	Route::resource('groups', 'GroupController', ['except' => ['create']]);
 
 	/*
 	 * Routes related to rooms
@@ -123,8 +125,8 @@ Route::group(['middleware' => ['auth:api']], function()
 
 			Route::group(['prefix' => 'evaluations'], function()
 			{
-				Route::get('/', 'EvaluationController@indexLessonEvaluations');
-				Route::get('/create', 'EvaluationController@createLessonEvaluations');
+				Route::get('/', 'EvaluationController@indexLessonEvaluations')->name('lessons.evaluations.index');
+				Route::get('/create', 'EvaluationController@createLessonEvaluations')->name('lessons.evaluations.create');
 			});
 		});
 	});
@@ -180,7 +182,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/notifications'], function()
 	{
-		Route::put('/{id}/read','NotificationController@readAt');
+		Route::put('/{id}/read','NotificationController@markAsRead')->name('notifications.mark-as-read');
 	});
 	Route::resource('notifications', 'NotificationController');
 

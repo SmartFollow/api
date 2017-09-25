@@ -22,7 +22,7 @@ class CriteriaTableSeeder extends Seeder
 		]);
 		
 		$missingHomeworks = Criterion::create([
-			'name' => 'Missing Homeworks',
+			'name' => 'Devoirs non réalisés',
 			'impact' => 'negative',
 			'difference_limit_percentage' => 0,
 			'check_interval' => 3600 * 24 * 7,
@@ -30,7 +30,7 @@ class CriteriaTableSeeder extends Seeder
 		]);
 		
 		$chatInClass = Criterion::create([
-			'name' => 'Chatting in Classroom',
+			'name' => 'Bavardage en classe',
 			'impact' => 'negative',
 			'difference_limit_percentage' => 10,
 			'check_interval' => 3600 * 24 * 7,

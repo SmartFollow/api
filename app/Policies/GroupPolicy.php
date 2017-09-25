@@ -50,7 +50,7 @@ class GroupPolicy
     {
         $rules = $user->group->accessRules->keyBy('name');
 
-		return	$rules->has('groups.access-rules')
+		return	$rules->has('groups.show.access-rules')
 				|| ($group->id == $user->group->id); // If it's the user's group
     }
 
