@@ -8,6 +8,7 @@ use App\Models\Pedagogy\Evaluations\Evaluation;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Pedagogy\Exams\Mark;
 
@@ -83,6 +84,14 @@ class User extends Authenticatable
 		return $this->hasMany(StudentCriterionSum::class)
 					->orderBy('year', 'ASC')
 					->orderBy('week', 'ASC');
+	}
+
+	/*
+	 * Custom getters
+	 */
+	public function getAvatarAttribute($avatar)
+	{
+		return !empty($avatar) ? Storage::url($avatar) : '/img/misc/default-avatar.png';
 	}
 
 }
