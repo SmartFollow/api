@@ -52,8 +52,8 @@ class AlterTableReservationsModifyDates extends Migration
 			$table->dropColumn('date_start');
 			$table->dropColumn('date_end');
 
-			$table->timestamp('start_at')->nullable();
-			$table->timestamp('end_at')->nullable();
+			$table->time('start_at')->nullable();
+			$table->time('end_at')->nullable();
 			$table->integer('recurrence_id')->unsigned()->index()->nullable();
         });
 

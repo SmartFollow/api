@@ -15,7 +15,9 @@ class ChangeTableExamsAddDocumentField extends Migration
     {
         Schema::table('exams', function (Blueprint $table) {
             $table->dropColumn('path_to_subject');
-			
+        });
+
+        Schema::table('exams', function (Blueprint $table) {
 			$table->integer('document_id')->unsigned()->index()->nullable();
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('set null');
         });
@@ -30,9 +32,8 @@ class ChangeTableExamsAddDocumentField extends Migration
     {
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('exams', function (Blueprint $table) {
-			$table->dropForeign(['document_id']);
-            $table->dropIndex('document_id');
-			$table->dropIndex('document_id');
+            $table->dropForeign(['document_id']);
+            //$table->dropIndex('document_id');
 
             $table->string('path_to_subject')->nullable();
         });

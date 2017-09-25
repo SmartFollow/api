@@ -27,7 +27,7 @@ class AlterTableDelaysChangeArrivedAtType extends Migration
     {
 	    Schema::disableForeignKeyConstraints();
         Schema::table('delays', function (Blueprint $table) {
-            $table->timestamp('arrived_at')->nullable()->change();
+            $table->time('arrived_at')->nullable()->change();
         });
 	    Schema::enableForeignKeyConstraints();
     }

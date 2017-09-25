@@ -14,7 +14,7 @@ class AlterTableAbsencesAddJustifiedAtColumn extends Migration
     public function up()
     {
         Schema::table('absences', function (Blueprint $table) {
-            $table->timestamp('justified_at')->nullable();
+            $table->time('justified_at')->nullable();
         });
     }
 

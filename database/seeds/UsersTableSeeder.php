@@ -19,13 +19,13 @@ class UsersTableSeeder extends Seeder
 		$teachers = User::take(10)->get();
 		foreach ($teachers as $teacher)
 		{
-			$teacher->group()->associate(Group::where('name', 'Teachers')->first());
+			$teacher->group()->associate(Group::where('name', 'Professeurs')->first());
 			$teacher->class_id = null;
 			$teacher->save();
 		}
 
 		$admin = User::first();
-	    $admin->group_id = Group::where('name', 'Administrators')->first()->id;
+	    $admin->group()->associate(Group::where('name', 'Administrateurs')->first());
 	    $admin->class_id = null;
 	    $admin->save();
     }

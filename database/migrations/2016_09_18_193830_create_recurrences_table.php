@@ -15,8 +15,8 @@ class CreateRecurrencesTable extends Migration
     {
         Schema::create('recurrences', function (Blueprint $table) {
             $table->increments('id');
-			$table->timestamp('start')->nullable();
-			$table->timestamp('end')->nullable();
+			$table->time('start')->nullable();
+			$table->time('end')->nullable();
             $table->timestamps();
         });
     }

@@ -26,6 +26,6 @@ $factory->define(App\Models\Users\User::class, function (Faker\Generator $faker)
         'email' => $email,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
-		'group_id' => Group::where('name', 'Students')->first()->id,
+		'group_id' => Group::where('name', 'Étudiants')->first()->id,
     ];
 });
