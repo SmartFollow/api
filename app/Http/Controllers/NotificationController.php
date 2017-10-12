@@ -17,11 +17,17 @@ class NotificationController extends Controller
      */
     public function index()
     {
-		$notification = Notification::whereHas('users', function ($q) {
+    	/*
+		$notifications = Notification::whereHas('users', function ($q) {
 			$q->where('users.id', Auth::id());
 		})->get();
+		*/
+    	
+	    $notifications = Auth::user();
+	    $notifications->load('notifications');
+	    $notifications = $notifications->notifications;
 
-        return $notification;
+        return $notifications;
     }
 
     /**

@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     public function notifications()
     {
-        return $this->belongsToMany('App\Models\Communication\Notification');
+        return $this->belongsToMany('App\Models\Communication\Notification')->withPivot(['read_at']);
     }
 
 	public function conversations()
