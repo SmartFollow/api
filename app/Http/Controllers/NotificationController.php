@@ -22,7 +22,7 @@ class NotificationController extends Controller
 			$q->where('users.id', Auth::id());
 		})->get();
 		*/
-    	
+
 	    $notifications = Auth::user();
 	    $notifications->load('notifications');
 	    $notifications = $notifications->notifications;
