@@ -158,7 +158,8 @@ class UserController extends Controller
 					->with('studentClass')
 					->with('taughtSubjects')
 					->with('marks.exam.lesson.subject')
-					->with('criteriaAverages')
+					->with('criteriaAverages.criterion')
+					->with('criteriaSums.criterion')
 					->findOrFail($id);
 
 		$this->authorize('show', $user);
