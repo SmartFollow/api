@@ -74,7 +74,7 @@ class GroupController extends Controller
 
 		$this->authorize('accessRules', $group);
 
-        return $group->accessRules;
+        return $group->accessRules->pluck('route');
     }
 
     /**

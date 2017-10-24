@@ -41,7 +41,7 @@ class UserController extends Controller
 	{
 		$group = Group::with('accessRules')->findOrFail(Auth::user()->group_id);
 
-		return $group->accessRules;
+		return $group->accessRules->pluck('route');
 	}
 
     /**

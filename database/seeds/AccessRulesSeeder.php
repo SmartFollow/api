@@ -51,6 +51,7 @@ class AccessRulesSeeder extends Seeder
 			'exams.store',
 			'exams.create',
 			'marks.index',
+			'marks.self.index',
 			'marks.store',
 			'marks.create',
 			'marks.update',
@@ -111,6 +112,7 @@ class AccessRulesSeeder extends Seeder
 			'messages.store',
 			'notifications.store',
 			'notifications.index',
+			'notifications.self.index',
 			'notifications.create',
 			'notifications.mark-as-read',
 			'notifications.destroy',
@@ -169,10 +171,13 @@ class AccessRulesSeeder extends Seeder
 			'users.change-password',
 			'users.profile',
 			'users.profile.access-rules',
+			'users.profile.homeworks',
 			'users.destroy',
 			'users.show',
 			'users.update',
 			'users.edit',
+			'difficulties.index',
+			'difficulties.self.index',
 		];
 
 		foreach ($routes as $route)
