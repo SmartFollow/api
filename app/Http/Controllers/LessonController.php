@@ -168,6 +168,8 @@ class LessonController extends Controller
 				->with('homeworks')
                 ->with('evaluations.criteria')
                 ->with('evaluations.student')
+                ->with('evaluations.absence')
+                ->with('evaluations.delay')
 				->with('documents')
 				->with('exam')
 				->with('studentClass.students')
