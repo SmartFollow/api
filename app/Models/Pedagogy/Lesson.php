@@ -8,6 +8,8 @@ use App\Models\Pedagogy\Evaluations\Evaluation;
 
 class Lesson extends Model
 {
+	protected $dates = [ 'start', 'end' ];
+
     public function subject()
 	{
 		return $this->belongsTo('App\Models\Pedagogy\Subject');

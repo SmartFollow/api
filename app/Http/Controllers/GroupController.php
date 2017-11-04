@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users\AccessRule;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -21,6 +22,23 @@ class GroupController extends Controller
 
 		return Group::get();
     }
+
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		$this->authorize('create', Group::class);
+
+		$accessRules = AccessRule::orderBy('route')->get();
+
+		return [
+			'access_rules' => $accessRules,
+		];
+	}
 
     /**
      * Store a newly created resource in storage.
@@ -43,7 +61,8 @@ class GroupController extends Controller
 		$group->description = $request->get('description');
 		$group->save();
 
-		$group->accessRules()->sync($request->get('access_rules'));
+		if ($request->has('access_rules'))
+			$group->accessRules()->sync($request->get('access_rules'));
 
 		return $group;
     }

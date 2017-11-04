@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::get('/{id}/access-rules', ['as' => 'groups.show.access-rules', 'uses' => 'GroupController@showAccessRules'])
 			->where(['id' => '[0-9]+']);
 	});
-	Route::resource('groups', 'GroupController', ['except' => ['create']]);
+	Route::resource('groups', 'GroupController');
 
 	/*
 	 * Routes related to rooms

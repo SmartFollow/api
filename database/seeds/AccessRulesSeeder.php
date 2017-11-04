@@ -70,6 +70,7 @@ class AccessRulesSeeder extends Seeder
 			'graphs.show',
 			'graphs.edit',
 			'groups.index',
+			'groups.create',
 			'groups.store',
 			'groups.update',
 			'groups.show',
