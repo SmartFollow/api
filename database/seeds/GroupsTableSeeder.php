@@ -62,6 +62,11 @@ class GroupsTableSeeder extends Seeder
 		$administrators->accessRules()->attach(AccessRule::where('route', 'lessons.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'notifications.self.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'difficulties.index')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'rooms.index')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'rooms.create')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'rooms.show')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'rooms.edit')->first());
+		$administrators->accessRules()->attach(AccessRule::where('route', 'rooms.destroy')->first());
 
 		$teachers = Group::create([
 			'name' => 'Professeurs',

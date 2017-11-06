@@ -75,7 +75,9 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-		$group = Group::findOrFail($id);
+		$group = Group::with('accessRules')
+					  ->with('users')
+					  ->findOrFail($id);
 
 		$this->authorize('show', $group);
 
@@ -96,6 +98,21 @@ class GroupController extends Controller
         return $group->accessRules->pluck('route');
     }
 
+	public function edit($id)
+	{
+		$group = Group::with('accessRules')
+					  ->findOrFail($id);
+
+		$this->authorize('edit', $group);
+
+		$accessRules = AccessRule::orderBy('route')->get();
+
+		return [
+			'access_rules' => $accessRules,
+			'group' => $group,
+		];
+	}
+
     /**
      * Update the specified resource in storage.
      *
@@ -107,10 +124,10 @@ class GroupController extends Controller
     {
 		$group = Group::findOrFail($id);
 
-		$this->authorize('update', $group);
+		$this->authorize('edit', $group);
 
 		$this->validate($request, [
-			'name' => 'unique:groups',
+			'name' => 'unique:groups,name,' . $id,
 			'description' => '',
 			'access_rules.*' => 'exists:access_rules,id'
 		]);

@@ -99,7 +99,9 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        //
+	    $room = Room::findOrFail($id);
+
+	    return $room;
     }
 
     /**
