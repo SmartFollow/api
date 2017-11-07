@@ -23,9 +23,9 @@ class NotificationController extends Controller
 		})->get();
 		*/
 
-	    $notifications = Auth::user();
-	    $notifications->load('notifications');
-	    $notifications = $notifications->notifications;
+	    $user = Auth::user();
+	    $user->load('notifications.transmitter');
+	    $notifications = $user->notifications;
 
         return $notifications;
     }
