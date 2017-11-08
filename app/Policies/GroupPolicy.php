@@ -64,7 +64,7 @@ class GroupPolicy
     {
         $rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('groups.create');
+		return $rules->has('groups.create') || $rules->has('groups.store');
     }
 
     /**
@@ -77,7 +77,7 @@ class GroupPolicy
     {
         $rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('groups.store');
+		return $rules->has('groups.create') || $rules->has('groups.create');
     }
 
     /**
@@ -91,7 +91,7 @@ class GroupPolicy
     {
         $rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('groups.update') && $group->editable;
+		return ($rules->has('groups.update') || $rules->has('groups.edit')) && $group->editable;
     }
 
     /**

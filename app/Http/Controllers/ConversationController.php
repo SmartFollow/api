@@ -23,6 +23,16 @@ class ConversationController extends Controller
 		})->with('participants')->get();
     }
 
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+
+	}
+
     /**
      * @api {post} /conversations Store new conversation
 	 * @apiName store
