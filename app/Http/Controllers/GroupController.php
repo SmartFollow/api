@@ -103,7 +103,7 @@ class GroupController extends Controller
 		$group = Group::with('accessRules')
 					  ->findOrFail($id);
 
-		$this->authorize('edit', $group);
+		$this->authorize('update', $group);
 
 		$accessRules = AccessRule::orderBy('route')->get();
 
@@ -124,7 +124,7 @@ class GroupController extends Controller
     {
 		$group = Group::findOrFail($id);
 
-		$this->authorize('edit', $group);
+		$this->authorize('update', $group);
 
 		$this->validate($request, [
 			'name' => 'unique:groups,name,' . $id,

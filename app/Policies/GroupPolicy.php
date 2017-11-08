@@ -77,7 +77,7 @@ class GroupPolicy
     {
         $rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('groups.create') || $rules->has('groups.create');
+		return $rules->has('groups.create') || $rules->has('groups.store');
     }
 
     /**
