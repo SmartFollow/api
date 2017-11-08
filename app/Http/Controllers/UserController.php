@@ -24,7 +24,9 @@ class UserController extends Controller
     {
 		$this->authorize('index', User::class);
 
-		return User::get();
+		return User::with('studentClass')
+				   ->with('group')
+				   ->get();
     }
 
 	/**
