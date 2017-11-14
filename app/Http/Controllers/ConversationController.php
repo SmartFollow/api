@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Communication\Conversation;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +31,11 @@ class ConversationController extends Controller
 	 */
 	public function create()
 	{
+		$users = User::get();
 
+		return [
+			'users' => $users,
+		];
 	}
 
     /**
