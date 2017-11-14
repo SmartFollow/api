@@ -192,14 +192,19 @@ class UserController extends Controller
 		$prevMonday = date("Y-m-d", strtotime("last week monday"));
 		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));
 
-		$recentLessons = Lesson::where('student_class_id', $user->class_id)
+		$user->recentLessons = Lesson::where('student_class_id', $user->class_id)
 							   ->where('start', '>=', $prevMonday)
 							   ->where('end', '<=', $sunday)
-							   ->with('homeworks')
 							   ->with('subject')
 							   ->get();
 
-		$user->homeworks = $recentLessons;
+		$user->homeworks = Lesson::where('student_class_id', $user->class_id)
+								 ->where('start', '>=', $prevMonday)
+								 ->where('end', '<=', $sunday)
+								 ->with('homeworks')
+								 ->with('subject.teacher')
+								 ->whereHas('homeworks')
+								 ->get();
 
 		return $user;
 	}

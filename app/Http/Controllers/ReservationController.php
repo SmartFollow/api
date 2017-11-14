@@ -16,7 +16,8 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::with('room')->get();
+        $reservations = Reservation::with('room')
+	                               ->get();
 
 		return $reservations;
     }
