@@ -142,35 +142,18 @@ class HomeworkController extends Controller
      */
     public function homeworkList(Request $request)
     {
-        $lesson = Lesson::all();
-        $homework = Homework::all();
-        $user = Auth::user();
-        $homework->load('lesson.subject');
+    	$lessons = Lesson::where('student_class_id', Auth::user()->student_class)
+		                ->whereHas('homeworks')
+		                ->with('homeworks')
+		                ->get();
 
-        if ($user->group_id == 4)
-        {
-            $class = $user->class_id;
-            foreach ($lesson as $lessons) {
+    	$homeworks = [];
 
-                if ($lessons->student_class_id == $class)
-                { 
-                   foreach ($homework as $homeworks) {
-                        return $homeworks;
-                   }
-                }
-                else
-                {
-                    return [
-                        'error' => 'No homeworks'
-                    ];
-                }
-            }
-        }
-        else
-        {
-            return [
-                'error' => 'Homeworks unvailable'
-            ];
-        }
+    	foreach ($lessons as $lesson)
+	    {
+	    	$homeworks = array_merge($homeworks, $lesson->homeworks);
+	    }
+
+    	return $homeworks;
     }
 }
