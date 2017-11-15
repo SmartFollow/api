@@ -66,6 +66,11 @@ class ReservationController extends Controller
 				"error" => trans('reservations.conflict')
 			];
 
+		if ($request->time_end == $request->time_start)
+			return [
+				'error' => trans('reservations.invalid_time')
+			];
+
 		$reservation = new Reservation();
 		$reservation->room_id = $request->get('room_id');
 		$reservation->time_start = $request->get('time_start');

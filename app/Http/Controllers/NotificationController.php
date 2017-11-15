@@ -15,17 +15,16 @@ class NotificationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-    	/*
-		$notifications = Notification::whereHas('users', function ($q) {
+		$notifications = Notification::whereHas('users', function ($q) use ($request) {
 			$q->where('users.id', Auth::id());
-		})->get();
-		*/
 
-	    $user = Auth::user();
-	    $user->load('notifications.transmitter');
-	    $notifications = $user->notifications;
+			if ($request->has('type') && $request->get('type') == 'unread')
+				$q->where('read_at', null);
+		});
+
+		$notifications = $notifications->get();
 
         return $notifications;
     }
@@ -164,6 +163,7 @@ class NotificationController extends Controller
     /**
      * Mark the notification as read.
      *
+     * @param  int  $id
      * @return void
      */
     public function markAsRead($id)
