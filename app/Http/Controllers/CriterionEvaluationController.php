@@ -58,7 +58,7 @@ class CriterionEvaluationController extends Controller
 		if ($evaluation->criteria->contains($request->get('criterion_id')))
 			abort(400, trans('criterion_evaluation.criterion_evaluation_already_exists'));
 
-		$evaluation->criteria()->attach($request->get('criterion_id'), ['value' => $request->get('value')]);
+		$evaluation->criteria()->attach($request->get('criterion_id'), ['value' => json_encode($request->get('value'))]);
 
 		$evaluation->load('criteria');
 
@@ -95,7 +95,7 @@ class CriterionEvaluationController extends Controller
 
         $evaluation = Evaluation::with('criteria')->findOrFail($evaluationId);
 
-		$evaluation->criteria()->updateExistingPivot($id, ['value' => $request->get('value')]);
+		$evaluation->criteria()->updateExistingPivot($id, ['value' => json_encode($request->get('value'))]);
 
 		$evaluation->load('criteria');
 

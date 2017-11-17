@@ -215,4 +215,6 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::resource('messages', 'MessageController', ['only' => ['store']]);
 
 	Route::resource('graphs', 'GraphController');
+
+	Route::resource('criteria', 'CriterionController');
 });
