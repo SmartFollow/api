@@ -48,7 +48,7 @@ class UserPolicy
     {
         $rules = $userAuthed->group->accessRules->keyBy('name');
 
-		return $rules->has('users.create');
+		return $rules->has('users.create') || $rules->has('users.store');
     }
 
     /**
@@ -61,7 +61,7 @@ class UserPolicy
     {
         $rules = $userAuthed->group->accessRules->keyBy('name');
 
-		return $rules->has('users.store');
+		return $rules->has('users.create') || $rules->has('users.store');
     }
 
     /**

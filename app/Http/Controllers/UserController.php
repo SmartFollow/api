@@ -73,7 +73,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
 			'group' => 'exists:groups,id',
-			'studentClass' => 'exists:student_classes,id',
+			'student_class' => 'exists:student_classes,id',
 		]);
 
 		$user = new User();
@@ -83,8 +83,8 @@ class UserController extends Controller
         $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
-		if ($request->has('studentClass'))
-			$user->class_id = $request->get('studentClass');
+		if ($request->has('student_class'))
+			$user->class_id = $request->get('student_class');
 		$user->save();
 
 		return ($user);
@@ -122,7 +122,7 @@ class UserController extends Controller
             'email' => 'email|unique:users,email,' . $id,
             'password' => '',
 			'group' => 'exists:groups,id',
-			'studentClass' => 'exists:student_classes,id',
+			'student_class' => 'exists:student_classes,id',
 		]);
 
         if ($request->has('firstname'))
@@ -135,8 +135,8 @@ class UserController extends Controller
             $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
-		if ($request->has('studentClass'))
-			$user->class_id = $request->get('studentClass');
+		if ($request->has('student_class'))
+			$user->class_id = $request->get('student_class');
 		$user->save();
 
 		return ($user);
