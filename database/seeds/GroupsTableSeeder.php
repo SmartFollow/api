@@ -43,7 +43,7 @@ class GroupsTableSeeder extends Seeder
 			'name' => 'Administrateurs',
 			'description' => 'Administrateurs du logiciel',
 			'deletable' => false,
-			'editable' => false,
+			'editable' => true,
 		]);
 		$administrators->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
 		$administrators->accessRules()->attach(AccessRule::where('route', 'users.show')->first());
@@ -72,7 +72,7 @@ class GroupsTableSeeder extends Seeder
 			'name' => 'Professeurs',
 			'description' => 'Professeurs de l\'école',
 			'deletable' => false,
-			'editable' => false,
+			'editable' => true,
 		]);
         $teachers->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
 		$teachers->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
@@ -105,7 +105,7 @@ class GroupsTableSeeder extends Seeder
 			'name' => 'Étudiants',
 			'description' => 'Étudiants de l\'école',
 			'deletable' => false,
-			'editable' => false,
+			'editable' => true,
 		]);
         $students->accessRules()->attach(AccessRule::where('route', 'users.index')->first());
         $students->accessRules()->attach(AccessRule::where('route', 'users.profile')->first());
