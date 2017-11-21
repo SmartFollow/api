@@ -18,15 +18,23 @@ class NotificationController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$notifications = Notification::with('transmitter')
-			->whereHas('users', function ($q) use ($request) {
-				$q->where('users.id', Auth::id());
+		$notifications = [];
 
-				if ($request->has('type') && $request->get('type') == 'unread')
-					$q->where('read_at', null);
-			});
+		if (Auth::user()->group->accessRules->keyBy('name')->has('notifications.self.index'))
+		{
+			$notifications['self_notifications'] = Notification::with('transmitter')
+				->whereHas('users', function ($q) use ($request) {
+					$q->where('users.id', Auth::id());
 
-		$notifications = $notifications->get();
+					if ($request->has('type') && $request->get('type') == 'unread')
+						$q->where('read_at', null);
+				})->get();
+		}
+		if (Auth::user()->group->accessRules->keyBy('name')->has('notifications.index'))
+		{
+			$notifications['notifications'] = Notification::with('transmitter')
+															   ->get();
+		}
 
 		return $notifications;
 	}
