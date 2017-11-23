@@ -6,45 +6,52 @@ use Illuminate\Http\Request;
 
 use App\Models\Planning\Reservation;
 use App\Models\Planning\Room;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $reservations = Reservation::with('room')
-	                               ->get();
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		if (Auth::user()->group->accessRules->keyBy('name')->has('reservations.index'))
+		{
+			$reservations = Reservation::with('room')
+									   ->get();
 
-		return $reservations;
-    }
+			return $reservations;
+		}
+		else {
+			return [];
+		}
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $rooms = Room::get();
-		
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		$rooms = Room::get();
+
 		return [
 			'rooms' => $rooms,
 		];
-    }
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		$this->validate($request, [
 			'room_id' => 'required|exists:rooms,id',
 			'time_start' => 'required|date_format:H:i',
 			'time_end' => 'required|date_format:H:i',
@@ -54,12 +61,12 @@ class ReservationController extends Controller
 		]);
 
 		$conflict = Reservation::where('room_id', $request->get('room_id'))
-							   ->where('day', $request->get('day'))
-							   ->where('date_start', '<=', $request->get('date_start'))
-							   ->where('date_end', '>=', $request->get('date_end'))
-							   ->where('time_start', '<=', $request->get('time_start'))
-							   ->where('time_end', '>=', $request->get('time_end'))
-							   ->count();
+			->where('day', $request->get('day'))
+			->where('date_start', '<=', $request->get('date_start'))
+			->where('date_end', '>=', $request->get('date_end'))
+			->where('time_start', '<=', $request->get('time_start'))
+			->where('time_end', '>=', $request->get('time_end'))
+			->count();
 
 		if ($conflict != 0)
 			return [
@@ -81,46 +88,46 @@ class ReservationController extends Controller
 		$reservation->save();
 
 		return $reservation;
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $reservation = Reservation::findOrFail($id);
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show($id)
+	{
+		$reservation = Reservation::findOrFail($id);
 
 		return $reservation;
-    }
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $rooms = Room::get();
-		
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id)
+	{
+		$rooms = Room::get();
+
 		return [
 			'rooms' => $rooms,
 		];
-    }
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+		$this->validate($request, [
 			'room_id' => 'exists:rooms,id',
 			'time_start' => 'date_format:H:i',
 			'time_end' => 'date_format:H:i',
@@ -128,16 +135,16 @@ class ReservationController extends Controller
 			'date_end' => 'date_format:Y-m-d',
 			'day' => 'in:MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY',
 		]);
-		
+
 		$conflict = Reservation::where('room_id', $request->get('room_id'))
-							   ->where('day', $request->get('day'))
-							   ->where('date_start', '<=', $request->get('date_start'))
-							   ->where('date_end', '>=', $request->get('date_end'))
-							   ->where('time_start', '<=', $request->get('time_start'))
-							   ->where('time_end', '>=', $request->get('time_end'))
-							   ->where('id', '!=', $id)
-							   ->count();
-		
+			->where('day', $request->get('day'))
+			->where('date_start', '<=', $request->get('date_start'))
+			->where('date_end', '>=', $request->get('date_end'))
+			->where('time_start', '<=', $request->get('time_start'))
+			->where('time_end', '>=', $request->get('time_end'))
+			->where('id', '!=', $id)
+			->count();
+
 		if ($conflict != 0)
 			return [
 				"error" => trans('reservations.conflict')
@@ -159,18 +166,18 @@ class ReservationController extends Controller
 		$reservation->save();
 
 		return $reservation;
-    }
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $reservation = Reservation::findOrFail($id);
-		
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
+	{
+		$reservation = Reservation::findOrFail($id);
+
 		$reservation->delete();
-    }
+	}
 }
