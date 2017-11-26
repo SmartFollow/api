@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 	});
-	Route::resource('users', 'UserController', ['except' => ['create']]);
+	Route::resource('users', 'UserController');
 
 	/*
 	 * Routes related to the groups

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedagogy\Lesson;
+use App\Models\Pedagogy\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,6 +45,20 @@ class UserController extends Controller
 		$group = Group::with('accessRules')->findOrFail(Auth::user()->group_id);
 
 		return $group->accessRules->pluck('route');
+	}
+
+	public function create()
+	{
+		$this->authorize('create', User::class);
+
+		$groups = Group::get();
+
+		$studentClasses = StudentClass::get();
+
+		return [
+			'groups' => $groups,
+			'student_classes' => $studentClasses
+		];
 	}
 
     /**
@@ -88,6 +103,23 @@ class UserController extends Controller
 		$user->save();
 
 		return ($user);
+    }
+
+    public function edit($id)
+    {
+    	$user = User::findOrFail($id);
+
+    	$this->authorize('update', $user);
+
+    	$groups = Group::get();
+
+    	$studentClasses = StudentClass::get();
+
+    	return [
+    		'user' => $user,
+		    'groups' => $groups,
+		    'student_classes' => $studentClasses
+	    ];
     }
 
     /**
