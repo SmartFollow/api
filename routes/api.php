@@ -217,4 +217,6 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::resource('graphs', 'GraphController');
 
 	Route::resource('criteria', 'CriterionController');
+
+	Route::resource('difficulties', 'DifficultyController', ['only' => ['index']]);
 });

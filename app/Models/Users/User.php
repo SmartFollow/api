@@ -2,6 +2,7 @@
 
 namespace App\Models\Users;
 
+use App\Models\AI\Difficulty;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Evaluations\Evaluation;
@@ -67,6 +68,11 @@ class User extends Authenticatable
 	public function evaluations()
 	{
 		return $this->hasMany(Evaluation::class, 'student_id');
+	}
+
+	public function assignedDifficulties()
+	{
+		return $this->hasMany(Difficulty::class, 'assigned_teacher_id');
 	}
 
 	/*
