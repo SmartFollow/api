@@ -14,9 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\AI\ClassCriteriaAverage::class,
-        Commands\AI\ClassCriteriaSum::class,
-        Commands\AI\LessonCriteriaAverage::class,
-        Commands\AI\LessonCriteriaSum::class,
+        Commands\AI\ClassCriteriaAverage::class,
+        Commands\AI\ClassAbsenceDelaySum::class,
         Commands\AI\StudentCriteriaAverage::class,
         Commands\AI\StudentCriteriaSum::class,
 	    Commands\AI\StudentAbsenceDelaySum::class,

@@ -2,18 +2,18 @@
 
 namespace App\Console\Commands\AI;
 
-use App\Models\AI\ClassCriterionSum;
+use App\Models\AI\ClassAbsencesDelaysSum;
 use App\Models\Pedagogy\StudentClass;
 use Illuminate\Console\Command;
 
-class ClassCriteriaSum extends Command
+class ClassAbsenceDelaySum extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ai:criteria:class:sum';
+    protected $signature = 'ai:absdelay:class';
 
     /**
      * The console command description.
@@ -44,15 +44,17 @@ class ClassCriteriaSum extends Command
 	    $currentWeek = date("W");
 	    $currentYear = date("Y");
 
-	    $studentClasses = StudentClass::with('students.evaluations.criteria')
-		    ->whereHas('students.evaluations', function ($q) use ($prevMonday, $prevSunday) {
-			    $q->where('created_at', '>=', $prevMonday);
-			    $q->where('created_at', '<=', $prevSunday);
-		    })->get();
+	    $studentClasses = StudentClass::with('students.evaluations.absence')
+								      ->with('students.evaluations.delay')
+								      ->whereHas('students.evaluations', function ($q) use ($prevMonday, $prevSunday) {
+									      $q->where('created_at', '>=', $prevMonday);
+									      $q->where('created_at', '<=', $prevSunday);
+								      })->get();
 
 	    foreach ($studentClasses as $studentClass)
 	    {
-		    $criteriaSum = [];
+		    $absences = 0;
+		    $delays = 0;
 
 		    foreach ($studentClass->students as $student)
 		    {
@@ -60,32 +62,24 @@ class ClassCriteriaSum extends Command
 			    {
 				    if ($evaluation->created_at >= $prevMonday && $evaluation->created_at <= $prevSunday)
 				    {
-					    foreach ($evaluation->criteria as $criterion)
-					    {
-						    if ($criterion->stats_type == 'sum')
-							    $criteriaSum[$criterion->id]['values'][] = $criterion->pivot->value;
-					    }
+					    if (!empty($evaluation->absence))
+						    $absences++;
+					    if (!empty($evaluation->delay))
+						    $delays++;
 				    }
 			    }
 		    }
 
-		    foreach ($criteriaSum as $criterionId => &$criterion)
-		    {
-			    $criterion['sum'] = array_sum($criterion['values']);
-
-			    $sum = ClassCriterionSum::updateOrCreate([
-				    'student_class_id' => $studentClass->id,
-				    'criterion_id' => $criterionId,
-				    'week' => $currentWeek,
-				    'year' => $currentYear,
-			    ], [
-				    'sum' => $criterion['sum'],
-				    'week_start' => $prevMonday,
-				    'week_end' => $prevSunday,
-			    ]);
-		    }
-
-		    print_r($criteriaSum);
+		    ClassAbsencesDelaysSum::updateOrCreate([
+			    'student_class_id' => $studentClass->id,
+			    'week' => $currentWeek,
+			    'year' => $currentYear,
+		    ], [
+			    'absences' => $absences,
+			    'delays' => $delays,
+			    'week_start' => $prevMonday,
+			    'week_end' => $prevSunday,
+		    ]);
 	    }
     }
 }

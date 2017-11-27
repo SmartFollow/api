@@ -181,6 +181,7 @@ class AccessRulesSeeder extends Seeder
 			'users.edit',
 			'difficulties.index',
 			'difficulties.self.index',
+			'ai.index'
 		];
 
 		foreach ($routes as $route)

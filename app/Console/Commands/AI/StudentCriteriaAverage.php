@@ -80,6 +80,8 @@ class StudentCriteriaAverage extends Command
 				    'week_end' => $prevSunday,
 			    ]);
 		    }
+
+		    print_r($criteriaAverage);
 	    }
     }
 }

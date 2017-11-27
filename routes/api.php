@@ -10,20 +10,6 @@
 |
 */
 
-/*
-Route::get('/ai/student-average', function(){
-	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:average');
-});
-
-Route::get('/ai/student-sum', function(){
-	\Illuminate\Support\Facades\Artisan::call('ai:criteria:student:sum');
-});
-
-Route::get('/ai/student-absdelays', function(){
-	\Illuminate\Support\Facades\Artisan::call('ai:absdelay:student');
-});
-*/
-
 /**
  * Route group for the routes requiring authentication
  */
@@ -219,4 +205,22 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::resource('criteria', 'CriterionController');
 
 	Route::resource('difficulties', 'DifficultyController', ['only' => ['index']]);
+
+	/*
+	 * Routes used to manually launch AI related systems
+	 */
+	Route::group(['prefix' => 'ai'], function()
+	{
+		Route::group(['prefix' => 'students'], function() {
+			Route::get('sum', 'AIController@criteriaStudentsSum');
+			Route::get('average', 'AIController@criteriaStudentsAverage');
+			Route::get('absence-delay', 'AIController@absenceDelaysStudents');
+		});
+
+		Route::group(['prefix' => 'classes'], function() {
+			Route::get('sum', 'AIController@criteriaClassesSum');
+			Route::get('average', 'AIController@criteriaClassesAverage');
+			Route::get('absence-delay', 'AIController@absenceDelaysClasses');
+		});
+	});
 });

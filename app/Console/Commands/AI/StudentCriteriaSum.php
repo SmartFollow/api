@@ -52,7 +52,7 @@ class StudentCriteriaSum extends Command
 
 	    foreach ($students as $student)
 	    {
-		    $criteriaAverage = [];
+		    $criteriaSum = [];
 
 		    foreach ($student->evaluations as $evaluation)
 		    {
@@ -61,15 +61,15 @@ class StudentCriteriaSum extends Command
 				    foreach ($evaluation->criteria as $criterion)
 				    {
 					    if ($criterion->stats_type == 'sum')
-						    $criteriaAverage[$criterion->id]['values'][] = $criterion->pivot->value;
+						    $criteriaSum[$criterion->id]['values'][] = $criterion->pivot->value;
 				    }
 			    }
 		    }
-		    foreach ($criteriaAverage as $criterionId => &$criterion)
+		    foreach ($criteriaSum as $criterionId => &$criterion)
 		    {
 			    $criterion['sum'] = array_sum($criterion['values']);
 
-			    $average = StudentCriteriaSumModel::updateOrCreate([
+			    $sum = StudentCriteriaSumModel::updateOrCreate([
 				    'user_id' => $student->id,
 				    'criterion_id' => $criterionId,
 				    'week' => $currentWeek,
@@ -81,7 +81,7 @@ class StudentCriteriaSum extends Command
 			    ]);
 		    }
 
-		    var_dump($criteriaAverage);
+		    print_r($criteriaSum);
 	    }
     }
 }
