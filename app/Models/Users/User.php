@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\AI\Difficulty;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
+use App\Models\Pedagogy\Alert;
 use App\Models\Pedagogy\Evaluations\Evaluation;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -73,6 +74,11 @@ class User extends Authenticatable
 	public function assignedDifficulties()
 	{
 		return $this->hasMany(Difficulty::class, 'assigned_teacher_id');
+	}
+
+	public function alerts()
+	{
+		return $this->hasMany(Alert::class, 'student_id');
 	}
 
 	/*

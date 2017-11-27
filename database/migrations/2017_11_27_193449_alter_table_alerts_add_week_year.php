@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableUsersAddAvatar extends Migration
+class AlterTableAlertsAddWeekYear extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AlterTableUsersAddAvatar extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-	        $table->string('avatar')->nullable();
+        Schema::table('alerts', function (Blueprint $table) {
+	        $table->integer('week');
+	        $table->integer('year');
         });
     }
 
@@ -25,10 +26,9 @@ class AlterTableUsersAddAvatar extends Migration
      */
     public function down()
     {
-	    Schema::disableForeignKeyConstraints();
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('avatar');
+        Schema::table('alerts', function (Blueprint $table) {
+            $table->dropColumn('week');
+            $table->dropColumn('year');
         });
-	    Schema::enableForeignKeyConstraints();
     }
 }

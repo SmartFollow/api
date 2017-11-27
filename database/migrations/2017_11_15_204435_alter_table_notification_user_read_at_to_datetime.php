@@ -25,8 +25,10 @@ class AlterTableNotificationUserReadAtToDatetime extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
         Schema::table('notification_user', function (Blueprint $table) {
-            //
+	        $table->time('read_at')->nullable()->change();
         });
+	    Schema::enableForeignKeyConstraints();
     }
 }

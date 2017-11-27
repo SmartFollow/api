@@ -194,7 +194,17 @@ class UserController extends Controller
 					->with('marks.exam.lesson.subject')
 					->with('criteriaAverages.criterion')
 					->with('criteriaSums.criterion')
+					->with(['alerts' => function ($query) {
+						$currentWeek = date("W");
+						$currentYear = date("Y");
+
+						$query->where('week', $currentWeek);
+						$query->where('year', $currentYear);
+					}])
 					->findOrFail($id);
+
+		foreach ($user->alerts as &$alert)
+	    	$alert->load('criterion');
 
 		$this->authorize('show', $user);
 
@@ -221,6 +231,16 @@ class UserController extends Controller
 		$user->load('criteriaAverages.criterion');
 		$user->load('criteriaSums.criterion');
 		$user->load('assignedDifficulties.student');
+		$user->load(['alerts' => function ($query) {
+			$currentWeek = date("W");
+			$currentYear = date("Y");
+
+			$query->where('week', $currentWeek);
+			$query->where('year', $currentYear);
+		}]);
+
+		foreach ($user->alerts as &$alert)
+			$alert->load('criterion');
 
 		$prevMonday = date("Y-m-d", strtotime("last week monday"));
 		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));

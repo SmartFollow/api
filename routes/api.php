@@ -206,6 +206,8 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	Route::resource('difficulties', 'DifficultyController', ['only' => ['index']]);
 
+	Route::resource('alerts', 'AlertController', ['only' => ['index']]);
+
 	/*
 	 * Routes used to manually launch AI related systems
 	 */

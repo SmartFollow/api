@@ -33,6 +33,8 @@ class CreateTableDifficulties extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('difficulties');
+	    Schema::disableForeignKeyConstraints();
+	    Schema::dropIfExists('difficulties');
+	    Schema::enableForeignKeyConstraints();
     }
 }
