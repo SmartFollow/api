@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\AI\Difficulty;
+use App\Models\AI\StudentAbsencesDelaysSum;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Alert;
@@ -94,6 +95,20 @@ class User extends Authenticatable
 	public function criteriaSums()
 	{
 		return $this->hasMany(StudentCriterionSum::class)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC');
+	}
+
+	public function absencesDelaysSums()
+	{
+		return $this->hasMany(StudentAbsencesDelaysSum::class)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC');
+	}
+
+	public function lastAbsencesDelaysSum()
+	{
+		return $this->hasOne(StudentAbsencesDelaysSum::class)
 					->orderBy('year', 'ASC')
 					->orderBy('week', 'ASC');
 	}

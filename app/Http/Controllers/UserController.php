@@ -194,6 +194,7 @@ class UserController extends Controller
 					->with('marks.exam.lesson.subject')
 					->with('criteriaAverages.criterion')
 					->with('criteriaSums.criterion')
+					->with('lastAbsencesDelaysSum')
 					->with(['alerts' => function ($query) {
 						$currentWeek = date("W");
 						$currentYear = date("Y");
@@ -230,6 +231,7 @@ class UserController extends Controller
 		$user->load('marks.exam.lesson.subject');
 		$user->load('criteriaAverages.criterion');
 		$user->load('criteriaSums.criterion');
+		$user->load('lastAbsencesDelaysSum');
 		$user->load('assignedDifficulties.student');
 		$user->load(['alerts' => function ($query) {
 			$currentWeek = date("W");
