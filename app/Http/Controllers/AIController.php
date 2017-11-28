@@ -35,4 +35,19 @@ class AIController extends Controller
 	{
 		Artisan::call('ai:absdelay:class');
 	}
+
+	public function criteriaGivenSum()
+	{
+		Artisan::call('ai:criteria:given:sum');
+	}
+
+	public function criteriaGivenAverage()
+	{
+		Artisan::call('ai:criteria:given:average');
+	}
+
+	public function absenceDelaysGiven()
+	{
+		Artisan::call('ai:absdelay:given');
+	}
 }

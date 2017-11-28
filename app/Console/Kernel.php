@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
         Commands\AI\StudentCriteriaAverage::class,
         Commands\AI\StudentCriteriaSum::class,
 	    Commands\AI\StudentAbsenceDelaySum::class,
+	    Commands\AI\GivenCriteriaAverage::class,
+	    Commands\AI\GivenCriteriaSum::class,
+	    Commands\AI\GivenAbsenceDelaySum::class,
     ];
 
     /**
@@ -29,8 +32,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
     }
 
     /**
