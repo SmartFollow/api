@@ -19,7 +19,6 @@ class ProcessController extends Controller
         return Process::get();
     }
 
-
     /**
      * Store a newly created resource in storage.
      *

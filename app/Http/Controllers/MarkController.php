@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\Exams\Exam;
 use App\Models\Pedagogy\Exams\Mark;
+use Illuminate\Validation\Rule;
 
 class MarkController extends Controller
 {
@@ -44,7 +45,13 @@ class MarkController extends Controller
 		$exam = Exam::findOrFail($examId);
 
         $this->validate($request, [
-			'student_id' => 'required|exists:users,id',
+			'student_id' => [
+				'required',
+				'exists:users,id',
+				Rule::unique('marks')->where(function ($q) use ($examId) {
+					$q->where('exam_id', $examId);
+				})
+			],
 			'mark' => 'required|numeric|min:' . $exam->min_mark . '|max:' . $exam->max_mark,
 			'comment' => '',
 		]);
