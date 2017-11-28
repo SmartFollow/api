@@ -3,6 +3,9 @@
 namespace App\Models\Users;
 
 use App\Models\AI\Difficulty;
+use App\Models\AI\GivenAbsencesDelaysSum;
+use App\Models\AI\GivenCriterionAverage;
+use App\Models\AI\GivenCriterionSum;
 use App\Models\AI\StudentAbsencesDelaysSum;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
@@ -119,6 +122,34 @@ class User extends Authenticatable
 		return $this->hasOne(StudentAbsencesDelaysSum::class)
 					->orderBy('year', 'ASC')
 					->orderBy('week', 'ASC');
+	}
+
+	public function givenCriteriaAverages()
+	{
+		return $this->hasMany(GivenCriterionAverage::class, 'teacher_id')
+			->orderBy('year', 'ASC')
+			->orderBy('week', 'ASC');
+	}
+
+	public function givenCriteriaSums()
+	{
+		return $this->hasMany(GivenCriterionSum::class, 'teacher_id')
+			->orderBy('year', 'ASC')
+			->orderBy('week', 'ASC');
+	}
+
+	public function givenAbsencesDelaysSums()
+	{
+		return $this->hasMany(GivenAbsencesDelaysSum::class, 'teacher_id')
+			->orderBy('year', 'ASC')
+			->orderBy('week', 'ASC');
+	}
+
+	public function givenLastAbsencesDelaysSum()
+	{
+		return $this->hasOne(GivenAbsencesDelaysSum::class, 'teacher_id')
+			->orderBy('year', 'ASC')
+			->orderBy('week', 'ASC');
 	}
 
 	/*

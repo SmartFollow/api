@@ -184,6 +184,8 @@ class AccessRulesSeeder extends Seeder
 			'ai.index',
 			'alerts.index',
 			'alerts.self.index',
+			'criteria.summary.received',
+			'criteria.summary.given',
 		];
 
 		foreach ($routes as $route)
