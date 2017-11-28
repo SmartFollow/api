@@ -20,9 +20,12 @@ Route::group(['middleware' => ['auth:api']], function()
 	 */
 	Route::group(['prefix' => '/users'], function()
 	{
-		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UserController@changePassword']);
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
+
+		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UserController@changePassword']);
+		Route::post('/{user}/avatar', ['as' => 'users.change-avatar' ,'uses' => 'UserController@updateAvatar'])
+			 ->where(['user' => '[0-9]+']);
 	});
 	Route::resource('users', 'UserController');
 
@@ -32,7 +35,7 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::group(['prefix' => '/groups'], function()
 	{
 		Route::get('/{id}/access-rules', ['as' => 'groups.show.access-rules', 'uses' => 'GroupController@showAccessRules'])
-			->where(['id' => '[0-9]+']);
+			 ->where(['id' => '[0-9]+']);
 	});
 	Route::resource('groups', 'GroupController');
 

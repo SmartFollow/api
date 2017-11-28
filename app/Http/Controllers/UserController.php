@@ -89,6 +89,7 @@ class UserController extends Controller
             'password' => 'required',
 			'group' => 'exists:groups,id',
 			'student_class' => 'exists:student_classes,id',
+		    'avatar' => 'file|mimes:jpeg,png',
 		]);
 
 		$user = new User();
@@ -102,7 +103,14 @@ class UserController extends Controller
 			$user->class_id = $request->get('student_class');
 		$user->save();
 
-		return ($user);
+	    if (!empty($request->file('avatar')) && $request->file('avatar')->isValid())
+	    {
+		    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
+		    $user->avatar = $request->file('avatar')->storeAs('public/avatars', $user->id . '.' . $ext);
+		    $user->save();
+	    }
+
+		return $user;
     }
 
     public function edit($id)
@@ -155,6 +163,7 @@ class UserController extends Controller
             'password' => '',
 			'group' => 'exists:groups,id',
 			'student_class' => 'exists:student_classes,id',
+			'avatar' => 'file|mimes:jpeg,png',
 		]);
 
         if ($request->has('firstname'))
@@ -169,6 +178,11 @@ class UserController extends Controller
 			$user->group_id = $request->get('group');
 		if ($request->has('student_class'))
 			$user->class_id = $request->get('student_class');
+	    if (!empty($request->file('avatar')) && $request->file('avatar')->isValid())
+	    {
+		    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
+		    $user->avatar = $request->file('avatar')->storeAs('public/avatars', $user->id . '.' . $ext);
+	    }
 		$user->save();
 
 		return ($user);
@@ -325,5 +339,21 @@ class UserController extends Controller
         $user->save();
 
         return ($user);
+    }
+
+    public function updateAvatar(Request $request, $id)
+    {
+    	$user = User::findOrFail($id);
+
+	    $this->validate($request, [
+		    'avatar' => 'required|file|mimes:jpeg,png',
+	    ]);
+
+	    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
+
+	    $user->avatar = $request->file('avatar')->storeAs('public/avatars', $user->id . '.' . $ext);
+	    $user->save();
+
+	    return $user;
     }
 }
