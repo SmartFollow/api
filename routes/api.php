@@ -185,12 +185,12 @@ Route::group(['middleware' => ['auth:api']], function()
 	{
 
 	});
-	Route::resource('processes', 'ProcessController');
 	Route::group(['prefix' => 'processes-users'], function ()
 	{
 		Route::post('/', 'ProcessUserController@store');
 		Route::put('/', 'ProcessUserController@update');
 	});
+	Route::resource('processes', 'ProcessController');
 
 	/*
 	 * Routes related to the steps
