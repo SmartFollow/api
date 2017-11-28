@@ -8,6 +8,13 @@ class Process extends Model
 {
     public function steps()
     {
-        return $this->hasMany('App\Models\Processes\Step');
+        return $this->hasMany(Step::class);
+    }
+
+    public function users()
+    {
+    	return $this->belongsToMany(User::class)
+		            ->withPivot(['step_id'])
+		            ->withTimestamps();
     }
 }

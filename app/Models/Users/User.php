@@ -8,6 +8,7 @@ use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Alert;
 use App\Models\Pedagogy\Evaluations\Evaluation;
+use App\Models\Processes\Process;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -80,6 +81,13 @@ class User extends Authenticatable
 	public function alerts()
 	{
 		return $this->hasMany(Alert::class, 'student_id');
+	}
+
+	public function processes()
+	{
+		return $this->belongsToMany(Process::class)
+					->withPivot(['step_id'])
+					->withTimestamps();
 	}
 
 	/*

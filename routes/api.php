@@ -26,6 +26,9 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UserController@changePassword']);
 		Route::post('/{user}/avatar', ['as' => 'users.change-avatar' ,'uses' => 'UserController@updateAvatar'])
 			 ->where(['user' => '[0-9]+']);
+
+		Route::get('/profile/processes', 'ProcessUserController@profileProcesses');
+		Route::get('/{user}/processes', 'ProcessUserController@userProcesses');
 	});
 	Route::resource('users', 'UserController');
 
@@ -183,6 +186,11 @@ Route::group(['middleware' => ['auth:api']], function()
 
 	});
 	Route::resource('processes', 'ProcessController');
+	Route::group(['prefix' => 'processes-users'], function ()
+	{
+		Route::post('/', 'ProcessUserController@store');
+		Route::put('/', 'ProcessUserController@update');
+	});
 
 	/*
 	 * Routes related to the steps
