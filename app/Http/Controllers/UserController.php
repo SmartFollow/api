@@ -202,24 +202,34 @@ class UserController extends Controller
      */
     public function show($id)
     {
+	    $w = date("W");
+	    $y = date("Y");
+
 		$user = User::with('group')
 					->with('studentClass')
 					->with('taughtSubjects')
 					->with('marks.exam.lesson.subject')
-					->with('criteriaAverages.criterion')
-					->with('criteriaSums.criterion')
+					->with(['criteriaAverages' => function ($query) use ($w, $y) {
+						$query->where('week', $w);
+						$query->where('year', $y);
+					}])
+					->with(['criteriaSums' => function ($query) use ($w, $y) {
+						$query->where('week', $w);
+						$query->where('year', $y);
+					}])
 					->with('lastAbsencesDelaysSum')
-					->with(['alerts' => function ($query) {
-						$currentWeek = date("W");
-						$currentYear = date("Y");
-
-						$query->where('week', $currentWeek);
-						$query->where('year', $currentYear);
+					->with(['alerts' => function ($query) use ($w, $y) {
+						$query->where('week', $w);
+						$query->where('year', $y);
 					}])
 					->findOrFail($id);
 
 		foreach ($user->alerts as &$alert)
 	    	$alert->load('criterion');
+		foreach ($user->criteriaAverages as &$criteriaAverage)
+			$criteriaAverage->load('criterion');
+		foreach ($user->criteriaSums as &$criteriaSum)
+	    	$criteriaSum->load('criterion');
 
 		$this->authorize('show', $user);
 
@@ -239,24 +249,34 @@ class UserController extends Controller
 	{
 		$user = Auth::user();
 
+		$w = date("W");
+		$y = date("Y");
+
 		$user->load('group');
 		$user->load('studentClass');
 		$user->load('taughtSubjects');
 		$user->load('marks.exam.lesson.subject');
-		$user->load('criteriaAverages.criterion');
-		$user->load('criteriaSums.criterion');
+		$user->load(['criteriaAverages' => function ($query) use ($w, $y) {
+			$query->where('week', $w);
+			$query->where('year', $y);
+		}]);
+		$user->load(['criteriaSums' => function ($query) use ($w, $y) {
+			$query->where('week', $w);
+			$query->where('year', $y);
+		}]);
 		$user->load('lastAbsencesDelaysSum');
 		$user->load('assignedDifficulties.student');
-		$user->load(['alerts' => function ($query) {
-			$currentWeek = date("W");
-			$currentYear = date("Y");
-
-			$query->where('week', $currentWeek);
-			$query->where('year', $currentYear);
+		$user->load(['alerts' => function ($query) use ($w, $y) {
+			$query->where('week', $w);
+			$query->where('year', $y);
 		}]);
 
 		foreach ($user->alerts as &$alert)
 			$alert->load('criterion');
+		foreach ($user->criteriaAverages as &$criteriaAverage)
+			$criteriaAverage->load('criterion');
+		foreach ($user->criteriaSums as &$criteriaSum)
+			$criteriaSum->load('criterion');
 
 		$prevMonday = date("Y-m-d", strtotime("last week monday"));
 		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));
