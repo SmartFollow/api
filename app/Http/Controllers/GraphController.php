@@ -7,6 +7,7 @@ use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Evaluations\Criterion;
 use App\Models\Pedagogy\Graph;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -14,56 +15,68 @@ use Illuminate\Validation\Rule;
 
 class GraphController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		$graphs = Graph::with('criterion')->get();
+
+		return $graphs;
+	}
+
+	public function userGraphs(User $user)
+	{
+		$graphs = Graph::with('criterion');
+		if (!$user->group->accessRules->keyBy('name')->has('criteria.summary.given'))
+			$graphs = $graphs->where('summary_type', '!=','given');
+		if (!$user->group->accessRules->keyBy('name')->has('criteria.summary.received'))
+			$graphs = $graphs->where('summary_type', '!=','received');
+		$graphs = $graphs->get();
+
+		foreach ($graphs as &$graph)
+		{
+			$range = new \DateTime();
+			$range->modify('- ' . $graph->days_range . ' days');
+
+			if ($graph->type == 'bar')
+			{
+				$values = $graph->summary_type == 'received' ?
+					StudentCriterionSum::where('user_id', $user->id) :
+					GivenCriterionSum::where('teacher_id', $user->id);
+
+				$values = $values->where('criterion_id', $graph->criterion_id)
+					->where('week_start', '>=', $range)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC')
+					->get();
+
+				$graph->values = $values;
+			}
+			else
+			{
+				$values = $graph->summary_type == 'received' ?
+					StudentCriterionAverage::where('user_id', $user->id) :
+					GivenCriterionAverage::where('teacher_id', $user->id);
+
+				$values = $values->where('criterion_id', $graph->criterion_id)
+					->where('week_start', '>=', $range)
+					->orderBy('year', 'ASC')
+					->orderBy('week', 'ASC')
+					->get();
+
+				$graph->values = $values;
+			}
+		}
+
+		return $graphs;
+	}
+
+    public function profileGraphs()
     {
-        $graphs = Graph::with('criterion');
-        if (!Auth::user()->group->accessRules->keyBy('name')->has('criteria.summary.given'))
-	        $graphs = $graphs->where('summary_type', '!=','given');
-	    if (!Auth::user()->group->accessRules->keyBy('name')->has('criteria.summary.received'))
-	        $graphs = $graphs->where('summary_type', '!=','received');
-	    $graphs = $graphs->get();
-
-        foreach ($graphs as &$graph)
-        {
-        	$range = new \DateTime();
-        	$range->modify('- ' . $graph->days_range . ' days');
-
-	        if ($graph->type == 'bar')
-	        {
-		        $values = $graph->summary_type == 'received' ?
-			        StudentCriterionSum::where('user_id', Auth::id()) :
-			        GivenCriterionSum::where('teacher_id', Auth::id());
-
-		        $values = $values->where('criterion_id', $graph->criterion_id)
-			        ->where('week_start', '>=', $range)
-			        ->orderBy('year', 'ASC')
-			        ->orderBy('week', 'ASC')
-			        ->get();
-
-		        $graph->values = $values;
-	        }
-	        else
-	        {
-		        $values = $graph->summary_type == 'received' ?
-			        StudentCriterionAverage::where('user_id', Auth::id()) :
-			        GivenCriterionAverage::where('teacher_id', Auth::id());
-
-		        $values = $values->where('criterion_id', $graph->criterion_id)
-			        ->where('week_start', '>=', $range)
-			        ->orderBy('year', 'ASC')
-			        ->orderBy('week', 'ASC')
-			        ->get();
-
-		        $graph->values = $values;
-	        }
-        }
-
-        return $graphs;
+        return $this->userGraphs(Auth::user());
     }
 
     /**

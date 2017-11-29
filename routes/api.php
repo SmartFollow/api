@@ -29,6 +29,9 @@ Route::group(['middleware' => ['auth:api']], function()
 
 		Route::get('/profile/processes', 'ProcessUserController@profileProcesses');
 		Route::get('/{user}/processes', 'ProcessUserController@userProcesses');
+
+		Route::get('/profile/graphs', 'GraphController@profileGraphs');
+		Route::get('/{user}/graphs', 'GraphController@userGraphs');
 	});
 	Route::resource('users', 'UserController');
 
