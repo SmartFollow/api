@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AI\GivenCriterionSum;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
 use App\Models\Pedagogy\Evaluations\Criterion;
@@ -20,32 +21,43 @@ class GraphController extends Controller
      */
     public function index()
     {
-        $graphs = Graph::with('criterion')->get();
+        $graphs = Graph::with('criterion');
+        if (!Auth::user()->group->accessRules->keyBy('name')->has('criteria.summary.given'))
+	        $graphs = $graphs->where('summary_type', '!=','given');
+	    if (!Auth::user()->group->accessRules->keyBy('name')->has('criteria.summary.received'))
+	        $graphs = $graphs->where('summary_type', '!=','received');
+	    $graphs = $graphs->get();
 
         foreach ($graphs as &$graph)
         {
         	$range = new \DateTime();
         	$range->modify('- ' . $graph->days_range . ' days');
 
-        	if ($graph->type == 'bar')
+	        if ($graph->type == 'bar')
 	        {
-	        	$values = StudentCriterionSum::where('user_id', Auth::id())
-			                                 ->where('criterion_id', $graph->criterion_id)
-			                                 ->where('week_start', '>=', $range)
-									         ->orderBy('year', 'ASC')
-									         ->orderBy('week', 'ASC')
-			                                 ->get();
+		        $values = $graph->summary_type == 'received' ?
+			        StudentCriterionSum::where('user_id', Auth::id()) :
+			        GivenCriterionSum::where('teacher_id', Auth::id());
 
-	        	$graph->values = $values;
+		        $values = $values->where('criterion_id', $graph->criterion_id)
+			        ->where('week_start', '>=', $range)
+			        ->orderBy('year', 'ASC')
+			        ->orderBy('week', 'ASC')
+			        ->get();
+
+		        $graph->values = $values;
 	        }
 	        else
 	        {
-		        $values = StudentCriterionAverage::where('user_id', Auth::id())
-			                                     ->where('criterion_id', $graph->criterion_id)
-										         ->where('week_start', '>=', $range)
-										         ->orderBy('year', 'ASC')
-										         ->orderBy('week', 'ASC')
-										         ->get();
+		        $values = $graph->summary_type == 'received' ?
+			        StudentCriterionAverage::where('user_id', Auth::id()) :
+			        GivenCriterionAverage::where('teacher_id', Auth::id());
+
+		        $values = $values->where('criterion_id', $graph->criterion_id)
+			        ->where('week_start', '>=', $range)
+			        ->orderBy('year', 'ASC')
+			        ->orderBy('week', 'ASC')
+			        ->get();
 
 		        $graph->values = $values;
 	        }
@@ -65,7 +77,8 @@ class GraphController extends Controller
 
         return [
         	'criteria' => $criteria,
-	        'types' => [ 'bar' => trans('graphs.bar'), 'line' => trans('graphs.line') ]
+	        'types' => ['bar' => trans('graphs.bar'), 'line' => trans('graphs.line')],
+	        'summary_types' => ['given' => trans('graphs.summary_given'), 'received' => trans('graphs.summary_received')],
         ];
     }
 
@@ -81,12 +94,14 @@ class GraphController extends Controller
         	'criterion_id' => 'required|exists:criteria,id',
 	        'type' => ['required', Rule::in(['bar', 'line'])],
 	        'days_range' => 'required|integer|min:1',
+	        'summary_type' => ['required', Rule::in(['given', 'received'])],
         ]);
 
         $graph = new Graph();
         $graph->criterion_id = $request->criterion_id;
         $graph->type = $request->type;
         $graph->days_range = $request->days_range;
+        $graph->summary_type = $request->summary_type;
         $graph->save();
 
         return $graph;
@@ -146,7 +161,8 @@ class GraphController extends Controller
 	    return [
 	    	'graph' => $graph,
 		    'criteria' => $criteria,
-		    'types' => [ 'bar' => trans('graphs.bar'), 'line' => trans('graphs.line') ]
+		    'types' => [ 'bar' => trans('graphs.bar'), 'line' => trans('graphs.line') ],
+	        'summary_types' => ['given' => trans('graphs.summary_given'), 'received' => trans('graphs.summary_received')],
 	    ];
     }
 
@@ -172,6 +188,8 @@ class GraphController extends Controller
 		    $graph->type = $request->type;
 	    if ($request->has('days_range'))
 		    $graph->days_range = $request->days_range;
+	    if ($request->has('summary_type'))
+		    $graph->summary_type = $request->summary_type;
 	    $graph->save();
 
 	    return $graph;
