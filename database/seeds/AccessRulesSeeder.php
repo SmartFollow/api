@@ -186,6 +186,7 @@ class AccessRulesSeeder extends Seeder
 			'alerts.self.index',
 			'criteria.summary.received',
 			'criteria.summary.given',
+			'homeworks.self.index',
 		];
 
 		foreach ($routes as $route)

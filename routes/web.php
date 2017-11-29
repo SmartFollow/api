@@ -11,3 +11,5 @@
 |
 */
 
+Route::get('/data/access-rules', 'DataController@accessRules');
+Route::get('/data/group-access-rules', 'DataController@groupAccessRules');
