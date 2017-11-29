@@ -10,7 +10,7 @@ class UserPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the user.
+     * Determine whether the user can view the list of users.
      *
      * @param  \App\User  $userAuthed
      * @param  \App\User  $user

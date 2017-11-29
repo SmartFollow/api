@@ -26,7 +26,6 @@ class EvaluationController extends Controller
         return $evaluations;
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -113,7 +112,9 @@ class EvaluationController extends Controller
      */
     public function edit($id)
     {
+	    $evaluation = Evaluation::findOrFail($id);
 
+	    return $evaluation;
     }
 
     /**
@@ -125,7 +126,15 @@ class EvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
+	    $this->validate($request, [
+		    'comment' => 'required',
+	    ]);
 
+	    $evaluation = Evaluation::findOrFail($id);
+	    $evaluation->comment = $request->comment;
+	    $evaluation->save();
+
+	    return $evaluation;
     }
 
     /**
@@ -136,6 +145,8 @@ class EvaluationController extends Controller
      */
     public function destroy($id)
     {
+		$evaluation = Evaluation::findOrFail($id);
 
+		$evaluation->delete();
     }
 }

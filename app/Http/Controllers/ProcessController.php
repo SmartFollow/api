@@ -55,6 +55,13 @@ class ProcessController extends Controller
         return $process;
     }
 
+	public function edit($id)
+	{
+		$process = Process::findOrFail($id);
+
+		return $process;
+	}
+
     /**
      * Update the specified resource in storage.
      *

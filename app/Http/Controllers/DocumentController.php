@@ -116,7 +116,11 @@ class DocumentController extends Controller
      */
     public function edit($id)
     {
-        //
+	    $document = Document::findOrFail($id);
+
+	    $document->url = Storage::url($document->path);
+
+	    return $document;
     }
 
     /**
@@ -128,7 +132,19 @@ class DocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+	    $this->validate($request, [
+		    'name' => '',
+		    'description' => '',
+	    ]);
+
+	    $document = Document::findOrFail($id);
+	    if ($request->has('name'))
+	        $document->name = $request->get('name');
+	    if ($request->has('description'))
+		    $document->description = $request->get('description');
+	    $document->save();
+
+	    return $document;
     }
 
     /**
@@ -139,6 +155,8 @@ class DocumentController extends Controller
      */
     public function destroy($id)
     {
-        //
+	    $document = Document::findOrFail($id);
+
+	    $document->delete();
     }
 }

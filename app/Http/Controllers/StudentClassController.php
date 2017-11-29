@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedagogy\Level;
 use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\StudentClass;
@@ -36,7 +37,11 @@ class StudentClassController extends Controller
      */
     public function create()
     {
+		$levels = Level::get();
 
+		return [
+			'levels' => $levels,
+		];
     }
 
     /**
@@ -100,7 +105,14 @@ class StudentClassController extends Controller
      */
     public function edit($id)
     {
+	    $studentClass = StudentClass::findOrFail($id);
 
+	    $levels = Level::get();
+
+	    return [
+		    'levels' => $levels,
+		    'student_class' => $studentClass,
+	    ];
     }
 
     /**

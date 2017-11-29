@@ -29,23 +29,15 @@ class StepController extends Controller
             $step->process_id = $request->get('process_id');
         $step->save();
 
-        return ($step);
+        return $step;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * To show all the details of the process' steps
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $step = Step::with('process')->findOrFail($id);
+	public function edit($id)
+	{
+		$step = Step::findOrFail($id);
 
-        return ($step);
-    }
+		return $step;
+	}
 
     /**
      * Update the specified resource in storage.
@@ -56,23 +48,20 @@ class StepController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $step = Step::with('process')->findOrFail($id);
+        $step = Step::findOrFail($id);
 
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'process' => 'exists:processes,id',
         ]);
 
         if ($request->has('name'))
             $step->name = $request->get('name');
         if ($request->has('description'))
             $step->description = $request->get('description');
-        if ($request->has('process'))
-            $step->process_id = $request->get('process');
         $step->save();
 
-        return ($step);
+        return $step;
     }
 
     /**

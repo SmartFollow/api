@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedagogy\Level;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\Subject;
@@ -35,7 +37,13 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::get();
+        $levels = Level::get();
+
+        return [
+        	'users' => $users,
+	        'levels' => $levels,
+        ];
     }
 
     /**
@@ -105,7 +113,16 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        //
+	    $subject = Subject::findOrFail($id);
+
+	    $users = User::get();
+	    $levels = Level::get();
+
+	    return [
+		    'users' => $users,
+		    'levels' => $levels,
+		    'subject' => $subject,
+	    ];
     }
 
     /**
