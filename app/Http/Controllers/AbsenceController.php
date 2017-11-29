@@ -10,6 +10,17 @@ use App\Models\Pedagogy\Evaluations\Delay;
 class AbsenceController extends Controller
 {
 
+	public function index(Request $request)
+	{
+		$absences = Absence::with('evaluation.student')
+						   ->with('evaluation.lesson.subject');
+		if ($request->get('type') == 'unjustified')
+			$absences = $absences->where('justified_at', null);
+		$absences = $absences->get();
+
+		return $absences;
+	}
+
     /**
      * @api {post} /evaluations/:evaluationId/absences Store new absence
 	 * @apiName store
@@ -67,12 +78,11 @@ class AbsenceController extends Controller
     public function update(Request $request, $id)
     {
 		$this->validate($request, [
-			'justified_at' => 'date'
+			'justified_at' => 'required|date'
 		]);
 
 		$absence = Absence::findOrFail($id);
-		if ($request->has('justified_at'))
-			$absence->justified_at = $request->get('justified_at');
+		$absence->justified_at = $request->get('justified_at');
 		$absence->save();
 
 		return $absence;

@@ -168,6 +168,7 @@ Route::group(['middleware' => ['auth:api']], function()
 		});
 	});
 	Route::resource('evaluations', 'EvaluationController');
+	Route::resource('absences', 'AbsenceController', ['only' => ['index']]);
 
 	/**
 	 * Routes related to the notifications
