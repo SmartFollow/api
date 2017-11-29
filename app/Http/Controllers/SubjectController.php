@@ -21,7 +21,9 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::get();
+	    $this->authorize('index', Subject::class);
+
+	    $subjects = Subject::get();
 
 		return $subjects;
     }
@@ -37,7 +39,9 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        $users = User::get();
+	    $this->authorize('store', Subject::class);
+
+	    $users = User::get();
         $levels = Level::get();
 
         return [
@@ -63,7 +67,9 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Subject::class);
+
+	    $this->validate($request, [
 			'level' => 'required|exists:levels,id',
 			'name' => 'required|unique:subjects,name',
 			'description' => '',
@@ -96,7 +102,9 @@ class SubjectController extends Controller
     {
         $subject = Subject::findOrFail($id);
 
-		return $subject;
+	    $this->authorize('show', $subject);
+
+	    return $subject;
     }
 
     /**
@@ -114,6 +122,8 @@ class SubjectController extends Controller
     public function edit($id)
     {
 	    $subject = Subject::findOrFail($id);
+
+	    $this->authorize('update', $subject);
 
 	    $users = User::get();
 	    $levels = Level::get();
@@ -147,7 +157,9 @@ class SubjectController extends Controller
     {
 		$subject = Subject::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $subject);
+
+	    $this->validate($request, [
 			'level' => 'exists:levels,id',
 			'name' => 'unique:subjects,name',
 			'description' => '',
@@ -183,7 +195,9 @@ class SubjectController extends Controller
     {
         $subject = Subject::findOrFail($id);
 
-		$subject->delete();
+	    $this->authorize('destroy', $subject);
+
+	    $subject->delete();
     }
 
 	/**

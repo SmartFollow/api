@@ -18,6 +18,8 @@ class NotificationController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		$this->authorize('index', Notification::class);
+
 		$notifications = [];
 
 		if (Auth::user()->group->accessRules->keyBy('name')->has('notifications.self.index'))
@@ -46,6 +48,8 @@ class NotificationController extends Controller
 	 */
 	public function create()
 	{
+		$this->authorize('store', Notification::class);
+
 		return [
 			'groups' => Group::get(),
 			'studentClasses' => StudentClass::get(),
@@ -60,6 +64,8 @@ class NotificationController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$this->authorize('store', Notification::class);
+
 		$this->validate($request, [
 			'resource_link' => '',
 			'message' => 'required',
@@ -105,6 +111,8 @@ class NotificationController extends Controller
 									->with('users')
 									->findOrFail($id);
 
+		$this->authorize('show', $notification);
+
 		return $notification;
 	}
 
@@ -117,6 +125,8 @@ class NotificationController extends Controller
 	public function edit($id)
 	{
 		$notification = Notification::findOrFail($id);
+
+		$this->authorize('update', $notification);
 
 		return $notification;
 	}
@@ -131,6 +141,8 @@ class NotificationController extends Controller
 	public function update(Request $request, $id)
 	{
 		$notification = Notification::findOrFail($id);
+
+		$this->authorize('update', $notification);
 
 		$this->validate($request, [
 			'transmitter_id' => '',
@@ -178,6 +190,8 @@ class NotificationController extends Controller
 	{
 		$notification = Notification::findOrFail($id);
 
+		$this->authorize('destroy', $notification);
+
 		$notification->delete();
 	}
 
@@ -190,6 +204,8 @@ class NotificationController extends Controller
 	public function markAsRead($id)
 	{
 		$notification = Notification::findOrFail($id);
+
+		$this->authorize('markAsRead', $notification);
 
 		$notification->users()->updateExistingPivot(Auth::id(), ['read_at' => new \DateTime()]);
 	}

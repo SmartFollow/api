@@ -16,6 +16,8 @@ class ProcessController extends Controller
      */
     public function index()
     {
+	    $this->authorize('index', Process::class);
+
         return Process::get();
     }
 
@@ -29,7 +31,9 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Process::class);
+
+	    $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
         ]);
@@ -52,12 +56,16 @@ class ProcessController extends Controller
     {
         $process = Process::with('steps')->findOrFail($id);
 
-        return $process;
+	    $this->authorize('show', $process);
+
+	    return $process;
     }
 
 	public function edit($id)
 	{
 		$process = Process::findOrFail($id);
+
+		$this->authorize('update', $process);
 
 		return $process;
 	}
@@ -73,7 +81,9 @@ class ProcessController extends Controller
     {
         $process = Process::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $process);
+
+	    $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
         ]);
@@ -96,6 +106,9 @@ class ProcessController extends Controller
     public function destroy($id)
     {
         $process = Process::findOrFail($id);
-        $process->delete();
+
+	    $this->authorize('destroy', $process);
+
+	    $process->delete();
     }
 }

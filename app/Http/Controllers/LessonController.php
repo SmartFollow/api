@@ -23,6 +23,8 @@ class LessonController extends Controller
      */
     public function index()
     {
+    	$this->authorize('index', Lesson::class);
+
 	    $lessons = [];
 
     	if (Auth::user()->group->accessRules->keyBy('name')->has('lessons.index'))
@@ -58,6 +60,8 @@ class LessonController extends Controller
      */
     public function create()
     {
+	    $this->authorize('store', Lesson::class);
+
         $available_reservations = Reservation::whereDoesntHave('lessons')->get();
 
 		$levels = Level::with('subjects.studentClasses')->get();
@@ -76,6 +80,8 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
+	    $this->authorize('store', Lesson::class);
+
 		$days = [
 			'SUNDAY' => 0,
 			'MONDAY' => 1,
@@ -175,6 +181,8 @@ class LessonController extends Controller
 				->with('studentClass.students')
 				->findOrFail($id);
 
+	    $this->authorize('show', $lesson);
+
 		return $lesson;
     }
 
@@ -187,6 +195,8 @@ class LessonController extends Controller
     public function edit($id)
     {
         $lesson = Lesson::findOrFail($id);
+
+	    $this->authorize('update', $lesson);
 
 		return $lesson;
     }
@@ -201,7 +211,9 @@ class LessonController extends Controller
     public function update(Request $request, $id)
     {
         $lesson = Lesson::findOrFail($id);
-		
+
+	    $this->authorize('update', $lesson);
+
 		$this->validate($request, [
 			'description' => '',
 		]);
@@ -221,6 +233,8 @@ class LessonController extends Controller
     public function destroy($id)
     {
         $lesson = Lesson::findOrFail($id);
+
+	    $this->authorize('destroy', $lesson);
 
 		$lesson->delete();
     }

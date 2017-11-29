@@ -15,7 +15,9 @@ class CriterionController extends Controller
      */
     public function index()
     {
-        $criteria = Criterion::get();
+	    $this->authorize('index', Criterion::class);
+
+	    $criteria = Criterion::get();
 
 	    return $criteria;
     }
@@ -27,7 +29,9 @@ class CriterionController extends Controller
      */
     public function create()
     {
-        return [
+	    $this->authorize('store', Criterion::class);
+
+	       return [
         	'impacts' => [
         		'neutral' => trans('criteria.neutral'),
 		        'positive' => trans('criteria.positive'),
@@ -48,6 +52,8 @@ class CriterionController extends Controller
      */
     public function store(Request $request)
     {
+	    $this->authorize('store', Criterion::class);
+
 	    $this->validate($request, [
 		    'name' => 'required',
 		    'impact' => ['required', Rule::in(['negative', 'neutral', 'positive'])],
@@ -77,6 +83,8 @@ class CriterionController extends Controller
     {
         $criterion = Criterion::findOrFail($id);
 
+	    $this->authorize('show', $criterion);
+
         return $criterion;
     }
 
@@ -89,6 +97,8 @@ class CriterionController extends Controller
     public function edit($id)
     {
 	    $criterion = Criterion::findOrFail($id);
+
+	    $this->authorize('update', $criterion);
 
 	    return [
 	    	'criterion' => $criterion,
@@ -113,6 +123,10 @@ class CriterionController extends Controller
      */
     public function update(Request $request, $id)
     {
+	    $criterion = Criterion::findOrFail($id);
+
+	    $this->authorize('update', $criterion);
+
 	    $this->validate($request, [
 		    'name' => '',
 		    'impact' => [Rule::in(['negative', 'neutral', 'positive'])],
@@ -121,7 +135,6 @@ class CriterionController extends Controller
 		    'stats_type' => [Rule::in(['sum', 'average'])]
 	    ]);
 
-	    $criterion = Criterion::findOrFail($id);
 	    if ($request->has('name'))
 	        $criterion->name = $request->name;
 	    if ($request->has('impact'))
@@ -146,6 +159,8 @@ class CriterionController extends Controller
     public function destroy($id)
     {
 	    $criterion = Criterion::findOrFail($id);
+
+	    $this->authorize('destroy', $criterion);
 
 	    $criterion->delete();
     }

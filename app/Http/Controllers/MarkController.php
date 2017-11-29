@@ -17,6 +17,8 @@ class MarkController extends Controller
      */
     public function index($examId)
     {
+	    $this->authorize('index', Mark::class);
+
         $marks = Mark::where('exam_id', $examId)->get();
 
 		return $marks;
@@ -29,6 +31,8 @@ class MarkController extends Controller
      */
     public function create($examId)
     {
+	    $this->authorize('store', Mark::class);
+
         $exam = Exam::with('lesson.studentClass.students')->findOrFail($examId);
 
 		return $exam;
@@ -42,6 +46,8 @@ class MarkController extends Controller
      */
     public function store(Request $request, $examId)
     {
+	    $this->authorize('store', Mark::class);
+
 		$exam = Exam::findOrFail($examId);
 
         $this->validate($request, [
@@ -77,15 +83,17 @@ class MarkController extends Controller
      */
     public function update(Request $request, $examId, $id)
     {
-		$exam = Exam::findOrFail($examId);
+	    $mark = Mark::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $mark);
+
+	    $exam = Exam::findOrFail($examId);
+	    $this->validate($request, [
 			'mark' => 'numeric|min:' . $exam->min_mark . '|max:' . $exam->max_mark,
 			'comment' => '',
 		]);
 
-		$mark = Mark::findOrFail($id);
-		if ($request->has('mark'))
+	    if ($request->has('mark'))
 			$mark->mark = $request->get('mark');
 		if ($request->has('comment'))
 			$mark->comment = $request->get('comment');
@@ -103,6 +111,8 @@ class MarkController extends Controller
     public function destroy($examId, $id)
     {
         $mark = Mark::findOrFail($id);
+
+	    $this->authorize('destroy', $mark);
 
 		$mark->delete();
     }

@@ -17,6 +17,8 @@ class EvaluationController extends Controller
      */
     public function index()
     {
+    	$this->authorize('index', Evaluation::class);
+
         $evaluations = Evaluation::get();
 
         $evaluations->load('criteria');
@@ -33,6 +35,8 @@ class EvaluationController extends Controller
      */
     public function indexLessonEvaluations($lessonId)
     {
+	    $this->authorize('index', Evaluation::class);
+
 		$evaluations = Evaluation::whereHas('lesson', function ($q) use ($lessonId) {
 			$q->where('lessons.id', $lessonId);
 		})->get();
@@ -47,6 +51,8 @@ class EvaluationController extends Controller
      */
     public function createLessonEvaluations($lessonId)
     {
+	    $this->authorize('store', Evaluation::class);
+
 		$lesson = Lesson::with('studentClass.students')
 						->with('evaluations')
 						->findOrFail($lessonId);
@@ -68,6 +74,8 @@ class EvaluationController extends Controller
      */
     public function store(Request $request)
     {
+	    $this->authorize('store', Evaluation::class);
+
 		$this->validate($request, [
 			'student_id' => 'exists:users,id|required',
 			'lesson_id' => 'exists:lessons,id|required',
@@ -101,6 +109,8 @@ class EvaluationController extends Controller
 								->with('student')
 								->findOrFail($id);
 
+	    $this->authorize('show', $evaluation);
+
 		return $evaluation;
     }
 
@@ -114,6 +124,8 @@ class EvaluationController extends Controller
     {
 	    $evaluation = Evaluation::findOrFail($id);
 
+	    $this->authorize('update', $evaluation);
+
 	    return $evaluation;
     }
 
@@ -126,11 +138,14 @@ class EvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
+	    $evaluation = Evaluation::findOrFail($id);
+
+	    $this->authorize('update', $evaluation);
+
 	    $this->validate($request, [
 		    'comment' => 'required',
 	    ]);
 
-	    $evaluation = Evaluation::findOrFail($id);
 	    $evaluation->comment = $request->comment;
 	    $evaluation->save();
 
@@ -146,6 +161,8 @@ class EvaluationController extends Controller
     public function destroy($id)
     {
 		$evaluation = Evaluation::findOrFail($id);
+
+	    $this->authorize('destroy', $evaluation);
 
 		$evaluation->delete();
     }

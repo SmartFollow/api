@@ -22,6 +22,8 @@ class GraphController extends Controller
 	 */
 	public function index()
 	{
+		$this->authorize('index', Graph::class);
+
 		$graphs = Graph::with('criterion')->get();
 
 		return $graphs;
@@ -86,6 +88,8 @@ class GraphController extends Controller
      */
     public function create()
     {
+	    $this->authorize('store', Graph::class);
+
     	$criteria = Criterion::get();
 
         return [
@@ -103,6 +107,8 @@ class GraphController extends Controller
      */
     public function store(Request $request)
     {
+	    $this->authorize('store', Graph::class);
+
         $this->validate($request, [
         	'criterion_id' => 'required|exists:criteria,id',
 	        'type' => ['required', Rule::in(['bar', 'line'])],
@@ -129,6 +135,8 @@ class GraphController extends Controller
     public function show($id)
     {
 	    $graph = Graph::with('criterion')->findOrFail($id);
+
+	    $this->authorize('show', $graph);
 
 	    $range = new \DateTime();
 	    $range->modify('- ' . $graph->days_range . ' days');
@@ -169,6 +177,8 @@ class GraphController extends Controller
     {
         $graph = Graph::findOrFail($id);
 
+	    $this->authorize('update', $graph);
+
 	    $criteria = Criterion::get();
 
 	    return [
@@ -188,13 +198,16 @@ class GraphController extends Controller
      */
     public function update(Request $request, $id)
     {
+	    $graph = Graph::findOrFail($id);
+
+	    $this->authorize('update', $graph);
+
 	    $this->validate($request, [
 		    'criterion_id' => 'exists:criteria,id',
 		    'type' => [Rule::in(['bar', 'line'])],
 		    'days_range' => 'integer|min:1',
 	    ]);
 
-	    $graph = Graph::findOrFail($id);
 	    if ($request->has('criterion_id'))
 		    $graph->criterion_id = $request->criterion_id;
 	    if ($request->has('type'))
@@ -217,6 +230,8 @@ class GraphController extends Controller
     public function destroy($id)
     {
         $graph = Graph::findOrFail($id);
+
+	    $this->authorize('destroy', $graph);
 
         $graph->delete();
     }

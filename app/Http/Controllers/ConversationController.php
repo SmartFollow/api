@@ -19,6 +19,8 @@ class ConversationController extends Controller
      */
     public function index()
     {
+    	$this->authorize('index', Conversation::class);
+
 		return Conversation::whereHas('participants', function($q) {
 			$q->where('users.id', Auth::id());
 		})->with('participants')->get();
@@ -31,6 +33,8 @@ class ConversationController extends Controller
 	 */
 	public function create()
 	{
+		$this->authorize('store', Conversation::class);
+
 		$users = User::get();
 
 		return [
@@ -53,7 +57,9 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Conversation::class);
+
+	     $this->validate($request, [
             'subject' => 'required',
 			'participants.*' => 'exists:users,id'
         ]);
@@ -87,7 +93,9 @@ class ConversationController extends Controller
 									->with('participants')
 									->findOrFail($id);
 
-        $conversation->load('messages.creator');
+	    $this->authorize('show', $conversation);
+
+	    $conversation->load('messages.creator');
 
         return $conversation;
     }
@@ -109,7 +117,9 @@ class ConversationController extends Controller
     {
         $conversation = Conversation::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $conversation);
+
+	    $this->validate($request, [
             'subject' => 'required',
         ]);
 
@@ -135,6 +145,8 @@ class ConversationController extends Controller
     {
         $conversation = Conversation::findOrFail($id);
 
-        $conversation->delete();
+	    $this->authorize('destroy', $conversation);
+
+	    $conversation->delete();
     }
 }

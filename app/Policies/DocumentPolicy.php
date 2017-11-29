@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\Users\User;
 use App\Models\Pedagogy\Document;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

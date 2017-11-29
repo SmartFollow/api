@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\Users\User;
 use App\Models\Pedagogy\Exams\Exam;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

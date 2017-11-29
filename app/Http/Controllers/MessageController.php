@@ -17,6 +17,8 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+    	$this->authorize('store', Message::class);
+
         $this->validate($request, [
             'conversation_id' => 'required|exists:conversations,id',
             'content' => 'required',

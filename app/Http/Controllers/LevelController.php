@@ -16,6 +16,8 @@ class LevelController extends Controller
      */
     public function index()
     {
+    	$this->authorize('index', Level::class);
+
         $levels = Level::get();
 
 		return $levels;
@@ -28,7 +30,9 @@ class LevelController extends Controller
      */
     public function create()
     {
-        //
+	    $this->authorize('store', Level::class);
+
+
     }
 
     /**
@@ -39,7 +43,9 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Level::class);
+
+	    $this->validate($request, [
 			'name' => 'required|unique:levels,name',
 		]);
 
@@ -60,6 +66,8 @@ class LevelController extends Controller
     {
 		$level = Level::with('studentClasses')->findOrFail($id);
 
+	    $this->authorize('show', $level);
+
 		return $level;
     }
 
@@ -71,7 +79,11 @@ class LevelController extends Controller
      */
     public function edit($id)
     {
-        //
+	    $level = Level::findOrFail($id);
+
+	    $this->authorize('update', $level);
+
+	    return $level;
     }
 
     /**
@@ -85,7 +97,9 @@ class LevelController extends Controller
     {
 		$level = Level::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $level);
+
+	    $this->validate($request, [
 			'name' => 'unique:levels,name,' . $id,
 		]);
 
@@ -106,6 +120,8 @@ class LevelController extends Controller
     {
         $level = Level::findOrFail($id);
 
+	    $this->authorize('destroy', $level);
+
 		$level->delete();
     }
 
@@ -119,6 +135,8 @@ class LevelController extends Controller
 	public function addStudentClasses(Request $request, $id)
 	{
 		$level = Level::with('studentClasses')->findOrFail($id);
+
+		$this->authorize('addStudentClasses', $level);
 
 		$this->validate($request, [
 			'studentClasses.*' => 'exists:student_classes,id',
@@ -144,6 +162,8 @@ class LevelController extends Controller
 	{
 		$level = Level::with('studentClasses')->findOrFail($id);
 
+		$this->authorize('listStudentClasses', $level);
+
 		return $level->studentClasses;
 	}
 
@@ -157,8 +177,9 @@ class LevelController extends Controller
 	{
 		$level = Level::with('subjects')->findOrFail($id);
 
+		$this->authorize('listSubjects', $level);
+
 		return $level->subjects;
 	}
-
 
 }

@@ -21,7 +21,9 @@ class StudentClassController extends Controller
      */
     public function index()
     {
-        $studentClasses = StudentClass::get();
+	    $this->authorize('index', StudentClass::class);
+
+	    $studentClasses = StudentClass::get();
 
 		return $studentClasses;
     }
@@ -37,7 +39,9 @@ class StudentClassController extends Controller
      */
     public function create()
     {
-		$levels = Level::get();
+	    $this->authorize('store', StudentClass::class);
+
+	    $levels = Level::get();
 
 		return [
 			'levels' => $levels,
@@ -59,7 +63,9 @@ class StudentClassController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', StudentClass::class);
+
+	    $this->validate($request, [
             'level' => 'required|exists:levels,id',
             'name' => 'required|unique:student_classes,name',
 		]);
@@ -88,7 +94,9 @@ class StudentClassController extends Controller
     {
         $studentClass = StudentClass::with('students')->findOrFail($id);
 
-		return $studentClass;
+	    $this->authorize('show', $studentClass);
+
+	    return $studentClass;
     }
 
     /**
@@ -106,6 +114,8 @@ class StudentClassController extends Controller
     public function edit($id)
     {
 	    $studentClass = StudentClass::findOrFail($id);
+
+	    $this->authorize('update', $studentClass);
 
 	    $levels = Level::get();
 
@@ -135,7 +145,9 @@ class StudentClassController extends Controller
     {
         $studentClass = StudentClass::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $studentClass);
+
+	    $this->validate($request, [
 			'level' => 'exists:levels,id',
             'name' => 'unique:student_classes,name,' . $id,
 		]);
@@ -165,7 +177,9 @@ class StudentClassController extends Controller
     {
         $studentClass = StudentClass::findOrFail($id);
 
-		$studentClass->delete();
+	    $this->authorize('destroy', $studentClass);
+
+	    $studentClass->delete();
     }
 
 	/**

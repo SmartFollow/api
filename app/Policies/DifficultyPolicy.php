@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\Users\User;
-use App\Models\Pedagogy\Alert;
+use App\Models\AI\Difficulty;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AlertPolicy
+class DifficultyPolicy
 {
     use HandlesAuthorization;
 
@@ -14,7 +14,7 @@ class AlertPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('alerts.index');
+	    return $rules->has('difficulties.index') || $rules->has('difficulties.self.index');
     }
 
 }

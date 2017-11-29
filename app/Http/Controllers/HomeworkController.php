@@ -18,8 +18,12 @@ class HomeworkController extends Controller
      */
     public function index($lessonId)
     {
+    	$this->authorize('index', Homework::class);
+
 		$homeworks = Homework::where('lesson_id', $lessonId)->get();
+
         $homeworks->load('lesson.subject'); 
+
         return $homeworks;
     }
 
@@ -30,6 +34,8 @@ class HomeworkController extends Controller
      */
     public function create($lessonId)
     {
+	    $this->authorize('store', Homework::class);
+
         $documents = Document::where('lesson_id', $lessonId)->get();
 
 		return [
@@ -45,6 +51,8 @@ class HomeworkController extends Controller
      */
     public function store(Request $request, $lessonId)
     {
+	    $this->authorize('store', Homework::class);
+
 		$lesson = Lesson::findOrFail($lessonId);
 
         $this->validate($request, [
@@ -76,7 +84,10 @@ class HomeworkController extends Controller
 							->with('lesson.subject')
 							->findOrFail($id);
 
-        $homework->load('lesson.subject');                    
+	    $this->authorize('show', $homework);
+
+        $homework->load('lesson.subject');
+
 		return $homework;
     }
 
@@ -88,10 +99,13 @@ class HomeworkController extends Controller
      */
     public function edit($lessonId, $id)
     {
-        $documents = Document::where('lesson_id', $lessonId)->get();
-		$homework = Homework::findOrFail($id);
+	    $homework = Homework::findOrFail($id);
 
-		return [
+	    $this->authorize('update', $homework);
+
+	    $documents = Document::where('lesson_id', $lessonId)->get();
+
+	    return [
 			'documents' => $documents,
 			'homework' => $homework
 		];
@@ -106,13 +120,16 @@ class HomeworkController extends Controller
      */
     public function update(Request $request, $lessonId, $id)
     {
-        $this->validate($request, [
+	    $homework = Homework::findOrFail($id);
+
+	    $this->authorize('update', $homework);
+
+	    $this->validate($request, [
 			'description' => '',
 			'document_id' => 'exists:documents,id',
 		]);
 
-		$homework = Homework::findOrFail($id);
-		if ($request->has('description'))
+	    if ($request->has('description'))
 			$homework->description = $request->get('description');
 		if ($request->has('document_id'))
 			$homework->document_id = $request->get('document_id');
@@ -130,6 +147,8 @@ class HomeworkController extends Controller
     public function destroy($lessonId, $id)
     {
         $homework = Homework::findOrFail($id);
+
+        $this->authorize('destroy', $homework);
 
 		$homework->delete();
     }

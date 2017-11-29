@@ -17,16 +17,12 @@ class ReservationController extends Controller
 	 */
 	public function index()
 	{
-		if (Auth::user()->group->accessRules->keyBy('name')->has('reservations.index'))
-		{
-			$reservations = Reservation::with('room')
-									   ->get();
+		$this->authorize('index', Reservation::class);
 
-			return $reservations;
-		}
-		else {
-			return [];
-		}
+		$reservations = Reservation::with('room')
+								   ->get();
+
+		return $reservations;
 	}
 
 	/**
@@ -36,6 +32,8 @@ class ReservationController extends Controller
 	 */
 	public function create()
 	{
+		$this->authorize('store', Reservation::class);
+
 		$rooms = Room::get();
 
 		return [
@@ -51,6 +49,8 @@ class ReservationController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$this->authorize('store', Reservation::class);
+
 		$this->validate($request, [
 			'room_id' => 'required|exists:rooms,id',
 			'time_start' => 'required|date_format:H:i',
@@ -100,6 +100,8 @@ class ReservationController extends Controller
 	{
 		$reservation = Reservation::findOrFail($id);
 
+		$this->authorize('show', $reservation);
+
 		return $reservation;
 	}
 
@@ -111,10 +113,15 @@ class ReservationController extends Controller
 	 */
 	public function edit($id)
 	{
+		$reservation = Reservation::findOrFail($id);
+
+		$this->authorize('update', $reservation);
+
 		$rooms = Room::get();
 
 		return [
 			'rooms' => $rooms,
+			'reservation' => $reservation,
 		];
 	}
 
@@ -127,6 +134,10 @@ class ReservationController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		$reservation = Reservation::findOrFail($id);
+
+		$this->authorize('update', $reservation);
+
 		$this->validate($request, [
 			'room_id' => 'exists:rooms,id',
 			'time_start' => 'date_format:H:i',
@@ -150,7 +161,6 @@ class ReservationController extends Controller
 				"error" => trans('reservations.conflict')
 			];
 
-		$reservation = Reservation::findOrFail($id);
 		if ($request->has('room_id'))
 			$reservation->room_id = $request->get('room_id');
 		if ($request->has('time_start'))
@@ -177,6 +187,8 @@ class ReservationController extends Controller
 	public function destroy($id)
 	{
 		$reservation = Reservation::findOrFail($id);
+
+		$this->authorize('destroy', $reservation);
 
 		$reservation->delete();
 	}

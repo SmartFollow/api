@@ -15,6 +15,8 @@ class AlertController extends Controller
      */
     public function index()
     {
+    	$this->authorize('index', Alert::class);
+
 	    $currentWeek = date("W");
 	    $currentYear = date("Y");
 

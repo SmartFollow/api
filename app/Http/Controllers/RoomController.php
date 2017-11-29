@@ -19,7 +19,9 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $room = Room::get();
+	    $this->authorize('index', Room::class);
+
+	    $room = Room::get();
 
         return $room;
     }
@@ -35,7 +37,9 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+	    $this->authorize('store', Room::class);
+
+
     }
 
     /**
@@ -53,7 +57,9 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Room::class);
+
+	    $this->validate($request, [
             'identifier' => 'required',
             'seats' => 'numeric|min:1',
         ]);
@@ -82,7 +88,9 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        return $room;
+	    $this->authorize('show', $room);
+
+	    return $room;
     }
 
     /**
@@ -100,6 +108,8 @@ class RoomController extends Controller
     public function edit($id)
     {
 	    $room = Room::findOrFail($id);
+
+	    $this->authorize('update', $room);
 
 	    return $room;
     }
@@ -124,7 +134,9 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $room);
+
+	    $this->validate($request, [
             'identifier' => '',
             'seats' => 'numeric|min:1',
         ]);
@@ -154,6 +166,8 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        $room->delete();
+	    $this->authorize('destroy', $room);
+
+	    $room->delete();
     }
 }

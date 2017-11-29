@@ -15,6 +15,8 @@ class DifficultyController extends Controller
      */
     public function index()
     {
+	    $this->authorize('index', Difficulty::class);
+
 	    $difficulties = [];
 
 	    if (Auth::user()->group->accessRules->keyBy('name')->has('difficulties.self.index'))

@@ -27,7 +27,9 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('store', Document::class);
+
+
     }
 
     /**
@@ -38,7 +40,9 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+	    $this->authorize('store', Document::class);
+
+
     }
 
 	/**
@@ -54,6 +58,8 @@ class DocumentController extends Controller
 	 */
     public function storeLessonDocument(Request $request, $lessonId)
     {
+	    $this->authorize('store', Document::class);
+
 		$lesson = Lesson::findOrFail($lessonId);
 
         $this->validate($request, [
@@ -88,6 +94,8 @@ class DocumentController extends Controller
     {
 		$document = Document::findOrFail($id);
 
+	    $this->authorize('show', $document);
+
 		$document->url = Storage::url($document->path);
 
         return $document;
@@ -118,6 +126,8 @@ class DocumentController extends Controller
     {
 	    $document = Document::findOrFail($id);
 
+	    $this->authorize('update', $document);
+
 	    $document->url = Storage::url($document->path);
 
 	    return $document;
@@ -132,12 +142,15 @@ class DocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
+	    $document = Document::findOrFail($id);
+
+	    $this->authorize('update', $document);
+
 	    $this->validate($request, [
 		    'name' => '',
 		    'description' => '',
 	    ]);
 
-	    $document = Document::findOrFail($id);
 	    if ($request->has('name'))
 	        $document->name = $request->get('name');
 	    if ($request->has('description'))
@@ -156,6 +169,8 @@ class DocumentController extends Controller
     public function destroy($id)
     {
 	    $document = Document::findOrFail($id);
+
+	    $this->authorize('destroy', $document);
 
 	    $document->delete();
     }

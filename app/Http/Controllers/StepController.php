@@ -16,7 +16,9 @@ class StepController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+	    $this->authorize('store', Step::class);
+
+	    $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
             'process_id' => 'exists:processes,id',
@@ -36,6 +38,8 @@ class StepController extends Controller
 	{
 		$step = Step::findOrFail($id);
 
+		$this->authorize('update', $step);
+
 		return $step;
 	}
 
@@ -48,9 +52,11 @@ class StepController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $step = Step::findOrFail($id);
+	    $step = Step::findOrFail($id);
 
-        $this->validate($request, [
+	    $this->authorize('update', $step);
+
+	    $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
         ]);
@@ -74,6 +80,8 @@ class StepController extends Controller
     {
         $step = Step::findOrFail($id);
 
-		$step->delete();
+	    $this->authorize('destroy', $step);
+
+	    $step->delete();
     }
 }

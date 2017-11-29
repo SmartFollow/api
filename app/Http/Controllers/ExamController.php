@@ -27,6 +27,8 @@ class ExamController extends Controller
      */
     public function createLessonExam($lessonId)
     {
+    	$this->authorize('store', Exam::class);
+
         $lesson = Lesson::with('documents')
 						->findOrFail($lessonId);
 
@@ -43,6 +45,8 @@ class ExamController extends Controller
      */
     public function storeLessonExam(Request $request, $lessonId)
     {
+	    $this->authorize('store', Exam::class);
+
         $lesson = Lesson::findOrFail($lessonId);
 
         $this->validate($request, [
@@ -83,6 +87,8 @@ class ExamController extends Controller
     {
 		$exam = Exam::with('lesson')->findOrFail($id);
 
+	    $this->authorize('show', $exam);
+
 		return $exam;
     }
 
@@ -103,6 +109,8 @@ class ExamController extends Controller
     {
         $exam = Exam::with('lesson.documents')->findOrFail($id);
 
+	    $this->authorize('update', $exam);
+
 		return $exam;
     }
 
@@ -116,7 +124,9 @@ class ExamController extends Controller
     public function update(Request $request, $id)
     {
 		$exam = Exam::findOrFail($id);
-		
+
+	    $this->authorize('update', $exam);
+
 		$this->validate($request, [
 			'type' => 'required|in:home,class,surprise',
 			'description' => '',
@@ -150,6 +160,8 @@ class ExamController extends Controller
     {
         $exam = Exam::findOrFail($id);
 
-		$exam->delete();
+	    $this->authorize('destroy', $exam);
+
+	    $exam->delete();
     }
 }

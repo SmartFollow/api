@@ -23,6 +23,8 @@ class DelayController extends Controller
      */
     public function store(Request $request, $evaluationId)
     {
+    	$this->authorize('store', Delay::class);
+
 		$this->validate($request, [
 			'arrived_at' => 'date_format:H:i',
 		]);
@@ -52,6 +54,9 @@ class DelayController extends Controller
     public function destroy($evaluationId, $id)
     {
         $delay = Delay::findOrFail($id);
+
+	    $this->authorize('destroy', $delay);
+
 		$delay->delete();
     }
 }

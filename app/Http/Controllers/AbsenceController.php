@@ -12,6 +12,8 @@ class AbsenceController extends Controller
 
 	public function index(Request $request)
 	{
+		$this->authorize('index', Absence::class);
+
 		$absences = Absence::with('evaluation.student')
 						   ->with('evaluation.lesson.subject');
 		if ($request->get('type') == 'unjustified')
@@ -34,6 +36,8 @@ class AbsenceController extends Controller
      */
     public function store(Request $request, $evaluationId)
     {
+	    $this->authorize('store', Absence::class);
+
 		$delay = Delay::where('evaluation_id', $evaluationId)->first();
 		if (!empty($delay))
 			$delay->delete();
@@ -59,6 +63,8 @@ class AbsenceController extends Controller
     {
         $absence = Absence::findOrFail($id);
 
+	    $this->authorize('update', $absence);
+
 		return $absence;
     }
 
@@ -82,7 +88,10 @@ class AbsenceController extends Controller
 		]);
 
 		$absence = Absence::findOrFail($id);
-		$absence->justified_at = $request->get('justified_at');
+
+	    $this->authorize('update', $absence);
+
+	    $absence->justified_at = $request->get('justified_at');
 		$absence->save();
 
 		return $absence;
@@ -101,6 +110,9 @@ class AbsenceController extends Controller
     public function destroy($evaluationId, $id)
     {
         $absence = Absence::findOrFail($id);
-		$absence->delete();
+
+	    $this->authorize('destroy', $absence);
+
+	    $absence->delete();
     }
 }
