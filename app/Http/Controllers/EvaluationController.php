@@ -102,6 +102,8 @@ class EvaluationController extends Controller
 			$evaluation->comment = $request->get('comment');
 		$evaluation->save();
 
+		$evaluation->load('criteria');
+
 		return $evaluation;
     }
 
