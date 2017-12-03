@@ -23,7 +23,9 @@ class SubjectController extends Controller
     {
 	    $this->authorize('index', Subject::class);
 
-	    $subjects = Subject::get();
+	    $subjects = Subject::with('teacher')
+		                   ->with('level')
+		                   ->get();
 
 		return $subjects;
     }

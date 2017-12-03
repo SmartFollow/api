@@ -14,7 +14,7 @@ class StudentClassPolicy
 	{
 		$rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('student-classes.');
+		return $rules->has('student-classes.index');
 	}
 
     /**
@@ -28,7 +28,7 @@ class StudentClassPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('student-classes.');
+	    return $rules->has('student-classes.show');
     }
 
     /**
@@ -41,7 +41,7 @@ class StudentClassPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('student-classes.');
+	    return $rules->has('student-classes.store');
     }
 
     /**
@@ -55,7 +55,7 @@ class StudentClassPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('student-classes.');
+	    return $rules->has('student-classes.update');
     }
 
     /**
@@ -69,6 +69,6 @@ class StudentClassPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('student-classes.');
+	    return $rules->has('student-classes.destroy');
     }
 }

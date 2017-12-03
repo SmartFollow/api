@@ -14,7 +14,7 @@ class SubjectPolicy
 	{
 		$rules = $user->group->accessRules->keyBy('name');
 
-		return $rules->has('subjects.');
+		return $rules->has('subjects.index');
 	}
 
     /**
@@ -28,7 +28,7 @@ class SubjectPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('subjects.');
+	    return $rules->has('subjects.show');
     }
 
     /**
@@ -41,7 +41,7 @@ class SubjectPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('subjects.');
+	    return $rules->has('subjects.store');
     }
 
     /**
@@ -55,7 +55,7 @@ class SubjectPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('subjects.');
+	    return $rules->has('subjects.update');
     }
 
     /**
@@ -69,6 +69,6 @@ class SubjectPolicy
     {
 	    $rules = $user->group->accessRules->keyBy('name');
 
-	    return $rules->has('subjects.');
+	    return $rules->has('subjects.destroy');
     }
 }
