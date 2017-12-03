@@ -171,7 +171,7 @@ class LessonController extends Controller
     {
         $lesson = Lesson::with('reservation.room')
 				->with('subject.teacher')
-				->with('homeworks')
+				->with('homeworks.document')
 				->with('documents')
 				->with('exam.marks')
 				->with('studentClass.students')

@@ -69,6 +69,8 @@ class HomeworkController extends Controller
 			$homework->document_id = $request->get('document_id');
 		$homework->save();
 
+		$homework->load('document');
+
 		return $homework;
     }
 
@@ -131,9 +133,10 @@ class HomeworkController extends Controller
 
 	    if ($request->has('description'))
 			$homework->description = $request->get('description');
-		if ($request->has('document_id'))
-			$homework->document_id = $request->get('document_id');
+		$homework->document_id = $request->has('document_id') ? $request->get('document_id') : null;
 		$homework->save();
+
+		$homework->load('document');
 
 		return $homework;
     }
