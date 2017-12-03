@@ -53,15 +53,24 @@ class EvaluationController extends Controller
     {
 	    $this->authorize('store', Evaluation::class);
 
+	    /*
 		$lesson = Lesson::with('studentClass.students')
 						->with('evaluations')
 						->findOrFail($lessonId);
 
+		foreach ($lesson->studentClass->students as &$student)
+		{
+			$student->load(['evaluations' => function ($q) use ($lessonId) {
+				$q->where('lesson_id', $lessonId);
+			}]);
+		}
+	    */
+
 		$criteria = Criterion::get();
 
 		return [
-			'students' => $lesson->studentClass->students,
-			'existing_evaluations' => $lesson->evaluations,
+			// 'students' => $lesson->studentClass->students,
+			// 'existing_evaluations' => $lesson->evaluations,
 			'criteria' => $criteria,
 		];
     }

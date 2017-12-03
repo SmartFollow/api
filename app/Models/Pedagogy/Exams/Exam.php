@@ -12,4 +12,9 @@ class Exam extends Model
 	{
 		return $this->belongsTo(Lesson::class);
 	}
+
+	public function marks()
+	{
+		return $this->hasMany(Mark::class);
+	}
 }

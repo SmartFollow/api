@@ -93,6 +93,11 @@ class User extends Authenticatable
 					->withTimestamps();
 	}
 
+	public function lessonEvaluation()
+	{
+		return $this->hasOne(Evaluation::class, 'student_id');
+	}
+
 	/*
 	 * AI data relationships
 	 */

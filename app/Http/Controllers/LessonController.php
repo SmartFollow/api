@@ -172,16 +172,26 @@ class LessonController extends Controller
         $lesson = Lesson::with('reservation.room')
 				->with('subject.teacher')
 				->with('homeworks')
-                ->with('evaluations.criteria')
-                ->with('evaluations.student')
-                ->with('evaluations.absence')
-                ->with('evaluations.delay')
 				->with('documents')
-				->with('exam')
+				->with('exam.marks')
 				->with('studentClass.students')
 				->findOrFail($id);
 
 	    $this->authorize('show', $lesson);
+
+	    foreach ($lesson->studentClass->students as &$student)
+	    {
+		    $student->load(['lessonEvaluation' => function ($q) use ($id) {
+			    $q->where('lesson_id', $id);
+		    }]);
+
+		    if (!empty($student->lessonEvaluation))
+		    {
+		        $student->lessonEvaluation->load('criteria');
+		        $student->lessonEvaluation->load('absence');
+		        $student->lessonEvaluation->load('delay');
+		    }
+	    }
 
 		return $lesson;
     }
