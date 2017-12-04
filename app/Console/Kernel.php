@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\AI\ClassCriteriaAverage::class,
+        Commands\AI\ClassCriteriaSum::class,
         Commands\AI\ClassCriteriaAverage::class,
         Commands\AI\ClassAbsenceDelaySum::class,
         Commands\AI\StudentCriteriaAverage::class,

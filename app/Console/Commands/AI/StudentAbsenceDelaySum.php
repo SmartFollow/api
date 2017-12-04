@@ -39,8 +39,8 @@ class StudentAbsenceDelaySum extends Command
      */
     public function handle()
     {
-	    $prevMonday = date("Y-m-d", strtotime("last week monday"));
-	    $prevSunday = date("Y-m-d 23:59:59", strtotime("last week sunday"));
+	    $prevMonday = date("Y-m-d", strtotime("monday this week"));
+	    $prevSunday = date("Y-m-d 23:59:59", strtotime("sunday this week"));
 	    $currentWeek = date("W");
 	    $currentYear = date("Y");
 
