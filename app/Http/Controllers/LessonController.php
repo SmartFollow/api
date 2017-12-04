@@ -174,6 +174,7 @@ class LessonController extends Controller
 				->with('homeworks.document')
 				->with('documents')
 				->with('exam.marks')
+				->with('exam.document')
 				->with('studentClass.students')
 				->findOrFail($id);
 
@@ -181,6 +182,7 @@ class LessonController extends Controller
 
 	    foreach ($lesson->studentClass->students as &$student)
 	    {
+	    	// Loading lesson evaluation
 		    $student->load(['lessonEvaluation' => function ($q) use ($id) {
 			    $q->where('lesson_id', $id);
 		    }]);
@@ -190,6 +192,14 @@ class LessonController extends Controller
 		        $student->lessonEvaluation->load('criteria');
 		        $student->lessonEvaluation->load('absence');
 		        $student->lessonEvaluation->load('delay');
+		    }
+
+		    // Loading lesson mark
+		    if (!empty($lesson->exam))
+		    {
+			    $student->load(['examMark' => function ($q) use ($lesson) {
+				    $q->where('exam_id', $lesson->exam->id);
+			    }]);
 		    }
 	    }
 

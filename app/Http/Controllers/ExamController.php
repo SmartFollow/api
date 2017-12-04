@@ -52,8 +52,8 @@ class ExamController extends Controller
         $this->validate($request, [
 			'type' => 'required|in:home,class,surprise',
 			'description' => '',
-			'min_mark' => 'numeric',
-			'max_mark' => 'numeric',
+			'min_mark' => 'required|numeric',
+			'max_mark' => 'required|numeric',
 			'document_id' => 'exists:documents,id'
 		]);
 		
@@ -74,6 +74,9 @@ class ExamController extends Controller
 			$exam->document_id = $request->get('document_id');
 		$exam->save();
 
+	    $exam->load('document');
+	    $exam->load('marks');
+
 		return $exam;
     }
 
@@ -85,7 +88,10 @@ class ExamController extends Controller
      */
     public function show($id)
     {
-		$exam = Exam::with('lesson')->findOrFail($id);
+		$exam = Exam::with('lesson')
+					->with('document')
+					->with('marks')
+					->findOrFail($id);
 
 	    $this->authorize('show', $exam);
 
@@ -143,10 +149,12 @@ class ExamController extends Controller
 			$exam->min_mark = $request->get('min_mark');
 		if ($request->has('max_mark'))
 			$exam->max_mark = $request->get('max_mark');
-		if ($request->has('document_id'))
-			$exam->document_id = $request->get('document_id');
+		$exam->document_id = $request->has('document_id') ? $request->get('document_id') : null;
 		$exam->save();
-		
+
+		$exam->load('document');
+		$exam->load('marks');
+
 		return $exam;
     }
 

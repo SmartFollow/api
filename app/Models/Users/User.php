@@ -98,6 +98,11 @@ class User extends Authenticatable
 		return $this->hasOne(Evaluation::class, 'student_id');
 	}
 
+	public function examMark()
+	{
+		return $this->hasOne(Mark::class, 'student_id');
+	}
+
 	/*
 	 * AI data relationships
 	 */
