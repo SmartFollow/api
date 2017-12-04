@@ -72,7 +72,7 @@ class DocumentController extends Controller
 		$document->lesson_id = $lesson->id;
 		$document->name = $request->get('name');
 		$document->description = $request->get('description');
-		$document->path = $request->file('document')->store('documents');
+		$document->path = $request->file('document')->store('public/documents');
 		$document->filename = pathinfo($request->file('document')->getClientOriginalName(), PATHINFO_FILENAME);
 		$document->extension = pathinfo($request->file('document')->getClientOriginalName(), PATHINFO_EXTENSION);
 		$document->save();
