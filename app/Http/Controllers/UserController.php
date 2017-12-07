@@ -319,8 +319,8 @@ class UserController extends Controller
 		$user->today_received_lessons = Lesson::where('student_class_id', $user->class_id)
 											   ->where('start', '>=', $todayStart)
 											   ->where('end', '<=', $todayEnd)
-											   ->with('subject')
-											   ->with('reservation')
+											   ->with('subject.teacher')
+											   ->with('reservation.room')
 											   ->get();
 
 		$user->today_given_lessons = Lesson::whereHas('subject', function ($q) use ($user) {
@@ -328,9 +328,9 @@ class UserController extends Controller
 										    })
 										    ->where('start', '>=', $todayStart)
 										    ->where('end', '<=', $todayEnd)
-										    ->with('subject')
+										    ->with('subject.teacher')
 										    ->with('studentClass')
-										    ->with('reservation')
+										    ->with('reservation.room')
 										    ->get();
 
 		$user->homeworks = Lesson::where('student_class_id', $user->class_id)
