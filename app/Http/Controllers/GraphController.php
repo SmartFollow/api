@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AI\GivenCriterionAverage;
 use App\Models\AI\GivenCriterionSum;
 use App\Models\AI\StudentCriterionAverage;
 use App\Models\AI\StudentCriterionSum;
@@ -43,34 +44,29 @@ class GraphController extends Controller
 			$range = new \DateTime();
 			$range->modify('- ' . $graph->days_range . ' days');
 
-			if ($graph->type == 'bar')
-			{
-				$values = $graph->summary_type == 'received' ?
-					StudentCriterionSum::where('user_id', $user->id) :
-					GivenCriterionSum::where('teacher_id', $user->id);
+			$values = $graph->summary_type == 'received' ?
+				StudentCriterionSum::where('user_id', $user->id) :
+				GivenCriterionSum::where('teacher_id', $user->id);
 
-				$values = $values->where('criterion_id', $graph->criterion_id)
-					->where('week_start', '>=', $range)
-					->orderBy('year', 'ASC')
-					->orderBy('week', 'ASC')
-					->get();
+			$values = $values->where('criterion_id', $graph->criterion_id)
+				->where('week_start', '>=', $range)
+				->orderBy('year', 'ASC')
+				->orderBy('week', 'ASC')
+				->get();
 
-				$graph->values = $values;
-			}
-			else
-			{
-				$values = $graph->summary_type == 'received' ?
-					StudentCriterionAverage::where('user_id', $user->id) :
-					GivenCriterionAverage::where('teacher_id', $user->id);
+			$graph->values = $values;
 
-				$values = $values->where('criterion_id', $graph->criterion_id)
-					->where('week_start', '>=', $range)
-					->orderBy('year', 'ASC')
-					->orderBy('week', 'ASC')
-					->get();
+			$values = $graph->summary_type == 'received' ?
+				StudentCriterionAverage::where('user_id', $user->id) :
+				GivenCriterionAverage::where('teacher_id', $user->id);
 
-				$graph->values = $values;
-			}
+			$values = $values->where('criterion_id', $graph->criterion_id)
+				->where('week_start', '>=', $range)
+				->orderBy('year', 'ASC')
+				->orderBy('week', 'ASC')
+				->get();
+
+			$graph->values->merge($values);
 		}
 
 		return $graphs;
