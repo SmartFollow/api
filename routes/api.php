@@ -27,7 +27,8 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::put('/{user}/password', ['as' => 'users.show.update-password', 'uses' => 'UserController@updateUserPassword'])
 			 ->where(['user' => '[0-9]+']);
 
-		Route::post('/{user}/avatar', ['as' => 'users.change-avatar' ,'uses' => 'UserController@updateAvatar'])
+		Route::post('/profile/avatar', ['as' => 'users.profile.update-avatar' ,'uses' => 'UserController@updateProfileAvatar']);
+		Route::post('/{user}/avatar', ['as' => 'users.show.update-avatar' ,'uses' => 'UserController@updateUserAvatar'])
 			 ->where(['user' => '[0-9]+']);
 
 		Route::get('/profile/processes', 'ProcessUserController@profileProcesses');

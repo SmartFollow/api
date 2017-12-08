@@ -160,7 +160,6 @@ class UserController extends Controller
             'firstname' => '',
             'lastname' => '',
             'email' => 'email|unique:users,email,' . $id,
-            'password' => '',
 			'group' => 'exists:groups,id',
 			'student_class' => 'exists:student_classes,id',
 			'avatar' => 'file|mimes:jpeg,png',
@@ -172,8 +171,6 @@ class UserController extends Controller
             $user->lastname = $request->get('lastname');
 		if ($request->has('email'))
 			$user->email = $request->get('email');
-        if ($request->has('password'))
-            $user->password = bcrypt($request->get('password'));
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
 		if ($request->has('student_class'))
@@ -394,19 +391,24 @@ class UserController extends Controller
         return $this->updateUserPassword($request, Auth::user());
     }
 
-    public function updateAvatar(Request $request, $id)
+    public function updateUserAvatar(Request $request, User $user)
     {
-    	$user = User::findOrFail($id);
-
 	    $this->validate($request, [
 		    'avatar' => 'required|file|mimes:jpeg,png',
 	    ]);
 
-	    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
-
-	    $user->avatar = $request->file('avatar')->storeAs('public/avatars', $user->id . '.' . $ext);
+	    if (!empty($request->file('avatar')) && $request->file('avatar')->isValid())
+	    {
+		    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
+		    $user->avatar = $request->file('avatar')->storeAs('public/avatars', $user->id . '.' . $ext);
+	    }
 	    $user->save();
 
 	    return $user;
     }
+
+	public function updateProfileAvatar(Request $request)
+	{
+		return $this->updateUserAvatar($request, Auth::user());
+	}
 }
