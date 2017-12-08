@@ -23,7 +23,10 @@ Route::group(['middleware' => ['auth:api']], function()
 		Route::get('/profile/access-rules', ['as' => 'users.profile.access-rules', 'uses' => 'UserController@profileAccessRules']);
 		Route::get('/profile', ['as' => 'users.profile', 'uses' => 'UserController@profile']);
 
-		Route::put('/change-password', ['as' => 'users.change-password', 'uses' => 'UserController@changePassword']);
+		Route::put('/profile/password', ['as' => 'users.profile.update-password', 'uses' => 'UserController@updateProfilePassword']);
+		Route::put('/{user}/password', ['as' => 'users.show.update-password', 'uses' => 'UserController@updateUserPassword'])
+			 ->where(['user' => '[0-9]+']);
+
 		Route::post('/{user}/avatar', ['as' => 'users.change-avatar' ,'uses' => 'UserController@updateAvatar'])
 			 ->where(['user' => '[0-9]+']);
 

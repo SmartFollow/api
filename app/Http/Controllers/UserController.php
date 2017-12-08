@@ -365,32 +365,33 @@ class UserController extends Controller
 		$user->delete();
     }
 
+	public function updateUserPassword(Request $request, User $user)
+	{
+		$this->validate($request, [
+			'password' => 'required'
+		]);
+
+		$user->password = bcrypt($request->get('password'));
+		$user->save();
+
+		return $user;
+	}
+
     /**
-	 * @api {put} /users/change-password Change password
+	 * @api {put} /users/profile/password Change password
 	 * @apiName changePassword
 	 * @apiGroup Users
 	 *
      * @apiDescription Change the password of the authenticated user.
 	 *
-	 * @apiParam {String} password		The current password of the user
-	 * @apiParam {String} new_password	The new password of the user
+	 * @apiParam {String} password		The new password of the user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function changePassword(Request $request)
+    public function updateProfilePassword(Request $request)
     {
-        $user = Auth::user();
-
-        $this->validate($request, [
-            'password' => 'required',
-            'new_password' => 'required|different:password'
-        ]);
-
-        $user->password = bcrypt($request->get('new_password'));
-        $user->save();
-
-        return ($user);
+        return $this->updateUserPassword($request, Auth::user());
     }
 
     public function updateAvatar(Request $request, $id)
