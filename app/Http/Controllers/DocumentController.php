@@ -64,7 +64,7 @@ class DocumentController extends Controller
 
         $this->validate($request, [
 			'name' => 'required',
-			'description' => 'required',
+			'description' => '',
 			'document' => 'required|file|mimes:pdf,jpeg,png',
 		]);
 
