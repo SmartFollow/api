@@ -51,7 +51,7 @@ class ProcessUserController extends Controller
 	{
 		$user->load('processes.steps');
 
-		return $user->processes;
+		return $user;
 	}
 
 	public function profileProcesses()

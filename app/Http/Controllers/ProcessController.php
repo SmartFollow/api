@@ -18,7 +18,7 @@ class ProcessController extends Controller
     {
 	    $this->authorize('index', Process::class);
 
-        return Process::get();
+        return Process::with('steps')->get();
     }
 
     /**
