@@ -47,6 +47,17 @@ class ProcessUserController extends Controller
 		return $user->processes;
 	}
 
+	public function destroy($userId, $processId)
+	{
+		$user = User::findOrFail($userId);
+
+		$user->processes()->detach($processId);
+
+		$user->load('processes.steps');
+
+		return $user->processes;
+	}
+
 	public function userProcesses(User $user)
 	{
 		$user->load('processes.steps');

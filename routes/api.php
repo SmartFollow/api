@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:api']], function()
 
 		Route::get('/profile/processes', 'ProcessUserController@profileProcesses');
 		Route::get('/{user}/processes', 'ProcessUserController@userProcesses');
+		Route::delete('/{user}/processes/{process}', 'ProcessUserController@destroy');
 
 		Route::get('/profile/graphs', 'GraphController@profileGraphs');
 		Route::get('/{user}/graphs', 'GraphController@userGraphs');
