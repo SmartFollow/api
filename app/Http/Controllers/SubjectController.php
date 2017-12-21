@@ -102,7 +102,9 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        $subject = Subject::findOrFail($id);
+        $subject = Subject::with('teacher')
+	                      ->with('level')
+	                      ->findOrFail($id);
 
 	    $this->authorize('show', $subject);
 
