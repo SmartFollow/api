@@ -15,7 +15,7 @@ class AbsenceController extends Controller
 		$this->authorize('index', Absence::class);
 
 		$absences = Absence::with('evaluation.student')
-						   ->with('evaluation.lesson.subject');
+						   ->with('evaluation.lesson.subject.teacher');
 		if ($request->get('type') == 'unjustified')
 			$absences = $absences->where('justified_at', null);
 		$absences = $absences->get();
@@ -91,8 +91,12 @@ class AbsenceController extends Controller
 
 	    $this->authorize('update', $absence);
 
-	    $absence->justified_at = $request->get('justified_at');
+	    $absence->justified_at = new \DateTime($request->get('justified_at'));
 		$absence->save();
+
+	    $absence->load('evaluation');
+	    $absence->evaluation->load('student');
+	    $absence->evaluation->load('lesson.subject.teacher');
 
 		return $absence;
     }
