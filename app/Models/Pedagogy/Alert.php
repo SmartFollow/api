@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alert extends Model
 {
-    public function student()
+	protected $fillable = ['student_id', 'criterion_id'];
+
+	public function student()
     {
     	return $this->belongsTo(User::class, 'student_id');
     }

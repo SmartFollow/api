@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
 	    Commands\AI\GivenCriteriaAverage::class,
 	    Commands\AI\GivenCriteriaSum::class,
 	    Commands\AI\GivenAbsenceDelaySum::class,
+	    Commands\AI\Alerts::class,
     ];
 
     /**

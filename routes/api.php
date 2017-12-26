@@ -250,5 +250,7 @@ Route::group(['middleware' => ['auth:api']], function()
 			Route::get('average', 'AIController@criteriaGivenAverage');
 			Route::get('absence-delay', 'AIController@absenceDelaysGiven');
 		});
+
+		Route::get('alerts', 'AIController@alerts');
 	});
 });

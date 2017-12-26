@@ -50,4 +50,9 @@ class AIController extends Controller
 	{
 		Artisan::call('ai:absdelay:given');
 	}
+
+	public function alerts()
+	{
+		Artisan::call('ai:alerts');
+	}
 }
