@@ -70,7 +70,7 @@ class ReservationController extends Controller
 
 		if ($conflict != 0)
 			return [
-				"error" => trans('reservations.conflict')
+				"error" => trans('reservations.reservation_not_available')
 			];
 
 		if ($request->time_end == $request->time_start)
@@ -158,7 +158,7 @@ class ReservationController extends Controller
 
 		if ($conflict != 0)
 			return [
-				"error" => trans('reservations.conflict')
+				"error" => trans('reservations.reservation_not_available')
 			];
 
 		if ($request->has('room_id'))

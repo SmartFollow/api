@@ -42,3 +42,15 @@ To generate it you have to install [apiDoc](http://apidocjs.com/) and run the fo
 ```sh
 apidoc -i app/ -o public/docs/
 ```
+
+## Update after a pull
+
+In order to make sure that the installation is up to date after the pull, it is required to execute the following commands:
+
+```sh
+composer dumpauto
+php artisan config:cache
+php artisan migrate
+php artisan db:seed --class=UpdateAccessRulesSeeder
+php artisan db:seed --class=UpdateAccessRuleGroupSeeder
+```

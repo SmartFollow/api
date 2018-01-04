@@ -133,7 +133,7 @@ class GroupController extends Controller
 		]);
 
 		if (!$group->editable)
-			abort(403, trans('group.not_editable'));
+			abort(403, trans('groups.not_editable'));
 
 		if ($request->has('name'))
 			$group->name = $request->get('name');
@@ -162,7 +162,7 @@ class GroupController extends Controller
 		$this->authorize('destroy', $group);
 
 		if (!$group->deletable)
-			abort(403, trans('group.not_deletable'));
+			abort(403, trans('groups.not_deletable'));
 		else
 			$group->delete();
     }
