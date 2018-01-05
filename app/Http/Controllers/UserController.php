@@ -290,7 +290,10 @@ class UserController extends Controller
 		}]);
 		$user->load('givenLastAbsencesDelaysSum');
 
-		$user->load('assignedDifficulties.student');
+		$user->load(['assignedDifficulties' => function ($query) use ($w, $y) {
+			$query->where('week', $w);
+			$query->where('year', $y);
+		}]);
 		$user->load(['alerts' => function ($query) use ($w, $y) {
 			$query->where('week', $w);
 			$query->where('year', $y);
@@ -306,6 +309,8 @@ class UserController extends Controller
 			$givenCriteriaAverage->load('criterion');
 		foreach ($user->givenCriteriaSums as &$givenCriteriaSum)
 			$givenCriteriaSum->load('criterion');
+		foreach ($user->assignedDifficulties as &$assignedDifficulty)
+			$assignedDifficulty->load('student');
 
 		$prevMonday = date("Y-m-d", strtotime("last week monday"));
 		$sunday = date("Y-m-d 23:59:59", strtotime("sunday"));

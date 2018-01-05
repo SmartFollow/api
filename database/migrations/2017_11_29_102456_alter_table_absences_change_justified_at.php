@@ -28,11 +28,13 @@ class AlterTableAbsencesChangeJustifiedAt extends Migration
      */
     public function down()
     {
+	    Schema::disableForeignKeyConstraints();
 	    Schema::table('absences', function (Blueprint $table) {
 		    $table->dropColumn('justified_at');
 	    });
 	    Schema::table('absences', function (Blueprint $table) {
 		    $table->time('justified_at')->nullable()->default(null);
 	    });
+	    Schema::enableForeignKeyConstraints();
     }
 }

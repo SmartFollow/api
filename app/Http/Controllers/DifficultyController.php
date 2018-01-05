@@ -17,18 +17,25 @@ class DifficultyController extends Controller
     {
 	    $this->authorize('index', Difficulty::class);
 
+	    $currentWeek = date("W");
+	    $currentYear = date("Y");
+
 	    $difficulties = [];
 
 	    if (Auth::user()->group->accessRules->keyBy('name')->has('difficulties.self.index'))
 	    {
 		    $difficulties['self_difficulties'] = Difficulty::with('student')
 													       ->where('assigned_teacher_id', Auth::id())
+			                                               ->where('week', $currentWeek)
+			                                               ->where('year', $currentYear)
 													       ->get();
 	    }
 	    if (Auth::user()->group->accessRules->keyBy('name')->has('difficulties.index'))
 	    {
 		    $difficulties['difficulties'] = Difficulty::with('student')
 												       ->with('assignedTeacher')
+												       ->where('week', $currentWeek)
+												       ->where('year', $currentYear)
 												       ->get();
 	    }
 

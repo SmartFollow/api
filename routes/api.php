@@ -252,5 +252,6 @@ Route::group(['middleware' => ['auth:api']], function()
 		});
 
 		Route::get('alerts', 'AIController@alerts');
+		Route::get('difficulties', 'AIController@difficulties');
 	});
 });
