@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\Processes\Process;
 use App\Models\Users\User;
-use App\Models\Planning\Process;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProcessPolicy
