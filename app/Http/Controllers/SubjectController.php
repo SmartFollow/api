@@ -73,7 +73,7 @@ class SubjectController extends Controller
 
 	    $this->validate($request, [
 			'level' => 'required|exists:levels,id',
-			'name' => 'required|unique:subjects,name',
+			'name' => 'required',
 			'description' => '',
 			'teacher' => 'required|exists:users,id',
 		]);
