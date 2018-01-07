@@ -24,7 +24,7 @@ class StepController extends Controller
             'process_id' => 'exists:processes,id',
         ]);
 
-        $step = new Process();
+        $step = new Step();
         $step->name = $request->get('name');
         $step->description = $request->get('description');
         if ($request->has('process_id'))
