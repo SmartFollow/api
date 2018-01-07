@@ -21,7 +21,7 @@ class StepController extends Controller
 	    $this->validate($request, [
             'name' => 'required',
             'description' => '',
-            'process_id' => 'exists:processes,id',
+            'process_id' => 'required|exists:processes,id',
         ]);
 
         $step = new Step();
@@ -57,14 +57,13 @@ class StepController extends Controller
 	    $this->authorize('update', $step);
 
 	    $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+            'name' => '',
+            'description' => '',
         ]);
 
         if ($request->has('name'))
             $step->name = $request->get('name');
-        if ($request->has('description'))
-            $step->description = $request->get('description');
+        $step->description = $request->get('description');
         $step->save();
 
         return $step;
