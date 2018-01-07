@@ -20,7 +20,7 @@ class StepController extends Controller
 
 	    $this->validate($request, [
             'name' => 'required',
-            'description' => 'required',
+            'description' => '',
             'process_id' => 'exists:processes,id',
         ]);
 
