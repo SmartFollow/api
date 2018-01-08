@@ -253,9 +253,9 @@ class StudentClassController extends Controller
 		$students = User::find($request->get('students'));
 		foreach ($students as $student)
 		{
-			if ($student->studentClass() != $studentClass)
+			if ($student->class_id != $id)
 			{
-				$student->studentClass()->associate($studentClass);
+				$student->class_id = $id;
 				$student->save();
 			}
 		}
