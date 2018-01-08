@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Users\AccessRule;
 use App\Models\Users\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class DataController extends Controller
 {
@@ -31,6 +32,11 @@ class DataController extends Controller
 
 			echo "<br><br><br>";
 		}
+	}
+
+	public function locale()
+	{
+		echo App::getLocale();
 	}
 
 }

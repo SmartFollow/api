@@ -2,6 +2,7 @@
 
 namespace App\Models\Pedagogy;
 
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentClass extends Model

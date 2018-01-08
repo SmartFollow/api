@@ -14,6 +14,4 @@
 Route::get('/data/access-rules', 'DataController@accessRules');
 Route::get('/data/group-access-rules', 'DataController@groupAccessRules');
 
-Route::get('/locale', function () {
-	echo App::getLocale();
-});
+Route::get('/locale', 'DataController@locale');
