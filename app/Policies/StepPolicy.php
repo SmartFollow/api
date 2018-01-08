@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Users\User;
-use App\Models\Planning\Step;
+use App\Models\Processes\Step;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StepPolicy

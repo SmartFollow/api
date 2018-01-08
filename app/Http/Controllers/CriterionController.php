@@ -39,7 +39,7 @@ class CriterionController extends Controller
 	        ],
 	        'stats_types' => [
 	        	'sum' => trans('criteria.sum'),
-		        'average' => trans('criteria.average')
+		        // 'average' => trans('criteria.average')
 	        ]
         ];
     }
@@ -59,7 +59,7 @@ class CriterionController extends Controller
 		    'impact' => ['required', Rule::in(['negative', 'neutral', 'positive'])],
 		    'difference_limit_percentage' => 'required|integer|min:0|max:100',
 		    'check_interval' => 'required|integer|min:0',
-		    'stats_type' => ['required', Rule::in(['sum', 'average'])]
+		    'stats_type' => ['required', Rule::in(['sum'])]
 	    ]);
 
 	    $criterion = new Criterion();
@@ -109,7 +109,7 @@ class CriterionController extends Controller
 		    ],
 		    'stats_types' => [
 			    'sum' => trans('criteria.sum'),
-			    'average' => trans('criteria.average')
+			    // 'average' => trans('criteria.average')
 		    ]
 	    ];
     }
@@ -132,7 +132,7 @@ class CriterionController extends Controller
 		    'impact' => [Rule::in(['negative', 'neutral', 'positive'])],
 		    'difference_limit_percentage' => 'integer|min:0|max:100',
 		    'check_interval' => 'integer|min:0',
-		    'stats_type' => [Rule::in(['sum', 'average'])]
+		    'stats_type' => [Rule::in(['sum'])]
 	    ]);
 
 	    if ($request->has('name'))

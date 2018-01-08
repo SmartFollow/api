@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedagogy\Level;
+use App\Models\Pedagogy\Subject;
 use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\StudentClass;
@@ -23,7 +24,9 @@ class StudentClassController extends Controller
     {
 	    $this->authorize('index', StudentClass::class);
 
-	    $studentClasses = StudentClass::get();
+	    $studentClasses = StudentClass::with('level')
+		                              ->with('mainTeacher')
+		                              ->get();
 
 		return $studentClasses;
     }
@@ -45,6 +48,8 @@ class StudentClassController extends Controller
 
 		return [
 			'levels' => $levels,
+			'users' => User::get(),
+			'subjects' => Subject::get(),
 		];
     }
 
@@ -94,7 +99,11 @@ class StudentClassController extends Controller
      */
     public function show($id)
     {
-        $studentClass = StudentClass::with('students')->findOrFail($id);
+        $studentClass = StudentClass::with('level')
+							        ->with('mainTeacher')
+							        ->with('students')
+							        ->with('subjects')
+							        ->findOrFail($id);
 
 	    $this->authorize('show', $studentClass);
 
@@ -124,6 +133,8 @@ class StudentClassController extends Controller
 	    return [
 		    'levels' => $levels,
 		    'student_class' => $studentClass,
+		    'users' => User::get(),
+		    'subjects' => Subject::get(),
 	    ];
     }
 

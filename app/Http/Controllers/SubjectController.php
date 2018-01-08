@@ -104,6 +104,7 @@ class SubjectController extends Controller
     {
         $subject = Subject::with('teacher')
 	                      ->with('level')
+	                      ->with('studentClasses')
 	                      ->findOrFail($id);
 
 	    $this->authorize('show', $subject);
