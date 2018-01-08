@@ -145,23 +145,20 @@ class NotificationController extends Controller
 		$this->authorize('update', $notification);
 
 		$this->validate($request, [
-			'transmitter_id' => '',
 			'resource_link' => '',
 			'message' => '',
-			'user' => 'required_without_all:users,group,student_class|exists:users,id',
-			'users.*' => 'required_without_all:user,group,student_class|exists:users,id',
-			'group' => 'required_without_all:user,users,student_class|exists:groups,id',
-			'student_class' => 'required_without_all:user,users,group|exists:student_classes,id',
+			// 'user' => 'required_without_all:users,group,student_class|exists:users,id',
+			// 'users.*' => 'required_without_all:user,group,student_class|exists:users,id',
+			// 'group' => 'required_without_all:user,users,student_class|exists:groups,id',
+			// 'student_class' => 'required_without_all:user,users,group|exists:student_classes,id',
 		]);
 
-		if ($request->has('transmitter_id'))
-			$notification->transmitter_id = Auth::id();
-		if ($request->has('resource_link'))
-			$notification->resource_link = $request->get('resource_link');
+		$notification->resource_link = $request->get('resource_link');
 		if ($request->has('message'))
 			$notification->message = $request->get('message');
 		$notification->save();
 
+		/*
 		if ($request->has('user')) {
 			$notification->users()->attach($request->get('user'));
 		}
@@ -176,6 +173,7 @@ class NotificationController extends Controller
 			$studentClass = StudentClass::with('students')->findOrFail($request->get('student_class'));
 			$notification->users()->syncWithoutDetaching($studentClass->students);
 		}
+		*/
 
 		return $notification;
 	}
