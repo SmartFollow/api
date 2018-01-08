@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedagogy\Level;
+use App\Models\Pedagogy\Subject;
 use Illuminate\Http\Request;
 
 use App\Models\Pedagogy\StudentClass;
@@ -48,6 +49,7 @@ class StudentClassController extends Controller
 		return [
 			'levels' => $levels,
 			'users' => User::get(),
+			'subjects' => Subject::get(),
 		];
     }
 
