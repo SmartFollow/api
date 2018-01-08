@@ -20,4 +20,9 @@ class StudentClass extends Model
 	{
 		return $this->belongsToMany('App\Models\Pedagogy\Subject');
 	}
+
+	public function mainTeacher()
+	{
+		return $this->belongsTo(User::class, 'main_teacher_id');
+	}
 }
