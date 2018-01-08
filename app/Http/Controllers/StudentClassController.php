@@ -132,6 +132,7 @@ class StudentClassController extends Controller
 		    'levels' => $levels,
 		    'student_class' => $studentClass,
 		    'users' => User::get(),
+		    'subjects' => Subject::get(),
 	    ];
     }
 
