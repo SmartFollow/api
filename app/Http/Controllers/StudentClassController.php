@@ -68,11 +68,13 @@ class StudentClassController extends Controller
 	    $this->validate($request, [
             'level' => 'required|exists:levels,id',
             'name' => 'required|unique:student_classes,name',
+		    'main_teacher_id' => 'exists:users,id'
 		]);
 
 		$studentClass = new StudentClass();
 		$studentClass->level_id = $request->get('level');
 		$studentClass->name = $request->get('name');
+		$studentClass->main_teacher_id = $request->get('main_teacher_id');
 		$studentClass->save();
 
 		return $studentClass;
@@ -150,13 +152,15 @@ class StudentClassController extends Controller
 	    $this->validate($request, [
 			'level' => 'exists:levels,id',
             'name' => 'unique:student_classes,name,' . $id,
+		    'main_teacher_id' => 'exists:users,id'
 		]);
 
 		if ($request->has('level'))
 			$studentClass->level_id = $request->get('level');
 		if ($request->has('name'))
 			$studentClass->name = $request->get('name');
-		$studentClass->save();
+	    $studentClass->main_teacher_id = $request->get('main_teacher_id');
+	    $studentClass->save();
 
 		return $studentClass;
     }
