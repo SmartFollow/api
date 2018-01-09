@@ -70,7 +70,8 @@ class ConversationController extends Controller
         $conversation->save();
 
 		$conversation->participants()->sync($request->get('participants'));
-		$conversation->participants()->attach(Auth::id());
+		if (!$conversation->participants->contains(Auth::id()))
+			$conversation->participants()->attach(Auth::id());
 
 		$conversation->load('participants');
 
