@@ -13,7 +13,7 @@
 /**
  * Route group for the routes requiring authentication
  */
-Route::group(['middleware' => ['auth:api']], function()
+Route::group(['middleware' => ['cors', 'auth:api']], function()
 {
 	/*
 	 * Routes related to the users
