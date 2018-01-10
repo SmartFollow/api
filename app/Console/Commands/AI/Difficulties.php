@@ -123,7 +123,7 @@ class Difficulties extends Command
 
 		    if (!empty($previousStudentSum))
 		    {
-			    if (!empty($previousStudentSum) && abs($sum->sum / $previousStudentSum->sum * 100 - 100) >= $sum->criterion->difference_limit_percentage)
+			    if (!empty($previousStudentSum) && $previousStudentSum->sum > 0 && abs($sum->sum / $previousStudentSum->sum * 100 - 100) >= $sum->criterion->difference_limit_percentage)
 			    { // If the value difference matches for student value
 				    switch ($this->getAlertType($sum->sum, $sum->sum / $previousStudentSum->sum * 100 - 100, $sum->criterion->impact, $sum->criterion->difference_limit_percentage))
 				    {

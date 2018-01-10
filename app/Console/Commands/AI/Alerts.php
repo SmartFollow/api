@@ -86,7 +86,7 @@ class Alerts extends Command
 			    $alert->week = $currentWeek;
 			    $alert->year = $currentYear;
 
-			    if (!empty($previousStudentSum) && abs($sum->sum / $previousStudentSum->sum * 100 - 100) >= $sum->criterion->difference_limit_percentage)
+			    if (!empty($previousStudentSum) && $previousStudentSum->sum > 0 && abs($sum->sum / $previousStudentSum->sum * 100 - 100) >= $sum->criterion->difference_limit_percentage)
 			    { // If the value difference matches for student value
 				    $alert->class_value = null;
 				    $alert->previous_student_value = $previousStudentSum->sum;
@@ -96,7 +96,7 @@ class Alerts extends Command
 
 				    print_r($alert->toArray());
 			    }
-			    else if (!empty($classValue) && abs($sum->sum / $classValue * 100 - 100) >= $sum->criterion->difference_limit_percentage)
+			    else if (!empty($classValue) && $classValue > 0 && abs($sum->sum / $classValue * 100 - 100) >= $sum->criterion->difference_limit_percentage)
 			    { // If the value difference matches for class value and their is no student progression
 				    $alert->previous_student_value = null;
 				    $alert->class_value = $classValue;
