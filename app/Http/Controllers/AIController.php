@@ -54,10 +54,14 @@ class AIController extends Controller
 	public function alerts()
 	{
 		Artisan::call('ai:alerts');
+
+		return [];
 	}
 
 	public function difficulties()
 	{
 		Artisan::call('ai:difficulties');
+
+		return [];
 	}
 }
