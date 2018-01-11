@@ -16,7 +16,7 @@ git clone git@gitlab.com:smartfollow/api.git
 cd api
 ```
 
-### Configuring Laravel setup
+### Configuring and installing Laravel setup
 
 ```sh
 composer install
@@ -27,10 +27,30 @@ nano .env
 
 Update the database informations and other relevant credentials.
 
-### Installing Laravel
-
 ```sh
 php artisan migrate
 php artisan db:seed
 php artisan passport:install
+```
+
+## Documentation
+
+The documentation for the routes is available at http://path.to.smartfollow.api/docs
+
+To generate it you have to install [apiDoc](http://apidocjs.com/) and run the following command:
+
+```sh
+apidoc -i app/ -o public/docs/
+```
+
+## Update after a pull
+
+In order to make sure that the installation is up to date after the pull, it is required to execute the following commands:
+
+```sh
+composer dumpauto
+php artisan config:cache
+php artisan migrate
+php artisan db:seed --class=UpdateAccessRulesSeeder
+php artisan db:seed --class=UpdateAccessRuleGroupSeeder
 ```

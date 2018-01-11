@@ -23,7 +23,7 @@ class CreateHomeworksTable extends Migration
 
 		Schema::table('homeworks', function (Blueprint $table) {
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
@@ -34,6 +34,8 @@ class CreateHomeworksTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('homeworks');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

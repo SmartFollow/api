@@ -13,7 +13,17 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\AI\ClassCriteriaSum::class,
+        Commands\AI\ClassCriteriaAverage::class,
+        Commands\AI\ClassAbsenceDelaySum::class,
+        Commands\AI\StudentCriteriaAverage::class,
+        Commands\AI\StudentCriteriaSum::class,
+	    Commands\AI\StudentAbsenceDelaySum::class,
+	    Commands\AI\GivenCriteriaAverage::class,
+	    Commands\AI\GivenCriteriaSum::class,
+	    Commands\AI\GivenAbsenceDelaySum::class,
+	    Commands\AI\Alerts::class,
+	    Commands\AI\Difficulties::class,
     ];
 
     /**
@@ -24,8 +34,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
     }
 
     /**

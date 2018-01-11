@@ -19,7 +19,7 @@ class CreateNotificationUserPivotTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['notification_id', 'user_id']);
 
-			$table->timestamp('read_at')->nullable();
+			$table->time('read_at')->nullable();
         });
     }
 
@@ -30,6 +30,8 @@ class CreateNotificationUserPivotTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::drop('notification_user');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

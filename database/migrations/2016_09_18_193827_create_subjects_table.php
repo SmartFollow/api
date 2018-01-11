@@ -24,7 +24,7 @@ class CreateSubjectsTable extends Migration
         });
 
 		Schema::table('subjects', function (Blueprint $table) {
-            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -36,6 +36,8 @@ class CreateSubjectsTable extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('subjects');
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

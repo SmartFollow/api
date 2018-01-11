@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/data/access-rules', 'DataController@accessRules');
+Route::get('/data/group-access-rules', 'DataController@groupAccessRules');
+
+Route::get('/locale', 'DataController@locale');

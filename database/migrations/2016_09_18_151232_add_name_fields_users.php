@@ -15,9 +15,11 @@ class AddNameFieldsUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('name');
-			$table->string('firstname');
-			$table->string('lastname');
         });
+		Schema::table('users', function (Blueprint $table) {
+			$table->string('firstname')->default('');
+			$table->string('lastname')->default('');
+		});
     }
 
     /**
@@ -27,10 +29,12 @@ class AddNameFieldsUsers extends Migration
      */
     public function down()
     {
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('firstname');
             $table->dropColumn('lastname');
 			$table->string('name');
         });
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
