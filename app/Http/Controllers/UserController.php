@@ -173,8 +173,7 @@ class UserController extends Controller
 			$user->email = $request->get('email');
 		if ($request->has('group'))
 			$user->group_id = $request->get('group');
-		if ($request->has('student_class'))
-			$user->class_id = $request->get('student_class');
+		$user->class_id = $request->has('student_class') ? $request->get('student_class') : null;
 	    if (!empty($request->file('avatar')) && $request->file('avatar')->isValid())
 	    {
 		    $ext = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_EXTENSION);
